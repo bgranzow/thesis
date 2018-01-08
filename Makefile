@@ -6,6 +6,9 @@ title.tex \
 acknowledge.tex \
 abstract.tex \
 introduction.tex \
+fad.tex \
+vms.tex \
+vmsapp.tex \
 references.bib
 
 imgs =

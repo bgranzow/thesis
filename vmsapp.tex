@@ -105,8 +105,8 @@ This proceeds as follows:
 \int_{\Omega} z \bs{a} \cdot \nabla u \, \text{d} \Omega \\
 &=
 -\int_{\partial \Omega} z \kappa \nabla u \cdot \bs{n} \, \text{d} \Gamma +
-\int_{\Omega} \kappa \nabla z \cdot \nabla u \, \text{d} \Omega +
-\int_{\partial \Omega} (z \bs{a} u) \cdot \bs{n} \, \text{d} \Gamma -
+\int_{\Omega} \kappa \nabla z \cdot \nabla u \, \text{d} \Omega + \\
+& \quad \quad \quad \int_{\partial \Omega} (z \bs{a} u) \cdot \bs{n} \, \text{d} \Gamma -
 \int_{\Omega} \bs{a} \cdot \nabla z u \, \text{d} \Omega \\
 &=
 \int_{\Omega} \kappa \nabla z \cdot \nabla u \, \text{d} \Omega -
@@ -347,8 +347,8 @@ J(u) - J(u^h)
 \int_{\Omega} z \R u^h \, \text{d} \Omega \\
 &=
 \int_{\Omega} z \R u^h \, \text{d} \Omega -
-\int_{\Omega} z^h \R u^h \, \text{d} \Omega +
-\sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
+\int_{\Omega} z^h \R u^h \, \text{d} \Omega + \\
+& \quad \quad \quad \sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
 \, \text{d} \Omega \\
 &=
 \int_{\Omega} (z - z^h) \R u^h +
@@ -361,13 +361,13 @@ J(u) - J(u^h)
 &=
 \int_{\Omega} \tilde{z}' \R u^h +
 \sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
-\, \text{d} \Omega +
-\int_{\Omega} \tilde{z} \R u^h \\
+\, \text{d} \Omega + \\
+& \quad \quad \quad \int_{\Omega} \tilde{z} \R u^h \\
 &=
 \int_{\Omega} (\uptau^e_d \R^* z^h) \R u^h +
 \sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
-\, \text{d} \Omega +
-\int_{\Omega} \tilde{z} \R u^h
+\, \text{d} \Omega + \\
+& \quad \quad \quad \int_{\Omega} \tilde{z} \R u^h
 \end{aligned}
 \end{gather*}
 %
@@ -397,9 +397,11 @@ be carried out in exactly the same manner
 for $u,z \in H^1_0(\Omega^e)$ to obtain the result:
 %
 \begin{gather}
-\int_{\Omega^e} z(\adv{u}) \, \text{d} \Omega =
-\int_{\Omega^e} (\adva{z}) u \, \text{d} \Omega
+\begin{aligned}
+&\int_{\Omega^e} z(\adv{u}) \, \text{d} \Omega = \\
+&\int_{\Omega^e} (\adva{z}) u \, \text{d} \Omega
 \quad \forall \, u,z \in H^1_0(\Omega^e)
+\end{aligned}
 \label{eq:app_elem_adjoint}
 \end{gather}
 %
@@ -415,34 +417,33 @@ the operator $\OP$ is not self-adjoint.
 %
 \begin{gather*}
 \begin{aligned}
-\adva{ g^e(\bs{x}; \bs{y}) }
-&=
+&\adva{ g^e(\bs{x}; \bs{y}) }
+=
 \delta(\bs{x} - \bs{y}) \\
-\implies \int_{\Omega^e}
+\implies &\int_{\Omega^e}
 g^e_d(\bs{x}; \bs{z}) (\adva{ g^e(\bs{x}; \bs{y}) })
 \, \text{d} \Omega
-&=
-\int_{\Omega^e}
+= \\
+& \quad \quad \int_{\Omega^e}
 g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
 \, \text{d} \Omega \\
 \implies
-\int_{\Omega^e} (\adv{ g^e_d(\bs{x}; \bs{z})}) g^e(\bs{x}; \bs{y})
+& \int_{\Omega^e} (\adv{ g^e_d(\bs{x}; \bs{z})}) g^e(\bs{x}; \bs{y})
 \, \text{d} \Omega
-&=
-\int_{\Omega^e}
+= \\
+& \quad \quad \int_{\Omega^e}
 g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
 \, \text{d} \Omega \\
 \implies
-\int_{\Omega^e} \delta(\bs{x} - \bs{z}) g^e(\bs{x}; \bs{y})
+& \int_{\Omega^e} \delta(\bs{x} - \bs{z}) g^e(\bs{x}; \bs{y})
 \, \text{d} \Omega
-&=
+=
 \int_{\Omega^e}
 g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
 \, \text{d} \Omega \\
 \implies
-g^e(\bs{z}; \bs{y})
-&=
-g^e_d(\bs{y}; \bs{z}),
+& g^e(\bs{z}; \bs{y})
+= g^e_d(\bs{y}; \bs{z}),
 \end{aligned}
 \end{gather*}
 %
@@ -454,4 +455,3 @@ the third equality is due to the fundamental relationship
 \eqref{eq:app_elem_adjoint}, and the fourth equality is due to the
 definition of the dual element-level Green's function
 \eqref{eq:dual_elem_greens}.
-
