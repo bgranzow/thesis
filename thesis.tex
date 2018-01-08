@@ -1,0 +1,91 @@
+\documentclass[chap]{thesis}
+
+% citations
+\usepackage{cite}
+\usepackage{notoccite}
+
+% captions
+\usepackage[
+  labelsep=period,
+  justification=centering]{caption}
+\usepackage{subcaption}
+
+% mathematics
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{upgreek}
+
+% figures
+\usepackage{graphicx}
+
+% make things pretty
+\usepackage{color}
+\usepackage[hidelinks]{hyperref}
+
+% make pretty graphs
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
+% make pretty tables
+\usepackage{tabu}
+
+% algorithms
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+
+% code listings
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+  basicstyle=\ttfamily,
+  language=C++,
+  columns=fullflexible,
+  keepspaces=true,
+  numbers=left,
+  xleftmargin=2em
+}
+
+% conform to rpi
+\renewcommand{\captionfont}{\bfseries}
+\renewcommand{\figurename}{Fig.}
+
+% theorems and propositions
+\newtheorem{prop}{Proposition}
+\theoremstyle{remark}
+\newtheorem{rmk}{Remark}
+
+% make typing easier
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\OP}{\mathcal{L}}
+\renewcommand{\H}{\mathcal{H}}
+\renewcommand{\O}{\mathcal{S}}
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+
+% make editors mad
+\renewcommand{\bar}[1]{\overline{#1}}
+\renewcommand{\tilde}[1]{\widetilde{#1}}
+\newcommand{\paira}[2]{\,{}_{\V^*}^{}\!\left< {#1}, {#2} \right>_{\V}}
+\newcommand{\pairb}[2]{\,{}_{\V}^{}\!\left< {#1}, {#2} \right>_{\V^*}}
+\newcommand{\adv}[1]{-\kappa \nabla^2 {#1} + \bs{a} \cdot \nabla {#1}}
+\newcommand{\madv}[1]{\kappa \nabla^2 {#1} - \bs{a} \cdot \nabla {#1}}
+\newcommand{\adva}[1]{-\kappa \nabla^2 {#1} - \bs{a} \cdot \nabla {#1}}
+\newcommand{\madva}[1]{\kappa \nabla^2 {#1} + \bs{a} \cdot \nabla {#1}}
+
+\begin{document}
+\include{title}
+\include{acknowledge}
+\include{abstract}
+\include{introduction}
+\include{vms}
+\include{bibliography}
+\include{appendix}
+\end{document}

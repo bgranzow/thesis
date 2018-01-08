@@ -1,0 +1,197 @@
+\chapter{FORWARD AUTOMATIC DIFFERENTIATION}
+\label{chap:fad}
+
+%%% INTRODUCTION
+\section{Introduction}
+
+Automatic differentiation (AD) is a useful technique to computationally
+evaluate analytic derivatives (to machine precision) of a given function.
+Numerical software is necessarily executed as a sequence of elementary
+operations, and AD operates by applying the chain rule to this sequence
+of elementary operations. There are two standard modes of AD, forward and
+reverse, as well as two methods of implementing the technique, operator
+overloading and source code transformation. Presently, we consider the
+forward mode of automatic differentiation using operator overloading in the
+context of the \texttt{C++} programming language. For an excellent
+comprehensive overview of automatic differentiation, see
+\cite{griewank2008evaluating}.
+
+%%% FAD WITH OPERATOR OVERLOADING
+\section{Forward AD with Operator Overloading}
+
+\texttt{C++} provides the capability to overload standard operators such as
+$+,-,*,$ and $/$ for custom data types. In scientific computing, operator
+overloading is convenient in that it allows developers the ability to program
+using a notation much closer the the target mathematical notation. A common
+example in scientific computing is the use of operator overloading to implement
+matrix multiplication. Say we have defined a \texttt{C++} dense matrix
+container called MyMatrix. Using operator overloading, a developer can define
+matrix multiplication specific behavior for the $*$ operator for the MyMatrix
+variable. Listing \ref{lst:opover} demonstrates the convenience of using
+operator overloading to multiply two MyMatrix objects.
+%
+\begin{lstlisting}[
+style=mystyle,
+caption=Using operator overloading for a custom matrix class,
+label=lst:opover]
+MyMatrix A = ...
+MyMatrix B = ...
+MyMatrix C = A*B;
+\end{lstlisting}
+%
+
+In the forward mode AD, a \texttt{C++} class variable container is defined
+that stores both a scalar value $x$ that corresponds the value of the variable
+and a derivative array $\bs{x}'$ that corresponds the values of derivatives of
+the variable with repsect to chosen independent variables. The computer
+program is then written in terms of these AD variables. At the beginning of
+the program, appropriate AD variables are initialized to their appropriate
+values, and \emph{seeded}. Seeding refers to appropriately setting the
+derivative array of the AD variables. For example, the $i^th$ variable in a
+system of $n$ independent variables could be represented as:
+%
+\begin{gather}
+x_i \quad
+[ \frac{\partial x_i}{\partial x_1},
+\frac{\partial x_i}{\partial x_2},
+\dots, \frac{\partial x_i}{\partial x_n} ],
+\end{gather}
+%
+where $x_i$ is the variable value and the terms contained in the brackets
+represent the AD variable's derivative array. To appropriately seed the
+derivative array, all values then become zero except for the $i^th$ component,
+which becomes 1.
+%
+\begin{gather}
+x_i \quad [0, 0, \dots, 1, \dots, 0, 0].
+\end{gather}
+
+Over the course of the execution of the software program, intermediate
+derivative arrays are updated via operator overloading when a new operator is
+encouterd. The operators are overloaded with definitions from basic calclulus
+rules. For example, the result for the derivative array of an AD variable $a$
+times another AD variable $b$ using the overloaded $*$ operator would result
+in
+%
+\begin{gather}
+a \cdot b \quad [ \bs{a}' \cdot  b + a \cdot \bs{b}' ],
+\end{gather}
+%
+where the resultant value of the AD variable is simply the multiplied value
+$a \cdot b$, but the derivative array is updated according to the product rule.
+Here $\bs{a}' \cdot b$ is the scalar value of the AD variable $b$ times $a$'s
+derivative array and $a \cdot \bs{b}'$ is the scalar value of $a$ times
+$b$'s derivative array.
+
+\begin{figure}
+\centering
+\begin{tabular}{|  l | l |}
+\hline
+Operation & Derivative rule \\ \hline
+$c = a \pm b$ & $\bs{c}' = \bs{a}' \pm \bs{b}'$ \\ \hline
+$c = ab$      & $\bs{c}' = a \bs{b}' + b \bs{a}'$ \\ \hline
+$c = a/b$     & $\bs{c}' = (\bs{a}' b - \bs{b}' a) / b^2$ \\ \hline
+$c = \sin(a)$  & $\bs{c}' = \cos(a) \bs{a}'$ \\ \hline
+$c = \cos(a)$  & $\bs{c}' = -\sin(a) \bs{a}'$ \\ \hline
+$c = \exp(a)$  & $\bs{c}' = \exp(a) \bs{a}'$ \\ \hline
+$c = \log(a)$  & $\bs{c}' = \bs{a}'/a $ \\ \hline
+\end{tabular}
+\end{figure}
+
+Now, if we program the computation of a given function
+$f(x_i)$, $i=1,2,\dots,n$, with AD variables, we necessarily obtain both the
+value of the function $f$ and its gradient $\nabla f = \bs{f}'$. This is by
+virtue of the fact that derivatives have been propogated forward through the
+code from the \emph{seed} point to the evaluation of $f$.
+
+From an implementation point of view, automatic differentiation via operator
+overloading is attractive in that existing codes can be easily modified to
+obtain gradient information. For example, consider a code that uses doubles
+for all of its evaluation types. A developer could simply replace appropriate
+instances of `double` in the code with the appropriate AD type name. Through
+very little development cost, gradient information is obtained.
+
+%%% A SIMPLE EXAMPLE
+\section{A Simple Example}
+
+To further illustrate the concept of forward AD, we present a simple example
+using Sandia's Sacado automatic differentiation library and examine it in
+depth. Listing \ref{lst:sacadoex} presents a simple example of the
+computation of three functions using forward automatic differentiation and
+displays the resulting values and gradients of the evaluated functions.
+
+\begin{lstlisting}[
+style=mystyle,
+caption=A simple forward AD example,
+label=lst:sacadoex]
+#include <Sacado.hpp>
+typedef Sacado::Fad::DFad<double> FAD;
+FAD f(FAD x, FAD y) { return x + y; }
+FAD g(FAD x, FAD y) { return x * y; }
+int main() {
+  FAD x = 2.0;
+  FAD y = 3.0;
+  x.diff(0,2);
+  y.diff(1,2);
+  std::cout << x << std::endl;
+  std::cout << y << std::endl;
+  std::cout << f(x,y) << std::endl;
+  std::cout << g(x,y) << std::endl;
+  std::cout << f(x,y) * g(x,y) << std::endl;
+}
+\end{lstlisting}
+
+Line 1 includes the Sacado header, which is an automatic differentiation
+library developed by Sandia National Laboratories. Line 2 declares the
+forward AD type to be called FAD. Line 3 declares $f$ to be the sum of two
+AD variables $x$ and $y$. Line $4$ declares $g$ to be the product of two AD
+variables $x$ and $y$. Line 10 initializes the AD variable $x$ to a value of
+$2$ and line 12 \emph{seeds} $x$ to be the 1st variable in a system of $2$
+independent variables. Line 11 initializes the AD variable $y$ to a value of
+$3$ and line 13 \emph{seeds} $y$ to be the 2nd variable in a system of $2$
+independent variables. Lines 14-18 print the results of evaluating various
+functions.
+
+The output from this simple example program is shown below
+%
+\begin{verbatim}
+                    x:      2 [ 1 0 ]
+                    y:      3 [ 0 1 ]
+                    f:      5 [ 1 1 ]
+                    g:      6 [ 3 2 ]
+                    f*g:    30 [ 21 16 ]
+\end{verbatim}
+%
+Naturally, the value of $x=2$ and $y=3$, as we initialized them to be.
+Similarly, the derivative array of $x$ shows that
+$\frac{\partial x}{\partial x} = 1$ and $\frac{\partial x}{\partial y} = 0$
+and the derivative array of $y$ shows that $\frac{\partial y}{\partial x} = 0$
+and $\frac{\partial y}{\partial y} = 1$.
+
+The value of $f(x,y) = z+ y$ is given as $2+3=5$, and its derivative array is
+updated according to operator overloading of the $+$ operator as the sum of
+$x$'s derivative array and $y$'s derivative array:
+%
+\begin{gather}
+\bs{f}' = \bs{x'} + \bs{y}' = [1 \; 0] + [0 \; 1] = [1 \; 1].
+\end{gather}
+
+The value of $g(x,y) = x \cdot y$ is given as $2\cdot3 = 6$, and its
+derivative array is updated according to operator overloading of the $*$
+operator as the sum of $\bs{x}'$ times $y$ and $\bs{y}'$ times $x$:
+%
+\begin{gather}
+\bs{g}' = \bs{x}' \cdot y + x \cdot \bs{y}' =
+[1 \; 0] \cdot 3 + 2 \cdot [0 \; 1] =
+[3 \; 2].
+\end{gather}
+
+Finally, the value of $h(x,y) = f(x,y) \cdot g(x,y)$ is computed as $6*5 = 30$,
+and its derivative array is computed by propogating $\bs{f}'$ and $\bs{g}'$
+through the code as:
+%
+\begin{gather}
+\bs{h}' = \bs{f}' \cdot g + f \cdot \bs{g}' =
+[1 \; 1] \cdot 6 + 5 \cdot [3 \; 2] =
+[21 \; 16].
+\end{gather}

@@ -1,0 +1,42 @@
+\specialhead{ABSTRACT}
+
+In a finite element simulation, not all of the computed
+data is of equal importance. Rather, the goal of an engineering
+practitioner is often to accurately assess only a small
+number of critical outputs, such as the displacement
+at a point or the von-Mises stress over a domain. When
+these outputs can be expressed as functionals,
+a strategy known as \emph{adjoint-based error estimation}
+can be employed to accurately assess output errors.
+Using this error information, mesh adaptation can then
+be utilized to control functional errors.
+The use of adjoint-based error estimation and mesh adaptation
+is much more prevalent in computational fluid dynamics
+applications when compared to computational solid mechanics.
+This can in part be explained by the high level of expertise
+required to derive and implement adjoint-based error estimation
+routines in computational solid mechanics.
+
+In this thesis, we present an approach to automate the
+the process of adjoint-based error estimation and mesh
+adaptation to lower the barrier of entry for solid
+mechanics practitioners. This approach has been developed
+to be applicable to both Galerin and stabilized finite
+element methods, but we mainly emphasize stabilized finite
+elements. In particular, we demonstrate the
+effectiveness of this approach for two and three
+dimensional problems in incompressible elasticity and
+in elastoplasticity. Further, we demonstrate the ability
+of this approach to execute effectively on parallel
+machines.
+
+The variational multiscale (VMS) method is a particular
+methodology that allows one to develop a stabilized
+finite element method.
+The process of adjoint-based error estimation and mesh
+adaptation requires the solution of an auxiliary
+\emph{adjoint problem}. The solution to this adjoint problem
+must be enriched in some manner to obtain meaningful error
+estimates. As a further research endeavor, we develop and
+investigate a novel approach to enrich adjoint solutions
+based on VMS techniques.

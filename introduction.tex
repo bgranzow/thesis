@@ -1,0 +1,145 @@
+%%% INTRODUCTION AND BACKGROUND
+\chapter{INTRODUCTION AND BACKGROUND}
+\label{chap:intro}
+
+%%% INTRODUCTION
+\section{Introduction}
+
+Numerical simulation has become ubiquitous in engineering and scientific
+practice due to the continuing increase in power and accessibility of
+computational resources. For scientific and engineering applications, ensuring
+the accuracy and reliability of the computed numerical solution is of primary
+importance. For example, it is often necessary to design structural components
+for which the von-Mises stress in the component's domain is less than a given
+material yield strength when subjected to a variety of loading conditions.
+
+In the context of finite element methods, \emph{a posteriori} error estimation
+and mesh adaptation provide useful tools for approximating and controlling
+the discretization error when solving partial differential equations
+(PDEs) (\emph{c.f} \cite{ainsworth2011posteriori, gratsch2005posteriori,
+verfurth1994adaptive}.)
+
+In an abstract finite element setting, one seeks to solve the variational
+problem: find $u \in \S$ such that
+%
+%% aut_abstract_variational
+\begin{gather}
+\R(w; u) = 0 \quad \forall w \in \V,
+\end{gather}
+%
+where $\R: \S \times \V \to \mathbb{R}$ is a semilinear form, linear in its
+first argument and potentially nonlinear in its second, and $\S$ and
+$\V$ are Hilbert spaces. Given the exact solution $u$ to this problem and
+a corresponding finite element approximation $u^H$, the discretization error
+is defined as $e := u -u^H$. Traditional \emph{a posteriori} error estimates
+attempt to bound or approximate the discretization error in a global norm
+$\| e \|$, such as the energy norm induced by the underlying partial
+differential operator. In the past twenty years, though, adjoint-based
+techniques have been developed and utilized to obtain approximations $\eta$
+or approximate bounds $\hat{\eta}$ for the error $|J(u) - J(u^H)|$ in some
+physically meaningful functional $J : \V \to \mathbb{R}$, such that
+%
+%% aut_functional_bounds_abstract
+\begin{gather}
+|J(u) - J(u^H)| \approx \eta < \hat{\eta}.
+\end{gather}
+
+The use of adjoint (or duality) techniques for \emph{a posteriori} error
+estimation can be traced back to Babu\v{s}ka and Miller
+\cite{babuska1984post1, babuska1984post2, babuska1984post3} who explored the
+post-processing of functional quantities. These ideas were then expaned to the
+context of adaptive finite element methods by Johnson et al.
+\cite{eriksson1996computational}. Becker and Rannacher \cite{becker2001optimal}
+developed an approach to functional \emph{a posteriori} error estimation for
+Galerkin finite element methods called the \emph{dual weighted residual}
+method. Giles and Pierce \cite{giles2003adjoint} developed an approach
+conceptually similar to the dual weighted residual method, but additionally
+concerned themselves with discretizations that lack Galerkin orthogonality,
+such as Godunov finite volume methods. Venditti and Darmofal
+\cite{venditti2000adjoint, venditti2002adjoint, venditti2003adjoint} developed
+adjoint-based error estimates for arbitrary discretizations using discrete
+adjoint equations based on two-level discretization schemes.
+
+Adjoint-based error estimation and mesh adaptation have been heavily adopted
+by the computational fluid dynamics (CFD) community \cite{fidkowski2011review}.
+This can in part be explained by the fact that the current increase in
+computing power alone may not be sufficient to accurately resolve
+quantities of interest (QoIs) in CFD applications, even when very finely
+generated \emph{a priori} meshes are used \cite{fidkowski2011review}. However,
+despite its popularity in CFD, adjoint-based error estimation is not regularly
+applied to solid mechanics applications.
+
+In the context of solid mechanics, adaptive adjoint-based error estimation
+has been used to study linear elasticity in two
+\cite{rannacher1997feed, stein2007error, gonzalez2014mesh} and three
+\cite{ghorashi2014goal} dimensional elasticity, two
+\cite{rannacher1998posteriori, rannacher1999posteriori} and three
+\cite{ghorashi2017goal} dimensional elasto-plasticity, two dimensional
+thermoelasticity \cite{rabizadeh2015adaptive}, two dimensional
+nonlinear elasticity \cite{larsson2002strategies}, and two dimensional
+hyperelasticity \cite{whiteley2014error}. We remark that in the majority of
+this literature, mesh adaptation is performed with structured adaptive mesh
+refinement using quadrilateral or hexahedral elements and without any
+discussion of parallelization. Additionally, none of these investigations
+apply the current state of the art capabilities of parallel three-dimensional
+unstructured mesh adaptation, as is currently the norm for CFD
+applications.
+
+Perhaps one reason for this discrepancy is the fact that adjoint-based error
+estimation requires the development and implementation of a number of
+non-trivial steps. From a high-level, the following steps must be carried out
+to perform an adaptive adjoint-based error analysis:
+%
+\begin{enumerate}
+\item Solve the original (primal) PDE of interest.
+\item Using the primal solution, derive and solve an auxiliary adjoint PDE.
+\item Enrich the solution to the adjoint PDE in some manner.
+\item Compute error estimates using an adjoint-weighted residual method.
+\item Localize the error to contributions at the mesh entity level.
+\item Adapt the mesh based on the local error contributions.
+\end{enumerate}
+%
+Additionally, modern solid applications necessitate the use of parallel
+analysis, meaning each of these steps must execute effectively and
+efficiently on parallel machines.
+
+Further, both the primal residual and functional QoI can be highly nonlinear
+for solid mechanics applications. Solving both the primal and adjoint problems
+requires the linearization of the primal residual and the functional QoI
+with respect to the degrees of freedom of the problem. The derivation and
+numerical implementation of these linearizations can be time consuming and
+error-prone. As a result, adjoint-based error control has typically remained
+a tool for expert analysis with a high barrier of entry.
+
+As a final observation, we note that unstructured mesh generation and
+adaptation is robust, reliable, and scalable for simplical elements. However,
+for solid mechanics applications with incompressibility constraints, such as
+isochoric plasticity or incompressible hyperelasticity, standard
+displacement-based Galerkin finite element discretizations are known to be
+unstable when using simplical elements. This fact may have further hindered
+the adoption of unstructured mesh adaptation for previous adaptive
+adjoint-based solid mechanics applications.
+
+%%% OUTLINE
+\section{Outline}
+
+%%% CONTRIBUTIONS
+\section{Contributions}
+
+\begin{enumerate}
+\item The development and implementation of an automated approach
+for adjoint-based error that executes on parallel machines.
+\item The application of the previously discussed automated approach
+to conduct an investigation of adjoint-based error estimation and mesh
+adaptation for finite deformation elasticity with stabilized finite
+elements.
+\item The application of the previously discussed automated approach
+to conduct an initial investigation of a non-uniform refinement approach
+for solving adjoint problems in the context of adjoint-based error
+estimation.
+\item The development of a novel approach for adjoint-based error
+estimation in variational multiscale finite element methods.
+\item A proof that two drasticallly distinct approaches for
+adjoint-based error estimation approaches in variational multiscale
+finite element methods yield identical results.
+\end{enumerate}

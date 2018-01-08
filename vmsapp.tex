@@ -1,0 +1,457 @@
+\chapter{PROPOSITIONS FOR THE ADVECTION-DIFFUSION OPERATOR}
+\label{chap:vmsapp}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Non-homogeneous boundary conditions}
+\label{app:bcs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Extensions to non-homogeneous Dirichlet boundary conditions
+for the primal model, given as
+%
+\begin{gather}
+\begin{cases}
+\begin{aligned}
+\OP u &= f, & & \bs{x} \in \Omega, \\
+u &= g, & & \bs{x} \in \partial \Omega,
+\end{aligned}
+\end{cases}
+\label{eq:bcs_primal_pde}
+\end{gather}
+%
+can readily be made by introducing the decomposition
+$u = u_0 + \tilde{g}$, where $\text{tr}({\tilde{g}}) = g$.
+The problem is then reposed as a homogeneous
+Dirichlet problem given by
+%
+\begin{gather}
+\begin{cases}
+\begin{aligned}
+\OP u_0 &= f + \OP \tilde{g}, & & \bs{x} \in \Omega, \\
+u_0 &= 0, & & \bs{x} \in \partial \Omega,
+\end{aligned}
+\end{cases}
+\end{gather}
+%
+where all arguments made previously can be applied to this
+modified formulation, provided $f + \OP \tilde{g} \in \V^*$.
+
+Extensions to non-homogeneous Neumann boundary conditions
+require additional investigation. To proceed,
+consider the primal problem given as
+%
+\begin{gather}
+\begin{cases}
+\begin{aligned}
+\OP u &= f & & \bs{x} \in \Omega, \\
+u &= 0, & & \bs{x} \in \partial \Omega_D \\
+B u &= h & & \bs{x} \in \partial \Omega_N,
+\end{aligned}
+\end{cases}
+\label{eq:dbcs_primal_pde}
+\end{gather}
+%
+where $\Omega_D \cup \Omega_N = \Omega$ and $\Omega_D \cap \Omega_N =
+\{ \varnothing \}$. Multiplying the left hand side of the
+primal problem \eqref{eq:dbcs_primal_pde}
+by an arbitrary test function $v$ and integrating by parts over the
+domain twice yields the relationship
+%
+\begin{gather}
+\int_{\Omega} v \OP u \, \text{d} \Omega +
+\int_{\partial \Omega_N} v B u \, \text{d} \Gamma =
+\int_{\Omega} \OP^* v u \, \text{d} \Omega +
+\int_{\partial \Omega_N} B^* v u \, \text{d} \Gamma.
+\end{gather}
+%
+All subsequent derivations would need to be
+made considering this relationship, which involves
+the boundary operator $B$, rather than
+relationship \eqref{eq:adjoint} which has
+been used extensively in this paper.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Derivation of the advection-diffusion adjoint operator}
+\label{app:adjoint}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Let $\OP: \V \to \V^*$
+be the steady-state, constant coefficient operator
+utilized in section \ref{sec:Results}:
+%
+\begin{gather}
+\OP u := \adv{u}
+\end{gather}
+such that $\V = H^1_0(\Omega)$ and $\V^* = H^{-1}(\Omega)$.
+To determine the corresponding operator:
+$\OP^*$ that satisfies the adjoint property:
+%
+\begin{gather}
+\paira{z}{\OP u} = \pairb{\OP^* z}{u}
+\quad \forall \, u, z \in H^1_0(\Omega),
+\end{gather}
+%
+we multiply $\OP u$ by an
+arbitrary function $z \in H^1_0(\Omega)$ and
+repeatedly apply the divergence theorem.
+This proceeds as follows:
+%
+\begin{align*}
+\pairb{z}{\OP u}
+&=
+\int_{\Omega} z (\adv{u}) \, \text{d} \Omega \\
+&=
+- \int_{\Omega} z \kappa \nabla^2 u \, \text{d} \Omega +
+\int_{\Omega} z \bs{a} \cdot \nabla u \, \text{d} \Omega \\
+&=
+-\int_{\partial \Omega} z \kappa \nabla u \cdot \bs{n} \, \text{d} \Gamma +
+\int_{\Omega} \kappa \nabla z \cdot \nabla u \, \text{d} \Omega +
+\int_{\partial \Omega} (z \bs{a} u) \cdot \bs{n} \, \text{d} \Gamma -
+\int_{\Omega} \bs{a} \cdot \nabla z u \, \text{d} \Omega \\
+&=
+\int_{\Omega} \kappa \nabla z \cdot \nabla u \, \text{d} \Omega -
+\int_{\Omega} \bs{a} \cdot \nabla z u \, \text{d} \Omega \\
+&=
+\int_{\partial \Omega} (\kappa \nabla z u) \cdot \bs{n} \, \text{d} \Gamma -
+\int_{\Omega} \kappa \nabla^2 z u \, \text{d} \Omega -
+\int_{\Omega} \bs{a} \cdot \nabla z u \, \text{d} \Omega \\
+&=
+- \int_{\Omega} \kappa \nabla^2 z u \, \text{d} \Omega -
+\int_{\Omega} \bs{a} \cdot \nabla z u \, \text{d} \Omega \\
+&=
+\int_{\Omega} (\adva{z}) u \,
+\text{d} \Omega \\
+&=
+\paira{\OP^* z}{u}
+\end{align*}
+%
+Here the third equality is achieved by application
+of the divergence theorem to both terms,
+the fourth equality holds since $z \in H^1_0(\Omega)$,
+the fifth equality is achieved by application of the
+divergence theorem to the leftmost term, and the sixth
+equality holds since $u \in H^1_0(\Omega)$. Thus, the
+operator $\OP^* : H^1_0(\Omega) \to H^{-1}(\Omega)$ is defined as
+%
+\begin{gather}
+\OP^* z := \adva{z}.
+\end{gather}
+%
+We make the observation that there has been a sign
+change for the advective term since the operator
+$\OP$ is not self-adjoint.
+This sign change, however, is absorbed in the definition
+of the operator $\OP^*$ and in no way introduces
+a sign change in the fundamental property:
+%
+\begin{gather}
+\pairb{z}{\OP u} = \paira{\OP^* z}{u} \quad \forall \, u, z \in H^1_0(\Omega).
+\label{eq:adv_adjoint}
+\end{gather}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propositions applied to the advection-diffusion operator}
+\label{app:propositions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We restate the adjoint property \eqref{eq:adv_adjoint} as
+%
+\begin{gather}
+\int_{\Omega} z(\adv{u}) \, \text{d} \Omega =
+\int_{\Omega} (\adva{z}) u \, \text{d} \Omega
+\quad \forall \, u,z \in H^1_0(\Omega)
+\label{eq:app_adjoint}
+\end{gather}
+%
+
+We now define the primal problem as:
+%
+\begin{gather}
+\begin{cases}
+\begin{aligned}
+\adv{u} &= f, & & \bs{x} \in \Omega, \\
+u &= 0, & & \bs{x} \in \partial \Omega,
+\end{aligned}
+\end{cases}
+\label{eq:app_primal_pde}
+\end{gather}
+%
+corresponding to equation \eqref{eq:primal_pde},
+where $f \in H^{-1}(\Omega)$.
+We note that the primal residual operator is given as:
+%
+\begin{gather}
+\R u := f + \madv{u}.
+\label{eq:app_primal_residual}
+\end{gather}
+We define the continuous variational multiscale formulation
+of the primal problem as: find $\bar{u} \in \bar{\V}$ such that
+%
+\begin{gather}
+\int_{\Omega} (\adva{\bar{v}}) \G' \R \bar{u} \, \text{d} \Omega =
+\int_{\Omega} \bar{v} \R \bar{u} \, \text{d} \Omega
+\quad \forall \, \bar{v} \in H^1_0(\Omega),
+\label{eq:app_primal_vms}
+\end{gather}
+%
+corresponding to equation \eqref{eq:primal_vms_2}, where we
+leave the fine-scale Green's operator
+$\G' : H^{-1}(\Omega) \to H^1_0(\Omega)$
+as an unspecified
+abstract operator.
+Here we note that $\G' \R \bar{u} \in H^1_0(\Omega)$.
+Let $\V^h \subset \V$ denote a classical finite element space consisting
+of piecewise linear functions defined over a discretization of the
+domain $\Omega$. The primal subgrid model can then be stated as: find
+$u^h \in \V^h$ such that
+%
+\begin{gather}
+\sum_{e=1}^{n_{el}} \int_{\Omega^e} (\adva{v^h}) ( \uptau^e \R u^h)
+\, \text{d} \Omega =
+\int_{\Omega} v^h \R u^h \, \text{d} \Omega
+\quad \forall \, v^h \in \V^h,
+\label{eq:app_primal_subgrid}
+\end{gather}
+%
+corresponding to equation \eqref{eq:primal_subgrid_2}, where we
+leave $\uptau^e$ unspecified.
+
+We define the dual problem as:
+%
+\begin{gather}
+\begin{cases}
+\begin{aligned}
+\adva{z} &= q, & & \bs{x} \in \Omega, \\
+z &= 0, & & \bs{x} \in \partial \Omega,
+\end{aligned}
+\end{cases}
+\label{eq:app_dual_pde}
+\end{gather}
+%
+corresponding to equation \eqref{eq:dual_pde},
+where $q \in H^{-1}(\Omega)$. We note that the dual residual
+operator is given as:
+%
+\begin{gather}
+\R^* z := q + \madva{z}.
+\label{eq:app_dual_residual}
+\end{gather}
+%
+We define the continuous variational multiscale formulation
+of the dual problem as: find $\bar{z} \in \bar{\V}$ such that
+%
+\begin{gather}
+\int_{\Omega} \G'_d \R^* \bar{z} (\adv{\bar{v}}) \, \text{d} \Omega =
+\int_{\Omega} \R^* \bar{z} \bar{v} \, \text{d} \Omega
+\quad \forall \, \bar{v} \in H^1_0(\Omega),
+\label{eq:app_dual_vms}
+\end{gather}
+corresponding to equation \eqref{eq:dual_vms_2}, where again
+we leave the dual fine-scale Green's operator
+$\G'_d : H^{-1}(\Omega) \to H^1_0(\Omega)$ unspecified.
+We note that $\G'_d \R^* \bar{z} \in H^1_0(\Omega)$
+The dual subgrid model can then be stated as: find
+$z^h \in \V^h$ such that
+%
+\begin{gather}
+\sum_{e=1}^{n_{el}} \int_{\Omega^e} (\uptau^e_d \R^* z^h) (\adv{v^h})
+\, \text{d} \Omega =
+\int_{\Omega} \R^* z^h v^h \, \text{d} \Omega
+\quad \forall \, v^h \in \V^h,
+\label{eq:app_dual_subgrid}
+\end{gather}
+%
+corresponding to equation \eqref{eq:dual_subgrid_2}, where we leave
+$\uptau^e_d$ unspecified.
+
+%=============================================================================
+\subsection{Proposition 2}
+%=============================================================================
+For any solutions $u = u' + \bar{u}$ to the continuous VMS
+formulation \eqref{eq:app_primal_vms} and $z = z' + \bar{z}$ to the
+continuous dual VMS formulation \eqref{eq:app_dual_vms}, we
+derive the error representation:
+%
+\begin{gather*}
+\begin{aligned}
+J(u) - J(\bar{u})
+&=
+\int_{\Omega} q u \, \text{d} \Omega -
+\int_{\Omega} q \bar{u} \, \text{d} \Omega \\
+&=
+\int_{\Omega} (\adva{z}) u \, \text{d} \Omega -
+\int_{\Omega} (\adva{z}) \bar{u} \, \text{d} \Omega \\
+&=
+\int_{\Omega} z (\adv{u}) \, \text{d} \Omega -
+\int_{\Omega} z (\adv{\bar{u}}) \, \text{d} \Omega \\
+&=
+\int_{\Omega} z f \, \text{d} \Omega -
+\int_{\Omega} z (\adv{\bar{u}}) \, \text{d} \Omega \\
+&=
+\int_{\Omega} z \R \bar{u} \, \text{d} \Omega \\
+&=
+\int_{\Omega} z' \R \bar{u} \, \text{d} \Omega +
+\int_{\Omega} \bar{z} \R \bar{u} \, \text{d} \Omega \\
+&=
+\int_{\Omega} z' \R \bar{u} \, \text{d} \Omega +
+\int_{\Omega} (\adva{\bar{z}}) \G' \R \bar{u} \, \text{d} \Omega \\
+&=
+\int_{\Omega} (\G'_d \R^* \bar{z}) \R \bar{u} \, \text{d} \Omega +
+\int_{\Omega} (\adva{\bar{z}}) \G' \R \bar{u} \, \text{d} \Omega \\
+&=
+\pairb{\G'_d \R^* \bar{z}}{\R \bar{u}} +
+\paira{\OP^* \bar{z}}{\G' \R \bar{u}}
+\end{aligned}
+\label{eq:app_error_cont_2}
+\end{gather*}
+Here the first equality is by definition \eqref{eq:functional},
+the second equality is due to the dual PDE \eqref{eq:app_dual_pde},
+the third equality is due to the fundamental relation
+\eqref{eq:app_adjoint}, the fourth equality is due to the primal
+PDE \eqref{eq:app_primal_pde}, the fifth equality is due to the
+definition of the primal residual \eqref{eq:app_primal_residual},
+the sixth equality is due to the sum decomposition of the
+dual solution $z = z' + \bar{z}$, the seventh equality is due
+to the continuous variational formulation of the primal problem
+\eqref{eq:app_primal_vms}, the eight equality is due to
+the definition of the fine-scale dual solution
+\eqref{eq:dual_fine_operator}, and the ninth equality
+is due to the definition of the duality pairing we have chosen.
+
+%=============================================================================
+\subsection{Proposition 4}
+%=============================================================================
+
+For any solutions $u$ to the primal model \eqref{eq:primal_weak},
+$z$ to the dual model \eqref{eq:dual_weak}, $u^h$ to the primal
+subgrid model \eqref{eq:primal_subgrid} and $z^h$ to the dual
+subgrid model \eqref{eq:dual_subgrid}, we derive the error
+representation
+%
+\begin{gather*}
+\begin{aligned}
+J(u) - J(u^h)
+&=
+\int_{\Omega} q u \, \text{d} \Omega -
+\int_{\Omega} q u^h \, \text{d} \Omega \\
+&=
+\int_{\Omega} (\adva{z}) u \, \text{d} \Omega -
+\int_{\Omega} (\adva{z}) u^h \, \text{d} \Omega \\
+& =
+\int_{\Omega} z (\adv{u}) \, \text{d} \Omega -
+\int_{\Omega} z (\adv{u^h}) \, \text{d} \Omega \\
+&=
+\int_{\Omega} z f \, \text{d} \Omega -
+\int_{\Omega} z (\adv{u^h}) \, \text{d} \Omega \\
+&=
+\int_{\Omega} z \R u^h \, \text{d} \Omega \\
+&=
+\int_{\Omega} z \R u^h \, \text{d} \Omega -
+\int_{\Omega} z^h \R u^h \, \text{d} \Omega +
+\sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
+\, \text{d} \Omega \\
+&=
+\int_{\Omega} (z - z^h) \R u^h +
+\sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
+\, \text{d} \Omega \\
+&=
+\int_{\Omega} (\tilde{z}' + \tilde{z}) \R u^h +
+\sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
+\, \text{d} \Omega \\
+&=
+\int_{\Omega} \tilde{z}' \R u^h +
+\sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
+\, \text{d} \Omega +
+\int_{\Omega} \tilde{z} \R u^h \\
+&=
+\int_{\Omega} (\uptau^e_d \R^* z^h) \R u^h +
+\sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
+\, \text{d} \Omega +
+\int_{\Omega} \tilde{z} \R u^h
+\end{aligned}
+\end{gather*}
+%
+where the first equality is by definition \eqref{eq:functional},
+the second equality is due to the dual PDE
+\eqref{eq:app_dual_pde}, the third equality is due to the
+fundamental relationship \eqref{eq:app_adjoint},
+the fourth equality is due to the primal PDE
+\eqref{eq:app_primal_pde}, the fifth equality is due to
+the definition of the primal residual \eqref{eq:app_primal_residual},
+the sixth equality is due to the primal subgrid model
+\eqref{eq:app_primal_subgrid} (where we have added and
+subtracted equal terms), the seventh equality is due to
+linearity, the eighth equality is due to the decomposition
+of the dual solution \eqref{eq:primal_subgrid_decomp},
+the ninth equality is due to linearity, and the tenth equality
+is due to the fine-scale approximation to the dual solution
+\eqref{eq:dual_fine_approx}.
+
+%=============================================================================
+\subsection{Proposition 5}
+%=============================================================================
+
+We first note that
+the derivation in \ref{app:adjoint} can
+be carried out in exactly the same manner
+for $u,z \in H^1_0(\Omega^e)$ to obtain the result:
+%
+\begin{gather}
+\int_{\Omega^e} z(\adv{u}) \, \text{d} \Omega =
+\int_{\Omega^e} (\adva{z}) u \, \text{d} \Omega
+\quad \forall \, u,z \in H^1_0(\Omega^e)
+\label{eq:app_elem_adjoint}
+\end{gather}
+%
+We note that the problem \eqref{eq:primal_elem_greens}
+defining the primal element-level Green's function implies that
+$g^e(\bs{x}; \bs{y}) \in H^1_0(\Omega^e)$.
+Similarly, the dual element-level Green's function satisfies
+$g^e_d(\bs{x}; \bs{y}) \in H^1_0(\Omega^e)$ from equation
+\eqref{eq:dual_elem_greens}. With this information,
+we utilize the relationship \eqref{eq:app_elem_adjoint} to verify
+that $g^e(\bs{x}; \bs{y}) = g^e_d(\bs{x}; \bs{y})$, even though
+the operator $\OP$ is not self-adjoint.
+%
+\begin{gather*}
+\begin{aligned}
+\adva{ g^e(\bs{x}; \bs{y}) }
+&=
+\delta(\bs{x} - \bs{y}) \\
+\implies \int_{\Omega^e}
+g^e_d(\bs{x}; \bs{z}) (\adva{ g^e(\bs{x}; \bs{y}) })
+\, \text{d} \Omega
+&=
+\int_{\Omega^e}
+g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
+\, \text{d} \Omega \\
+\implies
+\int_{\Omega^e} (\adv{ g^e_d(\bs{x}; \bs{z})}) g^e(\bs{x}; \bs{y})
+\, \text{d} \Omega
+&=
+\int_{\Omega^e}
+g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
+\, \text{d} \Omega \\
+\implies
+\int_{\Omega^e} \delta(\bs{x} - \bs{z}) g^e(\bs{x}; \bs{y})
+\, \text{d} \Omega
+&=
+\int_{\Omega^e}
+g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
+\, \text{d} \Omega \\
+\implies
+g^e(\bs{z}; \bs{y})
+&=
+g^e_d(\bs{y}; \bs{z}),
+\end{aligned}
+\end{gather*}
+%
+Here the first equality is due to the definition of the
+primal element-level Green's function \eqref{eq:primal_elem_greens},
+the second equality is achieved by multiplying by the dual
+element-level Green's function and integrating over the element domain,
+the third equality is due to the fundamental relationship
+\eqref{eq:app_elem_adjoint}, and the fourth equality is due to the
+definition of the dual element-level Green's function
+\eqref{eq:dual_elem_greens}.
+
