@@ -900,10 +900,13 @@ subgrid model \eqref{eq:dual_subgrid}, we have the error
 representation
 %
 \begin{gather}
-\hat{\E}_2 = J(u) - J(u^h) =
+\begin{aligned}
+\hat{\E}_2 &= J(u) - J(u^h) \\
+&=
 \pairb{\uptau^e_d \R^* z^h}{\R u^h}^{\Omega'} +
 \paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega'} +
 \pairb{\tilde{z}}{\R u^h}
+\end{aligned}
 \label{eq:representation_2}
 \end{gather}
 %
@@ -912,7 +915,7 @@ representation
 \begin{proof}
 \begin{gather*}
 \begin{aligned}
-J(u) - J(u^h)
+&J(u) - J(u^h) \\
 &=
 \paira{q}{u} - \paira{q}{u^h}
 && \text{by \eqref{eq:functional}} \\
