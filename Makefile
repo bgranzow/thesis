@@ -6,8 +6,9 @@ title.tex \
 acknowledge.tex \
 abstract.tex \
 introduction.tex \
-fad.tex \
+mech.tex \
 vms.tex \
+fad.tex \
 vmsapp.tex \
 references.bib
 
