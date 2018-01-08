@@ -7,6 +7,7 @@ acknowledge.tex \
 abstract.tex \
 introduction.tex \
 mech.tex \
+refine.tex \
 vms.tex \
 fad.tex \
 vmsapp.tex \
