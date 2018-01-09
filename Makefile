@@ -6,6 +6,7 @@ title.tex \
 acknowledge.tex \
 abstract.tex \
 introduction.tex \
+automated.tex \
 mech.tex \
 refine.tex \
 vms.tex \

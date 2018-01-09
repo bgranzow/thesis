@@ -1,0 +1,75 @@
+\begin{tikzpicture}
+
+% physic code
+\node[draw] at (1.5,6.25) {\tiny Physics Code};
+
+% legend
+\node[draw] at (5, 6.25) {\tiny Legend};
+
+% bounding boxes
+\draw (0,-0.5) rectangle +(3, 6.5);
+\draw (3,-0.5) rectangle +(4, 6.5);
+
+% global data transfer -> gather
+\draw[red,-implies,double equal sign distance] (-0.4,0.45) -- (0.3,0.45);
+
+% gather template operations
+\draw[fill=brown!50] (0.8, -0.3) rectangle+(2,0.5);
+\draw[fill=yellow] (0.7, -0.2) rectangle+(2,0.5);
+\draw[fill=gray!25] (0.6, -0.1) rectangle+(2,0.5);
+\draw[fill=pink] (0.5, 0.0) rectangle+(2,0.5);
+\draw[fill=orange] (0.4, 0.1) rectangle+(2,0.5);
+\draw[fill=green] (0.3, 0.2) rectangle +(2,0.5)
+node[pos=0.5] {\scriptsize Gather};
+
+% local data transfer gather -> pde
+\draw[black,thick,->] (1.4,.7) -- (1.4,2.5);
+
+% generic template pde evaluation
+\draw[fill=blue!25] (0.4,2.5) rectangle +(2,0.5)
+node[pos=0.5] {\scriptsize PDE terms};
+
+% local data transfer pde -> scatter
+\draw[black,thick,->] (1.4,3.0) -- (1.4,4.8);
+
+% scatter template operations
+\draw[fill=brown!50] (0.8, 5.3) rectangle+(2,-0.5);
+\draw[fill=yellow] (0.7, 5.4) rectangle+(2,-0.5);
+\draw[fill=gray!25] (0.6, 5.5) rectangle+(2,-0.5);
+\draw[fill=pink] (0.5, 5.6) rectangle+(2,-0.5);
+\draw[fill=orange] (0.4, 5.7) rectangle+(2,-0.5);
+\draw[fill=green] (0.3, 5.8) rectangle+(2,-0.5)
+node[pos=0.5] {\scriptsize Scatter};
+
+% global data transfer <- scatter
+\draw[red,implies-,double equal sign distance] (-0.4,5.55) -- (0.3,5.55);
+
+% data transfer
+\draw[dashed] (3.1,5.9) rectangle +(3.8,-1);
+\draw[red,-implies,double equal sign distance] (3.25,5.6) -- (3.75,5.6)
+node[black,anchor=west] {\tiny Global data structures};
+\draw[black,thick,->] (3.25, 5.2) -- (3.75, 5.2)
+node[black,anchor=west] {\tiny Local data structures};
+
+% generic data evaluation type
+\draw[dashed] (3.1, 4.8) rectangle +(3.8,-1);
+\node[black] at (5,4.6) {\tiny Generic template-based code};
+\draw[fill=blue!25] (4,4.4) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize $<$ ScalarT $>$};
+
+% template specializations
+\draw[dashed] (3.1, 3.7) rectangle +(3.8,-4.1);
+\node[black] at (5,3.5) {\tiny Gather/Scatter operations};
+\draw[fill=green] (4,3.2) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize Residual};
+\draw[fill=orange] (4,2.6) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize Jacobian};
+\draw[fill=pink] (4,2.0) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize Adjoint};
+\draw[fill=gray!25] (4,1.4) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize QoI};
+\draw[fill=yellow] (4,0.8) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize QoI Deriv};
+\draw[fill=brown!50] (4,0.2) rectangle +(2,-0.5)
+node[pos=0.5] {\scriptsize Error};
+\end{tikzpicture}
