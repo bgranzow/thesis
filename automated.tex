@@ -10,11 +10,12 @@ estimation and mesh adaptation,'' submitted for publication.}
 %%% INTRODUCTION
 \section{Introduction}
 
-To alleviate the difficulties outlined above and to make adjoint-based
+To make adjoint-based
 error estimation and mesh adaptation more accessible to solid mechanics
-practitioners, we seek to develop a fully automated approach for parallel
-adjoint-based error estimation and mesh adaptation. Specifically, we seek to
-develop software that automates steps 1-6 outlined above based solely on the
+practitioners, we seek to fully automate its steps for execution on
+parallel machines. Specifically, we seek to
+develop software that automates steps 1-6 outlined in Chapter \ref{chap:intro}
+based solely on the
 inputs of a semilinear form $\R$ and a functional QoI $J$. We endeavor to
 develop this software to be applicable to both Galerkin and stabilized
 finite element methods.
@@ -25,7 +26,7 @@ Galerkin finite element methods within the FEniCS \cite{logg2012automated}
 finite element framework. In this approach, the adjoint problem is derived
 in a discrete manner based on a user-implemented residual $\R$ and a
 functional $J$. The adjoint problem is then solved on the same finite element
-space as used for the primal problem, and then enriched to a higher order
+space as used for the primal problem and enriched to a higher order
 polynomial space by solving local patch-wise problems.
 Based on the given semilinear form
 $\R$, error contributions are then localized to the element-level by solving
@@ -44,7 +45,7 @@ via uniform mesh refinement. To localize the error to the mesh entity level,
 we utilize a partition of unity based approach proposed by Richter
 and Wick \cite{richter2015variational}. This allows us to directly re-use the
 implemented semilinear form $\R$ for error localization, eliminating the need
-to solve local element problems to revover the strong form residual. We also
+to solve local element problems to recover the strong form residual. We also
 take advantage of fully unstructured conforming mesh adaptation, where the
 mesh can be \emph{coarsened} as well as refined. As a final distinction, we
 highlight the ability of the proposed approach to execute on parallel machines.
@@ -111,7 +112,7 @@ argument and potentially nonlinear in their second argument. Let
 $\S^H \subset \S$ and $\V^H \subset \V$ and be classical finite element
 function spaces, where $H$ is a mesh-dependent parameter that denotes the
 fineness of the discretization. We introduce the following variational
-abstract weak formulation of our model problem: find $u \in \S$ such that
+abstract model problem: find $u \in \S$ such that
 %
 %% aut_abstract_primal
 \begin{gather}
@@ -156,7 +157,7 @@ relationship that allows us to derive adjoint-based error representations.
 
 The corresponding Galerkin finite element formulation of the abstract
 problem \eqref{eq:aut_abstract_primal} can be stated as: find
-$u^H \in \V^H$ such that
+$u^H \in \S^H$ such that
 %
 %% aut_abstract_fem
 \begin{gather}
@@ -194,12 +195,12 @@ total residual semilinear form $\R$ is given as $\R = \R_g$.
 \subsection{Stabilized Finite Element Methods}
 
 A corresponding stabilized finite element method of the abstract problem
-\eqref{eq:aut_abstract_primal} can be expressed as: find $u^H \in \V^H$ such
+\eqref{eq:aut_abstract_primal} can be expressed as: find $u^H \in \S^H$ such
 that
 %
 %% aut_abstract_stabilized_fem
 \begin{gather}
-\R_g(w; u) + \R_{\tau}(w; u) = 0 \quad \forall w \in \V.
+\R_g(w^H; u^H) + \R_{\tau}(w^H; u^H) = 0 \quad \forall w^H \in \V^H.
 \label{eq:aut_abstract_stabilized_fem}
 \end{gather}
 %
@@ -227,7 +228,7 @@ Here, the first four equalities are obtained exactly as in the corresponding
 Galerkin finite element method. However, when we subtract the interpolant
 $z^H$ of the adjoint solution $z$ in the fifth equality, an additional term
 remains because the numerical scheme \eqref{eq:aut_abstract_stabilized_fem}
-lacks Galerkin orthogonality In reference to the notation
+lacks Galerkin orthogonality. In reference to the notation
 introduced, the total semilinear form $\R$ is given as
 $\R = \R_g + \R_{\tau}$.
 
@@ -310,8 +311,8 @@ Goal application, as it falls outside of the normal intended use case of the
 MeshAdapt software, which concerns itself with fully unstructured conforming
 mesh adaptation via edge splits, swaps, and collapses. However,
 the flexibility of the PUMI software allows us to
-additionally construct structures similar to traditional adaptive mesh
-refinement (AMR) data structures with little implementation effort. Using
+additionally construct data structures similar to those used traditional
+adaptive mesh refinement (AMR) with little implementation effort. Using
 the APF library and the parent-child relational information, we are able
 to interrogate stored solution fields on both the parent and nested meshes,
 which is required during the assembly of the adjoint problem.
@@ -340,7 +341,7 @@ The error estimation and localization routines are implemented entirely in
 the Goal application. The error is localized by an evaluation of the
 stabilized weighted residual operator $\R$, where the weight is chosen to be
 the adjoint solution multiplied by a partition of unity. Based on these
-element-level residual vectors, Goal performs global finite element assembly
+element-level residual vectors, Goal performs finite element assembly
 of the global residual vector, which is stored as a Tpetra vector. This
 vector represents an adjoint-weighted residual error estimate at each mesh
 vertex for each PDE equation in the fine mesh. The error is attached to the
@@ -400,7 +401,8 @@ we perform the process: Gather $\rightarrow$ Compute $\rightarrow$
 Scatter. By doing so, we reduce memory overhead and eliminate complications
 introduced by parallel computation \cite{pawlowski2012automating2}.
 Underlying the TBGP approach is the use of forward automatic differentiation
-(FAD) \cite{griewank2008evaluating}. The Goal application utilizes the
+(FAD) \cite{griewank2008evaluating}, which is discussed in further detail
+in Appendix \ref{chap:fad}. The Goal application utilizes the
 Trilinos library Sacado \cite{phipps2012efficient} to perform
 automatic differentiation.
 
@@ -700,7 +702,7 @@ order polynomial space \cite{becker2001optimal} or a nested mesh
 multiscale enrichment \cite{granzow2017output} can be used in the context
 of stabilized finite elements. Next, the adjoint problem can be solved in a
 higher order polynomial space \cite{fidkowski2011output}, which we will refer
-to as $p$-enrichment. Additionally, the adjoint problem can be solved on a
+to as $p$-enrichment. Finally, the adjoint problem can be solved on a
 uniformly refined mesh \cite{burstedde2009parallel}, which we will refer to
 as $h$-enrichment.
 
@@ -742,7 +744,8 @@ the system of nonlinear algebraic equations arising either from the Galerkin
 \eqref{eq:aut_abstract_stabilized_fem}
 model problem posed on the uniformly nested mesh. Let $\bs{u}^h_H :=
 I^h_H \bs{u}^H$ denote the prolongation of the primal finite element solution
-onto the richer space $\S^h$ via interpolation. Let $J^h : \mathbb{R}^n \to
+onto the richer space $\S^h$ via interpolation,
+Let $J^h : \mathbb{R}^n \to
 \mathbb{R}$ denote the discretization of the functional QoI on the
 uniformly nested fine space. We approximate the adjoint problem
 \eqref{eq:aut_abstract_adjoint} in a discrete manner
@@ -1198,7 +1201,7 @@ template <typename ScalarT>
 void AvgVM<ScalarT>::at_point(
     apf::Vector3 const&, double w, double dv) {
   auto sigma = model->get_cauchy();
-  ScalarT vm = compute_von_mises<ScalarT>(sigma3x3);
+  ScalarT vm = compute_von_mises<ScalarT>(sigma);
   this->elem_value += vm * w * dv;
 }
 \end{lstlisting}
