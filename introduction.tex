@@ -52,7 +52,7 @@ physically meaningful functional $J : \V \to \mathbb{R}$, such that
 The use of adjoint (or duality) techniques for \emph{a posteriori} error
 estimation can be traced back to Babu\v{s}ka and Miller
 \cite{babuska1984post1, babuska1984post2, babuska1984post3} who explored the
-post-processing of functional quantities. These ideas were then expaned to the
+post-processing of functional quantities. These ideas were then expanded to the
 context of adaptive finite element methods by Johnson et al.
 \cite{eriksson1996computational}. Becker and Rannacher \cite{becker2001optimal}
 developed an approach to functional \emph{a posteriori} error estimation for
@@ -77,7 +77,7 @@ applied to solid mechanics applications.
 In the context of solid mechanics, adaptive adjoint-based error estimation
 has been used to study linear elasticity in two
 \cite{rannacher1997feed, stein2007error, gonzalez2014mesh} and three
-\cite{ghorashi2014goal} dimensional elasticity, two
+\cite{ghorashi2014goal} dimensions, two
 \cite{rannacher1998posteriori, rannacher1999posteriori} and three
 \cite{ghorashi2017goal} dimensional elasto-plasticity, two dimensional
 thermoelasticity \cite{rabizadeh2015adaptive}, two dimensional
@@ -128,23 +128,70 @@ adjoint-based solid mechanics applications.
 %%% OUTLINE
 \section{Outline}
 
+In order to make adjoint-based error estimation and mesh adaptation
+more accessible to practitioners of solid mechanics, we have developed
+a fully automated approach that addresses the difficulties outlined
+above. Specifically, we have developed a \texttt{C++} application called
+Goal that automates steps 1-6 based solely on the inputs of a
+semilinear form $\R$ and a functional QoI $J$ for both Galerkin and
+stabilized finite element methods. Chapter \ref{chap:automated}
+provides a review of the mathematical background required for
+adjoint-based error estimation and discusses in detail the approach
+we have developed to automate the process. In addition, Chapter
+\ref{chap:automated} provides examples that demonstrate this approach
+executes effectively on parallel machines.
+
+Chapter \ref{chap:mech} presents the governing equations for
+finite deformation elasticity and discusses the derivation
+of a stabilized mixed pressure-displacement finite element
+formulation for these equations. In this chapter, the automated
+approach developed in Chapter \ref{chap:automated} is discussed
+specifically in the context of nonlinear elasticity, and is utilized
+to investigate several examples in incompressible elasticity.
+In particular, the automated approach is shown to yield both
+effective error estimates in this context. Further, the ability of the
+Goal application to handle mesh adaptation in the presence of complex
+geometries is demonstrated by investigating a model problem arising
+from the study of a biological cell embedded in an extracellular
+matrix.
+
+Further, the automated approach
+developed in Chapter \ref{chap:automated} is used to investigate
+adjoint-based error estimation and mesh adaptation for several
+examples in incompressible nonlinear elasticity.
+
+As a further extension of the automated approach developed
+in Chapter \ref{chap:automated}, Chapter \ref{chap:refine}.
+
+
+Chapter \ref{chap:refine}
+
+Chapter \ref{chap:vms}
+
 %%% CONTRIBUTIONS
 \section{Contributions}
 
+This thesis centers around contributions to the ability to
+perform and investigate adjoint-based error estimation and mesh
+adaptation, while largely focusing on the area of solid mechanics.
+In the performance of the work for this thesis, novel contributions
+have been achieved by:
+%
 \begin{enumerate}
-\item The development and implementation of an automated approach
-for adjoint-based error that executes on parallel machines.
-\item The application of the previously discussed automated approach
-to conduct an investigation of adjoint-based error estimation and mesh
-adaptation for finite deformation elasticity with stabilized finite
-elements.
-\item The application of the previously discussed automated approach
-to conduct an initial investigation of a non-uniform refinement approach
-for solving adjoint problems in the context of adjoint-based error
-estimation.
-\item The development of a novel approach for adjoint-based error
-estimation in variational multiscale finite element methods.
-\item A proof that two drasticallly distinct approaches for
+\item Developing and implementing an automated approach
+for adjoint-based error estimation that executes effectively
+on parallel machines.
+\item Applying the automated approach to investigate
+adjoint-based error estimation and mesh adaptation for finite
+deformation elasticity with a stabilized finite element method.
+\item Advancing the ability to perform adjoint-based error
+estimation and mesh adaptation for solid mechanics applications
+with complex geometries.
+\item Applying the automated approach to conduct an investigation
+of a non-uniform refinement approach for solving adjoint problems.
+\item Developing a novel approach for adjoint-based error
+estimation for variational multiscale finite element methods.
+\item Proving that two drasticallly distinct approaches for
 adjoint-based error estimation approaches in variational multiscale
 finite element methods yield identical results.
 \end{enumerate}
