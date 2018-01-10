@@ -624,7 +624,8 @@ void Stabilization<ScalarT>::at_point(
   for (int n = 0; n < p->get_num_nodes(); ++n)
   for (int i = 0; i < num_dims; ++i)
   for (int j = 0; j < num_dims; ++j)
-    p->resid(n) += tau * J * Cinv(i, j) * p->grad(i) * w->grad(n, j) * ipw * dv;
+    p->resid(n) += tau * J * Cinv(i, j) *
+      p->grad(i) * w->grad(n, j) * ipw * dv;
 }
 \end{lstlisting}
 
@@ -1378,11 +1379,13 @@ defined as:
 %
 %% aut_mech_galerkin
 \begin{gather}
-\R_g(\bs{W}^H ; \bs{U}^H) :=
-\int_{\Omega} \bs{P} : \nabla \bs{w}^H \, \text{d} \Omega +
+\begin{aligned}
+&\R_g(\bs{W}^H ; \bs{U}^H) := \\
+&\int_{\Omega} \bs{P} : \nabla \bs{w}^H \, \text{d} \Omega +
 \int_{\Omega} \left[ \frac{p^H}{\kappa} - \frac{1}{2 J}(J^2 - 1) \right] \;
 q^H \, \text{d} \Omega -
 \int_{\partial \Omega_h} \bs{h} \cdot \bs{w} \; \text{d} \Gamma,
+\end{aligned}
 \label{aut:mech_galerkin}
 \end{gather}
 %
@@ -1392,7 +1395,8 @@ and the stabilization residual is defined as:
 \begin{gather}
 \R_{\tau}(\bs{W}^H ; \bs{U}^H) :=
 \sum_{e=1}^{n_{el}} \int_{\Omega_e} \tau_e
-(J \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H) \; \text{d} V.
+(J \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H) \;
+\text{d} \Omega.
 \label{aut_mech_stabilized}
 \end{gather}
 %
@@ -1411,8 +1415,7 @@ $\bs{u}^H$ corresponds to displacements and $p^H$ corresponds to
 pressures. Similarly, the total weighting vector is defined as
 $\bs{W}^H := [\bs{w}^H, q^H]$, where $\bs{w}^H$ denotes a weighting
 function corresponding to displacements and $q^H$ is a weighting
-function corresponding to pressures. The Cauchy stress tensor
-is defined via a neo-Hookean constitutive relationship. For a complete
+function corresponding to pressures. For a complete
 exposition, we refer the reader to \cite{granzow2017adjoint}.
 
 %
