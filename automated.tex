@@ -71,7 +71,7 @@ and a \emph{scatter} phase. The present work extends the TBGP approach to
 include the automation of error localization, as required to drive
 mesh adaptation.
 
-The remainder of this chapter is outlined as follows.
+The remainder of this paper is outlined as follows.
 First adjoint-based error estimation is reviewed for abstract
 Galerkin and stabilized variational problems.
 Next, a description of the software components utilized in this
@@ -624,8 +624,7 @@ void Stabilization<ScalarT>::at_point(
   for (int n = 0; n < p->get_num_nodes(); ++n)
   for (int i = 0; i < num_dims; ++i)
   for (int j = 0; j < num_dims; ++j)
-    p->resid(n) += tau * J * Cinv(i, j) *
-      p->grad(i) * w->grad(n, j) * ipw * dv;
+    p->resid(n) += tau * J * Cinv(i, j) * p->grad(i) * w->grad(n, j) * ipw * dv;
 }
 \end{lstlisting}
 
@@ -1244,7 +1243,7 @@ polynomials.
 
 The domain is chosen to be
 $\Omega := [-1,1] \times [-1,1] \setminus
-[-\frac12, \frac12] \times [\frac12, \frac12]$ as shown in
+[-\frac12, \frac12] \times [-\frac12, \frac12]$ as shown in
 Figure \ref{fig:aut_poisson_meshes}. The data is chosen to be
 and the data is chosen to be $f=1$ and we consider a point-wise
 QoI of the form
@@ -1290,7 +1289,7 @@ were performed seven times. The adaptive simulation was run using
 equation \eqref{eq:aut_size_field} so that the target number of elements
 is twice that of the current mesh. Figure \ref{fig:aut_poisson_meshes}
 also shows the final adapted mesh resulting from this procedure. We remark
-that the distributino of degrees of freedom in this mesh closely
+that the distribution of degrees of freedom in this mesh closely
 resembles the results obtained in reference \cite{dealiistep14}.
 
 %
@@ -1379,13 +1378,11 @@ defined as:
 %
 %% aut_mech_galerkin
 \begin{gather}
-\begin{aligned}
-&\R_g(\bs{W}^H ; \bs{U}^H) := \\
-&\int_{\Omega} \bs{P} : \nabla \bs{w}^H \, \text{d} \Omega
+\R_g(\bs{W}^H ; \bs{U}^H) :=
+\int_{\Omega} \bs{P} : \nabla \bs{w}^H \, \text{d} \Omega +
 \int_{\Omega} \left[ \frac{p^H}{\kappa} - \frac{1}{2 J}(J^2 - 1) \right] \;
 q^H \, \text{d} \Omega -
 \int_{\partial \Omega_h} \bs{h} \cdot \bs{w} \; \text{d} \Gamma,
-\end{aligned}
 \label{aut:mech_galerkin}
 \end{gather}
 %
@@ -1444,7 +1441,11 @@ the surface of the microglial cell. The magnitude of the applied
 traction $\bs{h}$ is defined to be 10 times the distance to the
 center of the cell and its direction points inward towards the
 cell center. This traction is consistent with observed physical
-behavior \cite{dong2017recovery}.
+behavior \cite{dong2017recovery}. Displacements $u_x = 0$
+on the face with constant minimum $x$-coordinate value, $u_y = 0$ on
+the face with constant minimum $y$-coordinate value, and $u_z = 0$ on
+the face with constant minimum $z$-coordinate value are prescribed
+to constrain rigid body rotations and translations.
 
 %
 %% aut_glial_meshes
@@ -1468,44 +1469,96 @@ for the microglial cell example}
 \label{fig:aut_glial_meshes}
 \end{figure}
 
+Figure \ref{fig:aut_glial_meshes} demonstrates an initial mesh,
+which contains around $30,000$ degrees of freedom. From this initial
+mesh, the steps
+%
+\begin{gather*}
+\text{Solve primal PDE} \rightarrow
+\text{Solve enriched adjoint PDE} \rightarrow
+\text{Localize error} \rightarrow
+\text{Adapt mesh}
+\end{gather*}
+%
+were successively performed $10$ times. During the adapt stage,
+the mesh size field was set such that desired number of elements
+$N$ in the output mesh is $1.5$ times the number of elements
+in the previous mesh, according to equation \eqref{eq:aut_size_field}.
+Figure \ref{fig:aut_glial_meshes} additionally demonstrates the adapted
+meshes obtained at the fifth and final adaptive iteration.
+In particular, both \emph{coarsening} and \emph{refinement} is performed
+from the initial mesh to the mesh obtained at the fifth adaptive iteration.
+
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.5\linewidth]{img/aut_glial_parts.png}
-\caption{The initial parallel mesh partitioning for the
-microglial cell example}
+\begin{subfigure}{.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_glial_initial_parts.png}
+\end{subfigure}%
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_glial_final_parts.png}
+\end{subfigure}
+\caption{The parallel mesh partitioning for the initial mesh (left)
+and the final adapted mesh (right) for the microglial cell example}
 \label{fig:aut_glial_parts}
 \end{figure}
+
+The problem was run using 16 MPI ranks. Figure \ref{fig:aut_glial_parts}
+demonstrates the parallel partitioning for the initial mesh and for
+the final adapted mesh obtained after 10 adjoint-based adaptive
+iterations. To ensure partitioning quality, ParMA software was
+utilized to guarantee the imbalance of vertices and elements
+across parallel partitions is no greater than $5\%$.
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=0.4\linewidth]{img/aut_glial_timings.pdf}
 \caption{Breakdown of the CPU time spent for each portion of
 the adaptive process for the microglial cell example}
+\label{fig:aut_glial_timings}
 \end{figure}
 
+Figure \ref{fig:aut_glial_timings} presents a breakdown of the
+total percentange of CPU time spent on each step in the
+adaptive analysis. For every adaptative iteration, the error
+localization \eqref{eq:aut_stabilized_localization} takes only
+a small percentage of the total CPU time, as it essentially amounts
+to an evaluation of the residual vector the fine space. More
+interestingly, mesh adaptation initially accounts for about
+20 percent of the total CPU time but decreases as the adaptive
+simulation progresses. This is explained by the fact that initial
+adaptive iteration requires more work to optimally distribute
+the degrees of freedom for the functional QoI as compared to
+subsequent adaptive iterations. In addition to refinement
+and coarsening operations, the mesh adaptation step also
+performs \emph{shape correction} to ensure elements are not
+too heavily skewed \cite{li20053d}. Finally, we note that the
+adjoint problem accounts for roughly 40 to 50 percent of the CPU time
+over the course of the adaptive simulation. While process of
+adjoint-based error estimation is not cheap for this example,
+we provide two justifying remarks. First, this problem required only
+3 to 4 Newton iterations for each primal solve. For constitutive
+models with higher degrees of nonlinearity or for problems loaded to
+higher strains, it is not uncommon for Newton's method to converge
+in 7 to 10 iterations. In these scenarios, the relative cost of
+adjoint-based error estimation is not as extreme.
+Second, for this computational price, we have
+achieved very accurate error estimates as shown in
+reference \cite{granzow2018adjoint}.
 
-
-
-
-
-
-%%% AN INDUSTRIAL APPLICATION
-\subsection{An Industrial Application}
+%%% ELASTOPLASTICITY IN AN ARRAY OF SOLDER BALLS
+\subsection{Elastoplasticity in an Array of Solder Balls}
 
 %%% CONCLUSIONS
 \section{Conclusions}
 
-%%% ACKNOWLEDGEMENTS
-\section{Acknowledgements}
-
-The authors acknowledge the support of IBM Corporation in the performance
-of this research. The computing resources of the Center for Computational
-Innovations at Rensselaer Polytechnic Institute are also acknowledged.
-The development of tools used in this work was partly supported by the
-U.S. Department of Energy, Office of Science, Office of Advanced
-Scientific Computing Research, under award DE-SC00066117 (FASTMath SciDAC
-Institute). The authos would like to thank Li Dong for providing the
-discrete geometric model used for the microglial cell example and
-Max Bloomfield for the geometric model used for the solder ball
-example.
-
+In this work, we have developed an automated approach for
+adjoint-based error estimation and mesh adaptation for
+execution on parallel machines. We have developed this approach
+to be applicable to both Galerkin and stabilized finite
+element methods. To realize this approach, we have extended
+the concept of \emph{template-based generic programming} for
+PDE models to include the automatic localization of error
+contributions using a partition of unity-based
+localization approach.
