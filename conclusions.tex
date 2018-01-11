@@ -5,5 +5,56 @@
 %%% CONCLUSIONS
 \section{Conclusions}
 
+We have presented an automated approach for adjoint-based error estimation and mesh
+adaptation to approximate and control the discretization error associated with
+functional quantities. In scenarios when these functional quantities correspond
+to physically meaningful outputs, such as the average von-Mises stress over a
+sub-domain, we have demonstrated that this approach can provide effective error
+estimates and meaningfully adapt the mesh to reduce the functional functional
+discretization error. In particular, we have developed and implemented this approach
+to be applicable to stabilized finite element methods and have demonstrated its
+ability to effectively estimate and control errors in a variety of applications
+in solid mechanics. Importantly, we have demonstrated that this approach is applicable
+to applications in solid mechanics with complex three-dimensional geometries.
+Further, we have demonstrated the ability of this approach
+to execute effectively on parallel machines. Additionally, we have extended the
+automated approach to investigate two novel strategies for solving adjoint problems
+on non-uniformly refined nested meshes. Finally, we have developed and
+investigated a novel approach for adjoint-based error estimation and mesh adaptation
+in the context of variational multiscale finite element methods. For the purposes
+of mesh adaptation, we have demonstrated the superiority of this approach when compared
+to a previously developed error estimate.
+
 %%% FUTURE WORK
 \section{Future Work}
+
+\subsection{Extending Capabilities to Quasi-Steady/Transient Problems}
+
+The examples presented in this work have been either steady-state examples
+or quasi-steady examples loaded in a single load step.
+The Goal application currently has the ability to perform multiple load
+steps and solve the adjoint problem either at the end of each load step
+or at the end of the total number of load steps to estimate errors in functional
+quantities of interest. This approach is mathematically valid for constitutive
+models that lack history-dependent variables, such as neo-Hookean elasticity.
+However, for constitutive models with history dependence, an error is
+introduced by the choice of step size, even if the problem is not truly
+transient. A natural extension of the current work is to consider multiple
+quasi-steady load steps for constitutive models with history-dependent variables
+and truly transient problems with inertial terms included in the balance
+of linear momentum residual. In these scenarios, the mathematical analysis
+requires the adjoint problem to be solved \emph{backwards in time}.
+In parallel, the effective implementation of such a backwards in time adjoint
+problem is an ongoing research topic in the CFD community.
+
+\subsection{Extending VMS Techniques for Solid Mechanics}
+
+We have developed and investigated enriching the adjoint solution with
+variational multiscale (VMS) techniques and estimating errors in
+linear functional QoIs in the context of a linear advection-diffusion model problem.
+These techniques should be analysed in the context of nonlinear variational
+problems and QoIs. In the Goal application, we have additionally included
+the ability to solve the adjoint problem on the same finite element space
+as used for the primal problem. This provides a convenient pretext to
+implement VMS adjoint enrichment routines in the Goal application, and
+investigate error estimates obtained as such.
