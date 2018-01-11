@@ -899,7 +899,7 @@ denote the effectivity index given by
 We would like to obtain error estimates $\eta$ that lead to
 effectivity indices of $\I = 1$ as $H \to 0$. To this end, we recall
 $J^h(\bs{u}^h) - J^h(\bs{u}^h_H) \approx - \bs{z}^h \cdot
-\bs{R}^h(\bs{u}^h_H)$ from equation \eqref{eq:aut_adjoint_weighted_residual}.
+\bs{R}^h(\bs{u}^h_H)$ from equation \eqref{eq:aut_adjoint_weighted_residual}
 to obtain the scaled adjoint weighted residual error estimate
 %
 %% aut_error_estimate
@@ -916,14 +916,14 @@ Following the approach of Richter and Wick
 $\sum_i \phi_i = 1$, into the weighting function slot for the
 error estimate to localize the error. In this work, the partition of unity is
 realized as linear Lagrange basis functions. This yields
-local level error contributions $\eta_i$ at the $n_{vtx}$ mesh
+local error contributions $\eta_i$ at the $n_{vtx}$ mesh
 vertices in the mesh.  Let $z^h \in \V^h$ be the finite element
 solution obtained by solving the discrete adjoint problem
 \eqref{eq:aut_discrete_adjoint}. We assume that this solution
 well approximates the continuous adjoint problem \eqref{eq:aut_abstract_adjoint},
 such that $z \approx z^h$. Let $z^H$ denote the interpolant of $z^h$
 onto the coarse space $\V^H$. Recalling the error representation
-\eqref{eq:aut_abstract_galerkin_error} for Galerkin finite element,
+\eqref{eq:aut_abstract_galerkin_error} for Galerkin finite elements,
 we obtain partition of unity-based correction indicators $\eta_i$ in the following
 manner
 %
@@ -963,7 +963,7 @@ J(u) - J(u^H) \approx
 
 Once correction indicators $\eta_i$ have been evaluated, an approximate
 upper bound $\hat{\eta}$ for the error is computed by summing the absolute
-value of the error contributions over all mesh vetrices, as
+value of the error contributions over all mesh vetrices
 %
 %% aut_upper_bound
 \begin{gather}
@@ -981,10 +981,11 @@ $\bs{R}^h(\bs{u}^h_H)$ are necessarily computed by the machinery
 of forward automatic differentiation. Thus,
 during the \texttt{scatter} phase for the adjoint problem computation,
 we additionally sum element-level contributions to the fine residual
-to assemble the global vector $\bs{R}^h(\bs{u}^h_H)$. In this manner,
-the process of computing the adjoint-weighted residual estimate
-\eqref{eq:aut_error_estimate} is automated.
-
+to assemble the global vector $\bs{R}^h(\bs{u}^h_H)$. This, along
+with the solution $\bs{z}^h$ to the adjoint problem
+\eqref{eq:aut_discrete_adjoint} with the solution provides enough
+information to compute the adjoint-weighted residual estimate
+\eqref{eq:aut_error_estimate} in an automated fashion.
 
 Again, we let $z^h \in \V^h$ denote the finite element solution to
 the discrete adjoint problem \eqref{eq:aut_discrete_adjoint} and let
@@ -1029,10 +1030,10 @@ and its corresponding gradient is computed as
 In this manner, we have introduced partition of unity-based adjoint weights
 that have the
 same data type as the weights used for the computation of the primal and
-adjoint problems. Because these weights 
+adjoint problems.
 
 Using the adjoint weights in the error localization evaluation results in
-element-level residual vectors that corresponding to contributions of the
+element-level residual vectors that correspond to contributions to the
 localized correction indicators $\eta_i$.
 During the \texttt{scatter} phase of the error localization evaluation, we
 sum these element level contributions to the appropriate mesh vertices
@@ -1103,7 +1104,8 @@ at a given spatial localtion $\bs{x}$. This functional can be expressed as
 %
 %% aut_pw_qoi
 \begin{gather}
-J(u) = \int_{\Omega} \delta ( \bs{x} - \bs{x}_0 ) \, u_i \; \text{d} V.
+J(u) = \int_{\Omega} \delta ( \bs{x} - \bs{x}_0 ) \, u_i
+\; \text{d} \Omega,
 \label{eq:aut_pw_qoi}
 \end{gather}
 %
@@ -1122,7 +1124,7 @@ the adjoint problem takes the form
 %
 For this implementation, a mesh vertex is always placed at the spatial
 location $\bs{x}_0$, the QoI derivative vector is zeroed out, and we place a
-one in the row of the QoI derivative vector that corresponds to the $i$th
+one in the row of the QoI derivative vector that corresponds to the $i^{th}$
 component of the solution at the vertex.
 
 %%% AVERAGE SOLUTION OVER A SUBDOMAIN
@@ -1133,7 +1135,8 @@ $\Omega_0 \subset \Omega$, which can be expressed as
 %
 %% aut_avg_u_qoi
 \begin{gather}
-J(u) = \int_{\Omega_0} \frac{1}{n_c} \sum_{i=1}^{n_c} u_i \, \text{d} V.
+J(u) = \int_{\Omega_0} \frac{1}{n_c} \sum_{i=1}^{n_c} u_i
+\; \text{d} \Omega.
 \label{eq:aut_avg_u_qoi}
 \end{gather}
 %
@@ -1164,7 +1167,7 @@ given as
 %
 %% aut_avg_vm_qoi
 \begin{gather}
-J(u) = \int_{\Omega_0} \sigma_{vm} \; \text{d} V,
+J(u) = \int_{\Omega_0} \sigma_{vm} \; \text{d} \Omega,
 \label{eq:aut_avg_vm_qoi}
 \end{gather}
 %
@@ -1177,7 +1180,7 @@ where the von-Mises stress $\sigma_{vm}$ is defined as
 \end{gather}
 %
 Here summation over repeated indices is implied and
-$\bs{\sigma} = \bs{\sigma} - \frac13 \text{tr}(\bs{\sigma})\bs{I}$ denotes
+$\bs{\sigma}' = \bs{\sigma} - \frac13 \text{tr}(\bs{\sigma})\bs{I}$ denotes
 the deviatoric part of the Cauchy stress tensor $\bs{\sigma}$. The von-Mises
 stress is often used in yield criterion for elastoplastic constitutive models,
 and is hence of particular interest for solid mechanics desing applications.
@@ -1188,7 +1191,8 @@ by the definition of the von-Mises stress, which includes the square of
 deviatoric stress components and a square root operation. The linearization
 and implementation of this QoI, as required for adjoint-based error
 estimation, would be cumbersome at best without some kind of automated
-approach. In contrast, Listing 2 illustrates the simplicity of the relevant
+approach. In contrast, Listing \ref{lst:aut_avg_vm_qoi}
+illustrates the simplicity of the relevant
 \texttt{C++} code that implements integration point contributions to this
 specific QoI in the Goal application.
 
@@ -1254,13 +1258,13 @@ The domain is chosen to be
 $\Omega := [-1,1] \times [-1,1] \setminus
 [-\frac12, \frac12] \times [-\frac12, \frac12]$ as shown in
 Figure \ref{fig:aut_poisson_meshes}. The data is chosen to be
-and the data is chosen to be $f=1$ and we consider a point-wise
+$f=1$ and we consider a point-wise
 QoI of the form
 $J(u) = \int_{\Omega} \delta(\bs{x} - \bs{x}_0) u \, \text{d} \Omega$,
 where the point of interest $\bs{x}_0$ is chosen to be
 $\bs{x}_0 = (0.75, 0.75)$. This problem was initially studied in
 the reference \cite{dealiistep14}, where the QoI was determined
-to have a reference value of $J(u) = 0.0334474 \pm e\mbox{-}7$.
+to have a reference value of $J(u) = 0.0334474 \pm 1e\mbox{-}7$.
 Presently, we demonstrate that our automated approach can
 reproduce the results for traditional adjoint-based error estimation
 found in \cite{dealiistep14}.
@@ -1374,10 +1378,11 @@ Recently, the automated approach developed in this paper was applied
 to a stabilized mixed pressure-displacement finite element formulation
 \cite{ramesh2005stabilized} for the governing equations of finite
 deformation elasticity in a total Lagrangian setting
-\cite{granzow2017adjoint}. For two and three dimensional problems in
+\cite{granzow2017adjoint} (see Chapter \ref{chap:mech}).
+For two and three dimensional problems in
 nonlinear elasticity, the automated approach was shown to effectively
-estimate the error and provide improved convergence rates via mesh
-adaptation over uniform refinement.
+estimate the error and provide improved error convergence rates via
+adjoint-based mesh adaptation over uniform refinement.
 
 In this section, the parallelization of a biomechanical application
 presented in the reference \cite{granzow2017adjoint} is discussed. First,
@@ -1424,7 +1429,7 @@ pressures. Similarly, the total weighting vector is defined as
 $\bs{W}^H := [\bs{w}^H, q^H]$, where $\bs{w}^H$ denotes a weighting
 function corresponding to displacements and $q^H$ is a weighting
 function corresponding to pressures. For a complete
-exposition, we refer the reader to \cite{granzow2017adjoint}.
+exposition, we refer the reader to Chapter \ref{chap:mech}.
 
 %
 %% aut_glial_geom
@@ -1440,7 +1445,8 @@ $20 \mu m \times 20 \mu m \times 20 \mu m$ embedded in an extracellular
 matrix of dimension $100 \mu \times 100 \mu m \times 100 \mu m$.
 The QoI is chosen to be a local average displacement
 $J(\bs{U}) = \int_{\Omega_0} \frac13 (u_x + u_y + u_z) \, \text{d} \Omega$,
-defined a box with dimensions $30 \mu m \times 30 \mu m \times 30 \mu m$
+defined over a box $\Omega_0$ with dimensions
+$30 \mu m \times 30 \mu m \times 30 \mu m$
 that bounds the microglial cell. Figure \ref{fig:aut_glial_geom} shows
 the geometry defining the microglial cell, the bounding box
 $\Omega_0$, and the extracellular matrix. The shear modulus
@@ -1452,10 +1458,10 @@ the surface of the microglial cell. The magnitude of the applied
 traction $\bs{h}$ is defined to be 10 times the distance to the
 center of the cell and its direction points inward towards the
 cell center. This traction is consistent with observed physical
-behavior \cite{dong2017recovery}. Displacements $u_x = 0$
-on the face with constant minimum $x$-coordinate value, $u_y = 0$ on
-the face with constant minimum $y$-coordinate value, and $u_z = 0$ on
-the face with constant minimum $z$-coordinate value are prescribed
+behavior \cite{dong2017recovery}. Displacements $u_x = 0$,
+$u_y=0$, and $u_z=0$ are applied to the faces with constant
+minimum $x$-coordinate value, constant minimum $y$-coordinate
+value, and constant minimum $z$-coordinate value, respectively,
 to constrain rigid body rotations and translations.
 
 %
@@ -1486,7 +1492,7 @@ mesh, the steps
 %
 \begin{gather*}
 \text{Solve primal PDE} \rightarrow
-\text{Solve enriched adjoint PDE} \rightarrow
+\text{Solve adjoint PDE} \rightarrow
 \text{Localize error} \rightarrow
 \text{Adapt mesh}
 \end{gather*}
@@ -1498,7 +1504,7 @@ in the previous mesh, according to equation \eqref{eq:aut_size_field}.
 Figure \ref{fig:aut_glial_meshes} additionally demonstrates the adapted
 meshes obtained at the fifth and final adaptive iteration.
 In particular, both \emph{coarsening} and \emph{refinement} is performed
-from the initial mesh to the mesh obtained at the fifth adaptive iteration.
+during the adaptive iterations.
 
 \begin{figure}[ht!]
 \centering
@@ -1518,7 +1524,7 @@ and the final adapted mesh (right) for the microglial cell example}
 The problem was run using 16 MPI ranks. Figure \ref{fig:aut_glial_parts}
 demonstrates the parallel partitioning for the initial mesh and for
 the final adapted mesh obtained after 10 adjoint-based adaptive
-iterations. To ensure partitioning quality, ParMA software was
+iterations. To ensure partitioning quality, ParMA was
 utilized to guarantee the imbalance of vertices and elements
 across parallel partitions is no greater than $5\%$.
 
@@ -1538,7 +1544,7 @@ a small percentage of the total CPU time, as it essentially amounts
 to an evaluation of the residual vector the fine space. More
 interestingly, mesh adaptation initially accounts for about
 20 percent of the total CPU time but decreases as the adaptive
-simulation progresses. This is explained by the fact that initial
+simulation progresses. This is explained by the fact that the initial
 adaptive iteration requires more work to optimally distribute
 the degrees of freedom for the functional QoI as compared to
 subsequent adaptive iterations. In addition to refinement
@@ -1556,7 +1562,7 @@ in 7 to 10 iterations. In these scenarios, the relative cost of
 adjoint-based error estimation is not as extreme.
 Second, for this computational price, we have
 achieved very accurate error estimates as shown in
-reference \cite{granzow2017adjoint}.
+Chapter \ref{chap:mech}.
 
 %%% ELASTOPLASTICITY IN AN ARRAY OF SOLDER BALLS
 \subsection{Elastoplasticity in an Array of Solder Balls}
