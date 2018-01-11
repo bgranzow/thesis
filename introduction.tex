@@ -155,18 +155,33 @@ geometries is demonstrated by investigating a model problem arising
 from the study of a biological cell embedded in an extracellular
 matrix.
 
-Further, the automated approach
-developed in Chapter \ref{chap:automated} is used to investigate
-adjoint-based error estimation and mesh adaptation for several
-examples in incompressible nonlinear elasticity.
+In Chapter \ref{chap:refine}, the automated approach presented in
+Chapter \ref{chap:automated} is extended to investigate two
+novel approaches for solving the adjoint problem.
+These approaches proceed by solving the adjoint problem on a
+nested mesh obtained via \emph{non-uniform} refinement so as to
+reduce the total number of degrees of freedom for the adjoint problem
+when compared to solving the adjoint problem on a mesh obtained
+with \emph{uniform} refinement. However, these two approaches still
+maintain a physically meaningful global enrichment of the adjoint
+solution. This investigation demonstrates a key feature of the Goal
+software, in that it is flexible enough to be used to conduct novel
+research that falls outside of its original intended scope.
 
-As a further extension of the automated approach developed
-in Chapter \ref{chap:automated}, Chapter \ref{chap:refine}.
-
-
-Chapter \ref{chap:refine}
-
-Chapter \ref{chap:vms}
+Finally, we investigate adjoint-based error estimation and mesh
+adaptation for variational multiscale (VMS) methods in Chapter \ref{chap:vms}.
+The VMS method provides a systematic approach to develop and derive
+stabilized finite element formulations for PDEs. In this chapter,
+we propose a novel strategy for enriching the solution to the
+adjoint problem based on VMS techniques, and using this enrichment
+derive an adjoint-based error estimate for functional QoIs.
+We prove that the developed error estimate yields identical
+results to a drastically different approach, but show that the
+distinct approach is wholly insufficient to drive mesh adaptation.
+In this chapter, we consider the advection-diffusion equation as a
+model problem, with the intent that this approach will soon
+be applied and implemented in the Goal application for
+solid mechanics applications.
 
 %%% CONTRIBUTIONS
 \section{Contributions}
@@ -189,9 +204,6 @@ estimation and mesh adaptation for solid mechanics applications
 with complex geometries.
 \item Applying the automated approach to conduct an investigation
 of a non-uniform refinement approach for solving adjoint problems.
-\item Developing a novel approach for adjoint-based error
+\item Developing and investigating a novel approach for adjoint-based error
 estimation for variational multiscale finite element methods.
-\item Proving that two drasticallly distinct approaches for
-adjoint-based error estimation approaches in variational multiscale
-finite element methods yield identical results.
 \end{enumerate}
