@@ -1,6 +1,7 @@
 all: thesis.pdf
 
 docs = \
+thesis.cls \
 thesis.tex \
 title.tex \
 acknowledge.tex \
