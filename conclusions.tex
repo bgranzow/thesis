@@ -28,6 +28,21 @@ to a previously developed error estimate.
 %%% FUTURE WORK
 \section{Future Work}
 
+\subsection{Higher Order Finite Element Methods}
+
+In this work, we have preferred to utilize low-order stabilized
+finite element methods to provide numerical stability in solid
+mechanics applications with incompressibility constraints.
+Taylor-Hood type elements provide another approach to develop
+stable discretizations in the finite element method, where
+displacements are represented with basis functions of order
+$p+1$ and pressures are represented with basis functions of
+order $p$. This leads to a more involved finite element assembly
+process, but the techniques used in the Goal application
+could be extended to account for this to investigate adjoint-based
+error estimation and mesh adaptation for solid mechanics with
+higher-order finite element methods.
+
 \subsection{Extending Capabilities to Quasi-Steady/Transient Problems}
 
 The examples presented in this work have been either steady-state examples
