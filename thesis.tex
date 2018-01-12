@@ -3,6 +3,8 @@
 % citations
 \usepackage{cite}
 \usepackage{notoccite}
+\bibliographystyle{IEEErpi}
+\renewcommand{\bibname}{}
 
 % captions
 \usepackage[
@@ -51,9 +53,10 @@
   xleftmargin=2em
 }
 
-% conform to rpi
+% conform to IEEE
 \renewcommand{\captionfont}{\bfseries}
 \renewcommand{\figurename}{Fig.}
+\renewcommand*{\UrlNoBreaks}{\do\(\do\[\do\{\do\<\do\:}%
 
 % theorems and propositions
 \newtheorem{prop}{Proposition}
