@@ -58,6 +58,15 @@
 \renewcommand{\figurename}{Fig.}
 \renewcommand*{\UrlNoBreaks}{\do\(\do\[\do\{\do\<\do\:}%
 
+% href for toc
+\makeatletter
+\usepackage{etoolbox}
+\pretocmd{\tableofcontents}{%
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \pdfbookmark[0]{\contentsname}{toc}%
+}{}{}%
+\makeatother
+
 % theorems and propositions
 \newtheorem{prop}{Proposition}
 \theoremstyle{remark}
