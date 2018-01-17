@@ -44,18 +44,18 @@ solving the adjoint problem in the same space
 as used for the primal problem
 and solving local patch-wise problems least
 squares problems \cite{nemec2007adjoint} or
-by performing patch-wise higher-order interpolation
+performing patch-wise higher-order interpolation
 \cite{becker2001optimal},
 and enriching the adjoint solution via
 variational multiscale methods
 \cite{granzow2017output}.
 
 Solving the adjoint problem in a globally higher
-order polynomial or on a uniformly refined mesh
+order polynomial space or on a uniformly refined mesh
 is a computationally expensive proposition. On the
 other hand, solving the adjoint problem in the same
 space as used for the primal problem and enriching
-it via local patch-wise problems may not be guaranteed
+it via some local recovery operation may not be guaranteed
 to yield a more accurate adjoint solution. In this
 chapter, we propose a simple compromise and solve the
 adjoint problem on meshes obtained via non-uniform
@@ -65,14 +65,15 @@ The remainder of this chapter is structured as follows.
 First, we review adjoint-based error estimation for
 functional quantities using two discretization levels,
 a \emph{coarse} space and a \emph{fine} space. We then
-review three choices for the fine space, obtained
+review three choices for the fine space obtained
 by refinement of the mesh used for the coarse space.
 The first choice is the standard uniform refinement
 method, while the other two approaches form the fine
 space via non-uniform refinement. In each of these
 sections, we discuss the algorithm utilized to generate
-the fine space. We then investigate the these three
-approaches for adjoint enrichment for Poisson's equation
+the fine space. We then investigate these three
+adjoint enrichment approaches when applied to examples
+in Poisson's equation
 and conclude with a summary of the results.
 
 %%% OUTPUT ERROR ESTIMATION WITH TWO DISCRETIZATION LEVELS
@@ -80,6 +81,10 @@ and conclude with a summary of the results.
 
 \subsection{Error Estimates}
 
+Following Venditti and Darmofal
+\cite{venditti2000adjoint, venditti2002adjoint, venditti2003adjoint},
+we review output-based error estimation using two discretization
+levels.
 Let $\V^h$ and $\V^H$ denote finite dimensional spaces
 such that $\V^H \subset \V^h$. We refer to $\V^h$
 and $V^H$ as the \emph{fine} space and the \emph{coarse}
@@ -311,10 +316,11 @@ Figure \ref{fig:long_mesh} illustrates the
 \textsc{Long} edge refinement algorithm applied to
 a base mesh.
 
-Not that, for the \textsc{Long} edge refinement
-approach, some elements are split once, and others
-are split multiple times. Thus, there is no global
-single global ratio $\frac{h}{H}$. We approximate
+Note that, for the \textsc{Long} edge refinement
+approach, some elements are split once while others
+are split multiple times. It follows then that there is
+single global ratio $\frac{h}{H}$ of the fine mesh size
+to the coarse mesh size. Presently, we approximate
 this ratio by taking the average of all ratios
 of nested element sizes to their parent element
 size, given by
@@ -378,7 +384,7 @@ After this process has completed, some elements may be
 Thus, for each element remaining that has not been marked as `visited',
 we mark the first edge adjacent to the element for refinement.
 The single edge refinement
-algorithm is illustrated in \ref{alg:single_refine}.
+algorithm is illustrated in Algorithm \ref{alg:single_refine}.
 Figure \ref{fig:single_mesh} demonstrates a mesh
 resulting from the application of the single
 edge refinement scheme. For the \textsc{Single}
@@ -457,7 +463,7 @@ size field as described by Boussetta et al. \cite{boussetta2006adaptive}
 that attempts to equidistribute the error in an output adapted mesh with
 $N$ target elements. From a high level, this size field will refine the mesh
 in areas of the domain that contribute strongly to the error in the functional
-and coarsens the mesh in areas of the domain that weakly contribute to the
+and coarsen the mesh in areas of the domain that weakly contribute to the
 error in the functional.
 
 Let $p$ be the polynomial interpolant order for the chosen finite element
@@ -470,7 +476,7 @@ G = \sum_{e=1}^{n_{el}} ( \eta_e ) ^{\frac{2d}{2p+d}}.
 \label{eq:refine_global_size}
 \end{gather}
 %
-From this global quanitty, we compute new element size $H_e^{\text{new}}$
+From this global quantity, we compute new element size $H_e^{\text{new}}$
 by scaling previous element sizes $H_e$ according to the formula
 %
 %% refine_size_field
@@ -583,7 +589,7 @@ mesh size. Effectivity indices for the
 baseline \textsc{Unif} method approach
 $1$ in the limit as $H \to 0$ as expected. The effectivity
 indices obtained using the two non-uniform refinement approaches,
-\textsc{Long} and \textsc{Single}, are less accurate
+are less accurate
 and do not appear to be asymptotically correct.
 This is perhaps not surprising, as we have considered a bulk
 average for the ratio $\frac{h}{H}$ for these two schemes,
@@ -611,7 +617,7 @@ However, even though the error estimates themselves obtained by
 the \textsc{Long} and \textsc{Single} schemes may not be suitable
 for application purposes, these schemes may still be suitable to
 drive mesh adaptation at a cheaper cost than the full \textsc{Unif}
-approach. For instance, Figure \ref{fig:refine_poisson_dofs}
+approach. Figure \ref{fig:refine_poisson_dofs}
 demonstrates the decrease in the total number of degrees of
 freedom for the adjoint problem for the \textsc{Long} and \textsc{Single}
 schemes as compared to the \textsc{Unif} scheme. This motivates
@@ -645,7 +651,7 @@ $\bs{x}_0 = (0.75, 0.75)$. We again expect the functional to converge
 at the rate $k = 2$. The domain and point-wise QoI location are show
 in Figure \ref{fig:refine_poisson2_geom}. The value of the quantity
 of interest was determined to have a value of $J(u) = 0.0334473
-\pm 10e\mbox{-}7$ in the reference \cite{dealiistep14}.
+\pm 1e\mbox{-}7$ in the reference \cite{dealiistep14}.
 
 %
 %% refine_poisson2_geom
@@ -764,16 +770,16 @@ corner of this mesh (right).}
 We have developed two alternative approaches to uniform refinement
 for performing enriched adjoint solves in adjoint-based error estimation
 with two discretization levels. We have applied this approach to
-Poisson's equation and demonstrated that. While the number of
+Poisson's equation. While the number of
 degrees of freedom for the adjoint solve for these two
 alternative approaches decreases significantly when compared to the
 more traditional approach of solving the adjoint problem on
 a uniformly refined mesh, the present outlook indicates that
 these approaches are not yet suitable for practical applications.
 That is, when performing adjoint-based error estimation with the
-two novel approaches, effectivity indices are not asymptotically.
-Additionally, the meshes obtained with adaptive adjoint-based
-analysis display largely qualitatively different features when
+two novel approaches, effectivity indices are not asymptotically
+correct. Additionally, the meshes obtained with adaptive adjoint-based
+analysis display qualitatively different features when
 compared to the uniform refinement approach.
 
 It is possible that more accurate error estimates could be
@@ -789,6 +795,6 @@ ratio, $\alpha_e = 1 - \left( \frac{h_e}{H_e} \right)^k$. Here, the
 subscript $e$ denotes the element-level contributions
 to the corresponding global quantity. Additionally, it is
 possible that more suitable meshes may be obtained during
-the adaptive process if some sort of size field smoothing
+the adaptive process if a size field smoothing
 algorithm is utilized. We leave investigation into these
 areas as a suggestion for future work.
