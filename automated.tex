@@ -868,18 +868,18 @@ where $\bs{z}^h$ is the solution to the adjoint problem
 \subsection{Modified Functional Error Estimate}
 
 Assume that the QoI converges at the rate $k$, such that
-$J(\bs{u}) - J^h(\bs{u}^h_H) = c H^k$ and $J(\bs{u}) - J^h(\bs{u}^h) = ch^k$,
-where $J(\bs{u})$ denotes the exact value of the QoI. If the fine space
+$J - J^h(\bs{u}^h_H) = c H^k$ and $J - J^h(\bs{u}^h) = ch^k$,
+where $J$ denotes the exact value of the QoI. If the fine space
 is obtained via uniform mesh refinement, then the ratio of the fine mesh size
 to the coarse mesh size is given as $\frac{h}{H} = \frac12$. Consider the ratio
 %
 %% aut_ratio
 \begin{gather}
 \begin{aligned}
-\frac{ J^h (\bs{u}^h) - J^h(\bs{u}^h_H) }{ J(\bs{u}) - J^h(\bs{u}^h_H) }
-&= \frac{\left[ J^h(\bs{u}) - J^h(\bs{u}^h_H) \right] -
-\left[ J^h(\bs{u}) - J^h(\bs{u}^h) \right] }
-{ J(\bs{u}) - J^h(\bs{u}^h_H) } \\
+\frac{ J^h (\bs{u}^h) - J^h(\bs{u}^h_H) }{ J - J^h(\bs{u}^h_H) }
+&= \frac{\left[ J - J^h(\bs{u}^h_H) \right] -
+\left[ J - J^h(\bs{u}^h) \right] }
+{ J - J^h(\bs{u}^h_H) } \\
 &= \frac{c H^k - ch^k}{c H^k} \\
 &= 1 - \left( \frac{h}{H} \right)^k \\
 &= 1 - \left( \frac12 \right)^k
@@ -888,12 +888,12 @@ to the coarse mesh size is given as $\frac{h}{H} = \frac12$. Consider the ratio
 %
 in the limit as $H \to 0$ \cite{fidkowski2011review}. We call this
 ratio $\alpha := 1 - (1/2)^k$. Let $\eta$ denote an approximation
-to the functional error $J(\bs{u}) - J^h(\bs{u}^h_H)$. Let $\I$
+to the functional error $J - J^h(\bs{u}^h_H)$. Let $\I$
 denote the effectivity index given by
 %
 %% aut_effectivity
 \begin{gather}
-\I = \frac{\eta}{ J(\bs{u}) - J^h(\bs{u}^h_H) }.
+\I = \frac{\eta}{ J - J^h(\bs{u}^h_H) }.
 \label{eq:aut_effectivity}
 \end{gather}
 %
@@ -1566,7 +1566,209 @@ achieved very accurate error estimates as shown in
 Chapter \ref{chap:mech}.
 
 %%% ELASTOPLASTICITY IN AN ARRAY OF SOLDER BALLS
-\subsection{Elastoplasticity in an Array of Solder Balls}
+\subsection{Elastoplasticity in an Array of Solder Joints}
+
+In this section, we investigate the utility of adjoint-based mesh
+adaptation for a thermomechanical analysis of an array of solder
+joints used in microelectronics fabrication. We consider a
+$6 \times 6$ array of solder joints sandwiched between two materials
+with distinct thermomechanical properties
+to model a portion of the process of `flip-chip'
+manufacturing \cite{bloomfield2017component}. The full geometry
+is shown in Figure \ref{fig:aut_solder_geom}. We consider
+an elasto-plastic constitutive model with a von-Mises yield
+surface and linear isotropic hardening, as given by
+Simo and Hughes \cite{simo1998computational} with a temperature
+correction for the stress tensor \cite{li2017simulation}. The top
+slab, solder balls, and bottom slab are modeled with the
+distinct material properties given in reference
+\cite{bloomfield2017component}.
+
+To drive the problem, the entirety of the domain is cooled
+from a reference temperature $T_{ref} = 393K$ to a
+resting temperature of $T_{f} = 318K$ in a single load
+step. The faces with minimum $x$, $y$, and $z$ coordinate
+values were constrained to have zero displacements in
+the $x$, $y$, and $z$ directions, respectively. As a
+QoI, we consider the average von-Mises stress given by
+equation \eqref{eq:aut_avg_vm_qoi} over three solder balls
+at the maximal $x$ and $y$ coordinates, as shown in
+Figure \ref{fig:aut_solder_geom}.
+
+\begin{figure}[ht!]
+\centering
+\begin{subfigure}{.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_geom.png}
+\end{subfigure}%
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_qoi_geom.png}
+\end{subfigure}
+\caption{The solder joint array geometry (left) and the
+geometric specification of the average von-Mises QoI
+(right).}
+\label{fig:aut_solder_geom}
+\end{figure}
+
+The primal problem was solved on a sequence of uniformly refined
+meshes, starting with an initial mesh with about 1 million
+elements distributed over 16 MPI ranks, and finalizing with a
+mesh with over half a billion elements distributed over
+8192 MPI ranks. For each solve, the work load for each mesh
+part (MPI rank) was held constant at approximately
+$70,000$ elements. Figure \ref{fig:aut_weak_scaling}
+demonstrates weak scaling timing results for various aspects
+of the primal solve. In particular, we remark that the
+assembly of the residual vector and Jacobian matrix scale
+well as the number of MPI ranks increases. The preconditioning
+routine shows a slight increase in time as the number of
+MPI ranks increases, but this increase is not drastic.
+The time to solve the linear system, however, does not scale
+optimally. This may in part be explained by the fact that the
+condition number of this problem scales as $\frac{1}{H^2}$.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.5\linewidth]{img/aut_weak_scaling.pdf}
+\caption{Weak scaling for the Goal application.}
+\label{fig:aut_weak_scaling}
+\end{figure}
+
+The approximate QoI, $J^H(\bs{u}^H)$, was computed at each
+primal solve. Using the QoI evaluations from the finest three meshes,
+we performed Richardson extrapolation \cite{richardson1911approximate}
+to obtain a more accurate representation of the QoI.
+This value was given as $J(u) = 328.9$. We consider the extrapolated
+value to be the ``true'' QoI value and measure errors with respect
+to it. The expected convergence rate of the QoI is $k=1$, which is
+confirmed by the Richardson extrapolation procedure.
+
+\begin{figure}[ht!]
+\centering
+\begin{subfigure}{.33\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_zux.png}
+\end{subfigure}%
+\begin{subfigure}{0.33\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_zuy.png}
+\end{subfigure}%
+\begin{subfigure}{0.33\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_zp.png}
+\end{subfigure}
+\caption{The $x$-component of the adjoint displacement solution
+(left), the $y$-component of the adjoint displacement solution
+(center), and the pressure component of the adjoint solution
+(right).}
+\label{fig:aut_solder_adjoint}
+\end{figure}
+
+From the same initial mesh used in the weak scaling study,
+we iteratively performed the steps:
+%
+\begin{gather*}
+\text{Solve Primal} \rightarrow \text{Solve Adjoint} \rightarrow
+\text{Estimate Error} \rightarrow \text{Adapt Mesh}
+\end{gather*}
+%
+with a restart after each mesh adaptation using $128$,
+$256$, and $512$ MPI ranks, such that the output number
+of elements $N$ in the adapted mesh was targeted to be
+$1$ million, $2$ million, and $4$ million elements,
+respectively. Figure \ref{fig:aut_solder_adjoint} shows
+different components of the adjoint solution obtained
+during the adjoint-based adaptive process.
+Figure \ref{fig:aut_solder_error} shows
+the spatial distribution of the error for the given
+QoI as computed by the adjoint-based error estimation process.
+Unsurprisingly, the majority of the error is localized to the
+area which geometrically defines the QoI. However, there are
+also contributions to the error from nearby solder joints that
+decreases as the distance from the 3 QoI solder joints
+increases. These additional contributions to the error
+are mostly gathered at the interface between solder
+joints and the underlying material slab, where von-Mises
+stress concentrations exist.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=.5\linewidth]{img/aut_solder_error.png}
+\caption{The spatial distribution of errors as computed by
+adjoint-based error estimation for the solder joint array.}
+\label{fig:aut_solder_error}
+\end{figure}
+
+Figures \ref{fig:aut_solder_mesh} and \ref{fig:aut_solder_mesh2}
+demonstrate the intial mesh used for the solder joint problem
+and the final adapted mesh obtained via adjoint-based adaptation.
+These figures clearly demonstrate that the 3 solder joints
+that define the QoI sub-domain are heavily refined, as expected.
+Additionally, notice that Figure \ref{fig:aut_solder_mesh}
+demonstrates that there is refinement at the left-most solder joint,
+which is not included in the geometric definition of the QoI.
+The adjoint-based error estimation procedure indicates that
+mesh must be refined in additional areas to accurately assess
+the QoI.
+
+\begin{figure}[ht!]
+\centering
+\begin{subfigure}{.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_mesh_initial.png}
+\end{subfigure}%
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_mesh_final.png}
+\end{subfigure}%
+\caption{Cross-sectional view of the initial mesh for the solder joint
+geometry (left) and the final adapted mesh (right).}
+\label{fig:aut_solder_mesh}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\begin{subfigure}{.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_mesh_initial2.png}
+\end{subfigure}%
+\begin{subfigure}{0.5\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{img/aut_solder_mesh_final2.png}
+\end{subfigure}%
+\caption{The initial mesh for the solder joint geometry (left) and the
+final adapted mesh (right).}
+\label{fig:aut_solder_mesh2}
+\end{figure}
+
+Figure \ref{fig:aut_solder_convergence} demonstrates the
+convergence history of the error in the functional QoI,
+as defined by the difference of the QoI obtained via
+Richardson extrapolation and the QoI approximated by the
+finite element solution. We compare the convergence for
+two adaptive schemes, one achieved by successive uniform
+refinements of the mesh and the other achieved by adjoint-based
+error estimation. After 4 adaptive iterations, the adjoint-based
+adaptive procedure achieves nearly the same degree of accuracy
+as the uniform refinement procedure with two orders of
+magnitude fewer degrees of freedom.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.5\linewidth]{img/aut_solder_convergence.pdf}
+\caption{Error convergence histories for the solder joint example problem
+with the average von-Mises stress QoI.}
+\label{fig:aut_solder_convergence}
+\end{figure}
+
+Finally, we remark that automated parallel adaptive workflows
+have been developed in reference \cite{bloomfield2017component}.
+As an avenue for future investigation, adjoint-based error estimation
+could be folded into these automated workflows.
+In particular, an automated primal analysis could be used to inform
+the actual selection of the QoI itself, which could then be accurately
+assessed using adjoint-based error estimation.
 
 %%% CONCLUSIONS
 \section{Conclusions}
@@ -1579,4 +1781,6 @@ element methods. To realize this approach, we have extended
 the concept of \emph{template-based generic programming} for
 PDE models to include the automatic localization of error
 contributions using a partition of unity-based
-localization approach.
+localization approach. We have demonstrated that this approach
+is effective for a variety of example applications, including
+nonlinear elasticity and elastoplasticity.
