@@ -503,7 +503,7 @@
          Dr. Jason E. Hicken\\
          Dr. Jeffrey W. Banks\\
          \vskip 100pt
-         \includegraphics[scale=0.5]{img/rpi_seal}
+         \includegraphics[width=0.3\linewidth]{img/rpi_seal}
          \vskip 20pt
          \emph{Department of \expandafter{\@department}}\\
          Rensselaer Polytechnic Institute\\
