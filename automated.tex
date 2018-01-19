@@ -4,7 +4,7 @@ ERROR ESTIMATION AND MESH ADAPTATION}
 
 \let\thefootnote\relax\footnotetext{
 This chapter has been submitted to:
-B.~N. Granzow, A.~A. Oberai, M.~S. Shephard,
+B.~N. Granzow, A.~A. Oberai, and M.~S. Shephard,
 ``An automated approach for parallel adjoint-based error
 estimation and mesh adaptation,'' submitted for publication.}
 
@@ -41,8 +41,8 @@ In this work, we present an approach for automating goal-oriented
 analysis that is distinct in several ways. First, we consider adjoint-based
 error estimation in the context of both Galerkin and stabilized finite element
 methods. Additionally, we propose solving the adjoint problem in a richer
-finite element space than the space used for the primal problem, obtained
-via uniform mesh refinement. To localize the error to the mesh entity level,
+finite element space, obtained via uniform refinement, than the space used for
+the primal problem. To localize the error to the mesh entity level,
 we utilize a partition of unity based approach proposed by Richter
 and Wick \cite{richter2015variational}. This allows us to directly re-use the
 implemented semilinear form $\R$ for error localization, eliminating the need
@@ -71,7 +71,7 @@ finite element application which we have called Goal \cite{goal_github}.
 Underlying this approach is the concept of \emph{template-based generic
 programming} (TBGP) \cite{pawlowski2012automating1, pawlowski2012automating2},
 which has previously been used to automate the solution of PDEs as well as
-embedded advanced analysis features for the solution of PDEs, such as
+embedded advanced analysis features, such as
 sensitivity analysis and uncertainty quantification. From a high-level the
 TBGP approach consists of a \emph{gather} phase, a \emph{compute} phase,
 and a \emph{scatter} phase. The present work extends the TBGP approach to
@@ -110,7 +110,7 @@ sections in this chapter.
 Let $\S$ and $\V$ be Hilbert spaces, $\R_g : \S \to \V$ and
 $\R_{\tau} : \S \to \V$ be semilinear forms that are linear in their first
 argument and potentially nonlinear in their second argument. Let
-$\S^H \subset \S$ and $\V^H \subset \V$ and be classical finite element
+$\S^H \subset \S$ and $\V^H \subset \V$ be classical finite element
 function spaces, where $H$ is a mesh-dependent parameter that denotes the
 fineness of the discretization. We introduce the following variational
 abstract model problem: find $u \in \S$ such that
@@ -152,6 +152,9 @@ Here, $u^H \in \S^H$ denotes some finite element approximation to the
 true solution $u$. The purpose of the adjoint problem is to relate the
 original problem of interest to the functional quantity $J$, and it is this
 relationship that allows us to derive adjoint-based error representations.
+Further, we note that the adjoint solution $z$ can be interpreted as
+the sensitivity of the QoI to perturbations in the primal PDE residual
+\cite{fidkowski2011review}.
 
 %%% GALERKIN FINITE ELEMENT METHODS
 \subsection{Galerkin Finite Element Methods}
@@ -206,7 +209,7 @@ that
 \end{gather}
 %
 Here $\R_{\tau}$ denotes a consistent \emph{stabilization residual} that adds
-numerical stability to the underlying variational problem. We say that the
+stability to the numerical scheme. We say that the
 stabilization is \emph{consistent} if $\R_{\tau}(w^H ; u^H) \to 0$ as
 $H \to 0$.
 
@@ -312,7 +315,7 @@ Goal application, as it falls outside of the normal intended use case of the
 MeshAdapt software, which concerns itself with fully unstructured conforming
 mesh adaptation via edge splits, swaps, and collapses. However,
 the flexibility of the PUMI software allows us to
-additionally construct data structures similar to those used traditional
+additionally construct data structures similar to those used in traditional
 adaptive mesh refinement (AMR) with little implementation effort. Using
 the APF library and the parent-child relational information, we are able
 to interrogate stored solution fields on both the parent and nested meshes,
@@ -366,7 +369,7 @@ load balancing to ensure parallel partitioning quality.
 %%% IN-MEMORY INTEGRATION
 \subsection{In-Memory Integration of Components}
 
-As a final remark, we note that the coupling of both the analysis and
+The coupling of both the analysis and
 software components described above is done \emph{in-memory}
 \cite{smith2016memory}. That is, there is no file-based communication of
 data from one analysis component to the next in the automated process.
@@ -679,7 +682,7 @@ method, where we iterate over the steps
 \end{aligned}
 \end{gather}
 %
-unitl the convergence criterion $\| \bs{R}(\bs{u}^H) \|_2 < \epsilon$ is met
+unitl the convergence criterion $\| \bs{R}^H(\bs{u}^H) \|_2 < \epsilon$ is met
 for a user-specified tolerance $\epsilon$. Here $\bs{u}^H_k$ denotes the
 solution vector at the $k^{th}$ iteration obtained by solving the Newton
 linear system. For linear variational problems, we simply restrict ourselves
@@ -701,9 +704,9 @@ finite element space as the primal problem and then be enriched to a higher
 order polynomial space \cite{becker2001optimal} or a nested mesh
 \cite{nemec2007adjoint} by some local patch-wise operation, or variational
 multiscale enrichment \cite{granzow2017output} can be used in the context
-of stabilized finite elements. Next, the adjoint problem can be solved in a
+of stabilized finite elements. Alternatively, the adjoint problem can be solved in a
 higher order polynomial space \cite{fidkowski2011output}, which we will refer
-to as $p$-enrichment. Finally, the adjoint problem can be solved on a
+to as $p$-enrichment. As a final option, the adjoint problem can be solved on a
 uniformly refined mesh \cite{burstedde2009parallel}, which we will refer to
 as $h$-enrichment.
 
@@ -757,11 +760,11 @@ venditti2003adjoint}, by solving
 \begin{gather}
 \left[ \frac{\partial \bs{R}^h}{\partial \bs{u}^h} \biggr|_{u^h_H}
 \right]^T \bs{z}^h = \left[ \frac{\partial J^h}{\partial \bs{u}^h}
-\biggr|_{u^h_H} \right]^T,
+\biggr|_{u^h_H} \right]^T.
 \label{eq:aut_discrete_adjoint}
 \end{gather}
 %
-which allows us to automate the process of solving the adjoint problem, as
+This allows us to automate the process of solving the adjoint problem, as
 discussed below. Here $\bs{z}^h \in \mathbb{R}^n$ denotes the adjoint
 solution vector on the nested discretization.
 
@@ -797,6 +800,9 @@ a sparse iterative solver in parallel.
 %%% TWO LEVEL ERROR ESTIMATES
 \subsection{Two-Level Error Estimates}
 
+Following Venditti and Darmofal
+\cite{venditti2000adjoint, venditti2002adjoint, venditti2003adjoint},
+we review adjoint-based error estimation using two discretization levels.
 The discrete residual form of the governing equations for a Galerkin
 \eqref{eq:aut_abstract_fem} finite element method or a stabilized finite
 element method \eqref{eq:aut_abstract_stabilized_fem} posed on the fine
@@ -1231,7 +1237,7 @@ u &= 0 \quad && \bs{x} \in \partial \Omega.
 \end{gather}
 %
 This model problem leads to the Galerkin finite element method: find
-$u^H \in \V^H$ such that $\R_g(w; u) = 0$ for all $w^H \in \V^H$.
+$u^H \in \V^H$ such that $\R_g(w^H; u^H) = 0$ for all $w^H \in \V^H$.
 Here the residual $\R_g$ is defined as
 %
 %% aut_poisson_fem
@@ -1576,11 +1582,11 @@ with distinct thermomechanical properties
 to model a portion of the process of `flip-chip'
 manufacturing \cite{bloomfield2017component}. The full geometry
 is shown in Figure \ref{fig:aut_solder_geom}. We consider
-an elasto-plastic constitutive model with a von-Mises yield
+an elastoplastic constitutive model with a von-Mises yield
 surface and linear isotropic hardening, as given by
 Simo and Hughes \cite{simo1998computational} with a temperature
 correction for the stress tensor \cite{li2017simulation}. The top
-slab, solder balls, and bottom slab are modeled with the
+slab, solder joints, and bottom slab are modeled with the
 distinct material properties given in reference
 \cite{bloomfield2017component}.
 
@@ -1591,9 +1597,8 @@ step. The faces with minimum $x$, $y$, and $z$ coordinate
 values were constrained to have zero displacements in
 the $x$, $y$, and $z$ directions, respectively. As a
 QoI, we consider the average von-Mises stress given by
-equation \eqref{eq:aut_avg_vm_qoi} over three solder balls
-at the maximal $x$ and $y$ coordinates, as shown in
-Figure \ref{fig:aut_solder_geom}.
+equation \eqref{eq:aut_avg_vm_qoi} over three solder joints
+shown in yellow in Figure \ref{fig:aut_solder_geom}.
 
 \begin{figure}[ht!]
 \centering
@@ -1625,8 +1630,10 @@ well as the number of MPI ranks increases. The preconditioning
 routine shows a slight increase in time as the number of
 MPI ranks increases, but this increase is not drastic.
 The time to solve the linear system, however, does not scale
-optimally. This may in part be explained by the fact that the
-condition number of this problem scales as $\frac{1}{H^2}$.
+optimally. Improvements to parallel performance could likely
+be made by more finely tuning the preconditioning and linear
+solver routines for the specific problem, but this is outside
+the scope of the present work.
 
 \begin{figure}[ht!]
 \centering
@@ -1686,7 +1693,7 @@ QoI as computed by the adjoint-based error estimation process.
 Unsurprisingly, the majority of the error is localized to the
 area which geometrically defines the QoI. However, there are
 also contributions to the error from nearby solder joints that
-decreases as the distance from the 3 QoI solder joints
+decrease as the distance from the 3 QoI solder joints
 increases. These additional contributions to the error
 are mostly gathered at the interface between solder
 joints and the underlying material slab, where von-Mises
