@@ -4,7 +4,7 @@
 
 \let\thefootnote\relax\footnotetext{
 Portions of this chapter have been submitted to:
-B.~N. Granzow, A.~A. Oberai, M.~S. Shephard,
+B.~N. Granzow, A.~A. Oberai, and M.~S. Shephard,
 ``An automated approach for parallel adjoint-based error
 estimation and mesh adaptation,'' submitted for publication.}
 
@@ -23,7 +23,7 @@ In the context of finite element methods, \emph{a posteriori} error estimation
 and mesh adaptation provide useful tools for approximating and controlling
 the discretization error when solving partial differential equations
 (PDEs) (\emph{c.f} \cite{ainsworth2011posteriori, gratsch2005posteriori,
-verfurth1994adaptive}.)
+verfurth1994adaptive}).
 
 In an abstract finite element setting, one seeks to solve the variational
 problem: find $u \in \S$ such that
@@ -110,7 +110,7 @@ analysis, meaning each of these steps must execute effectively and
 efficiently on parallel machines.
 
 Further, both the primal residual and functional QoI can be highly nonlinear
-for solid mechanics applications. Solving both the primal and adjoint problems
+for solid mechanics applications. Solving the primal and adjoint problems
 requires the linearization of the primal residual and the functional QoI
 with respect to the degrees of freedom of the problem. The derivation and
 numerical implementation of these linearizations can be time consuming and
@@ -174,19 +174,19 @@ adaptation for variational multiscale (VMS) methods in Chapter \ref{chap:vms}.
 The VMS method provides a systematic approach to develop and derive
 stabilized finite element formulations for PDEs. In this chapter,
 we propose a novel strategy for enriching the solution to the
-adjoint problem based on VMS techniques, and using this enrichment
+adjoint problem based on VMS techniques. We use this enrichment to
 derive an adjoint-based error estimate for functional QoIs.
 In this chapter, we consider the advection-diffusion equation as a
-model problem, with the intent that this approach will soon
-be applied and implemented in the Goal application for
+model problem with the intent that this approach will soon
+be implemented in the Goal application and applied to
 solid mechanics applications.
 
 %%% CONTRIBUTIONS
 \section{Contributions}
 
-This thesis centers around contributions to the ability to
+This thesis centers around contributions made to perform
 perform and investigate adjoint-based error estimation and mesh
-adaptation, while largely focusing on the area of solid mechanics.
+adaptation while largely focusing on the area of solid mechanics.
 In the performance of the work for this thesis, novel contributions
 have been achieved by:
 %
