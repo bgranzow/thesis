@@ -9,6 +9,8 @@
 \usepackage{fancybox}
 \usepackage{listings}
 
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+
 \title{New Approaches for Adjoint-Based
 Error Estimation and Mesh Adaptation in
 Stabilized Finite Element Methods with an
@@ -26,10 +28,6 @@ Troy, NY 12180 USA}
 \beamertemplatenavigationsymbolsempty
 
 %==============================================================================
-%==============================================================================
-% INTRODUCTION
-%==============================================================================
-%==============================================================================
 
 %% TITLE SLIDE
 \begin{frame}
@@ -42,15 +40,341 @@ Troy, NY 12180 USA}
 %==============================================================================
 
 %% ABOUT THIS TALK
-\begin{frame}{Introduction}{About this talk}
+\begin{frame}{About this talk}
 \begin{itemize}
-\item Review of goal-oriented error estimation.
-\item An automated approach for goal-oriented analysis.
+\item Review of adjoint-based \emph{a posteriori} error estimation.
+\item An automated approach for adjoint-based analysis.
 \item Example applications of the automated approach.
 \item A non-uniform refinement approach for adjoint analysis.
 \item Goal-oriented analysis for variational multiscale methods.
 \item Summary and conclusions.
 \end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% ERROR ESTIMATION
+\begin{frame}{Adjoint-based \emph{a posteriori} error estimation}
+{Error estimation}
+The big picture:
+\begin{itemize}
+\item Partial Differential equation (PDE) $\rightarrow$ exact solution $u$.
+\item PDE $\rightarrow$ analytic solution $u$ is, in general, unknown.
+\item Finite Element Method (FEM) $\rightarrow$ approx. PDE solution $u^H$.
+\item FEM $\rightarrow$ error associated with the discretization, $e := u-u^H$.
+\item Analyst $\rightarrow$ how reliable/accurate is the solution $u^H$?
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+% A POSTERIORI ERROR
+\begin{frame}{Adjoint-based \emph{a posteriori} error estimation}
+{\emph{A posteriori} error estimation}
+Provides a useful analysis tool to:
+\begin{itemize}
+\item measure the accuracy of FEM approximations $u^H$.
+\item control errors in FEM approximations (e.g. mesh adaptation).
+\end{itemize}
+Traditional estimates:
+\begin{itemize}
+\item choose a norm: $\| \cdot \|$ (e.g. energy, $L_2$)
+\item approximate: $\mathcal{E} \approx \| e \|$.
+\end{itemize}
+Goal-oriented error estimates:
+\begin{itemize}
+\item choose a physically meaningful functional: $J(u)$.
+\item approximate: $\mathcal{E} \approx J(u) - J(u^H)$.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% HIGH LEVEL STEPS
+\begin{frame}{Adjoint-based \emph{a posteriori} error estimation}
+{High level steps}
+From a high level, adjoint-based error analysis follows the steps:
+\begin{itemize}
+\item Choose a physically meaningful functional quantity $J(u)$.
+\item Solve the PDE of interest approximately with the FEM $\rightarrow u^H$.
+\item Solve an auxiliary dual PDE with the FEM $\rightarrow z^H$.
+\item Determine an enriched representation of the dual solution $z^h$.
+\item Utilize $u^H$, $z^H$, and $z^h$ to estimate $J(u) - J(u^H)$.
+\item Localize contributions to $J(u) - J(u^H)$ to the mesh entities.
+\item Use localized error contributions to drive adaptation.
+\end{itemize}
+Key features:
+\begin{itemize}
+\item The dual PDE relates $J(u)$ to the original PDE of interest.
+\item $z \rightarrow$ sensitivity of the functional quantity of
+interest with respect to perturbations in the original PDE residual.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%%% MATHEMATICAL FOUNDATION
+\begin{frame}{Adjoint-based \emph{a posteriori} error estimation}
+{Mathematical foundation}
+\scriptsize
+\begin{equation*}
+\hspace*{-3em}
+\begin{aligned}
+{\color{blue} Primal} \quad &
+\boxed{
+\text{Find} \; u \in V \; \text{such that} \; R_g(w;u) = 0
+\quad \forall w \in V
+} \\
+{\color{blue} FEM} \quad &
+\boxed{
+\text{Find} \; u^H \in V^H \; \text{such that} \; R_g(w^H; u^H) 
++ R_{\tau}(w^H; u^H) = 0
+\quad \forall w^H \in V^H
+} \\
+{\color{blue} Dual} \quad &
+\boxed{
+\text{Find} \; z \in V \; \text{such that} \; R'_g[u^H](w, z) =  J'[u^H](w)
+\quad \forall w \in V
+} \\
+{\color{blue} Error} \quad &
+\boxed{
+J(u) - J(u^H) =
+\underbrace{-R_g(z - z^H; u^H) + R_{\tau}(z^H; u^H)}_{\text{discretization error}} +
+\underbrace{\mathcal{O}(e^2)}_{\text{linearization error}}
+\forall w^H \in V^H
+}
+\end{aligned}
+\end{equation*}
+
+\begin{itemize}
+\item $J'[u^H](w)$ - Fr\'{e}chet linearization about $u^H$.
+\item $R'[u^H](w)$ - Fr\'{e}chet linearization about $u^H$.
+\item Error representation obtained from functional relation to the
+primal PDE residual via the dual solution $z$.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%%% A TWO LEVEL APPROACH
+\begin{frame}{Adjoint-based \emph{a posteriori} error estimation}
+{A two-level approach}
+\scriptsize
+
+\begin{minipage}{.5\textwidth}
+Two discretization levels: \\
+$V^H \subset V \rightarrow$ coarse space \\
+$V^h \subset V \rightarrow$  fine space \\ [8pt]
+%
+Primal equation discretized by FEM:
+\begin{equation*}
+\begin{aligned}
+{\color{blue} Coarse} \quad & \boxed{ \bs{R}^H(\bs{u}^H) = \bs{0} } \\
+{\color{blue} Fine} \quad & \boxed{ \bs{R}^h(\bs{u}^h) = \bs{0}} \\
+\end{aligned}
+\end{equation*}
+%
+$\bs{R}^H : \mathbb{R}^N \to \mathbb{R}^N$ \\
+$\bs{R}^h : \mathbb{R}^n \to \mathbb{R}^n$ \\ [8pt]
+%
+Functional discretized by FEM: \\
+$J^H : \mathbb{R}^N \to \mathbb{R}$ \\
+$J^h : \mathbb{R}^n \to \mathbb{R}$ \\
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+%
+Let $\bs{u}^h_H : I^h_H \bs{u}^H$ be prolongation of $u^H$
+onto the fine space $V^h$, where $I^h_H : V^H \to V^H$. \\ [8pt]
+Taylor expansions of fine space lead to:
+%
+\begin{equation*}
+J^h(\bs{u}^h) - J^H(\bs{u}^H) \approx - \bs{z}^h \cdot \bs{R}^h(\bs{u}^h_H)
+\end{equation*}
+%
+where $\bs{z}^h$ is the solution to the adjoint problem on
+the fine space given by
+%
+\begin{equation*}
+\left[ \frac{\partial \bs{R}^h}{\partial \bs{u}^h} \biggr|_{\bs{u}^h_H} \right]^T
+\bs{z}^h =
+\left[ \frac{\partial J^h}{\partial \bs{u}^h} \biggr|_{\bs{u}^h_H} \right]^T
+\end{equation*}
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%%% MY CONTRIBUTIONS
+\begin{frame}{Adjoint-based \emph{a posteriori} error estimation}
+{My contributions}
+\begin{itemize}
+\item A fully automated approach for adjoint-based error estimation.
+\item Applicable to stabilized finite element methods.
+\item Runs in parallel for solid mechanics applications.
+\item Applied to finite deformation solid mechanics.
+\item With complex three dimensional geometries.
+\item Non-uniform refinement approaches for adjoint solves.
+\item New adjoint-based error estimation for VMS methods.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% ACCESSIBILITY
+\begin{frame}{An automated approach to adjoint-based error estimation}
+{Accessibility to engineering practitioners}
+Potential difficulties in goal oriented error estimation and
+mesh adaptation for modern engineers practitioners:
+\begin{itemize}
+\item Many components must be implemented
+$\rightarrow$ primal analysis, dual analysis,
+dual enrichment, error localization, mesh adaptation
+\item Residuals and functionals can be highly nonlinear
+$\rightarrow$ linearizations are required
+\item Problems of interest necessitate parallel analysis
+$\rightarrow$ scalable primal and dual mechanics analysis code
+is required.
+\item Fully unstructured parallel mesh adaptation
+$\rightarrow$ requires performant software tools.
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% A POTENTIAL SOLUTION
+\begin{frame}{An automated approach to adjoint-based error estimation}
+{A potential solution}
+A solution: I wrote a goal-oriented analysis library:\\
+\vspace{1em}
+https://github.com/bgranzow/goal
+\vspace{1em}
+
+\begin{itemize}
+\item Utilizes performant software components (Trilinos and PUMI)
+\item Automates primal, dual, and error localization steps
+\item Allows for rapid implementation of new physics / QoIs
+\item Approach similar to Albany / Panzer (Sandia codes)
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% TEMPLATE BASED GENERIC PROGRAMMING
+\begin{frame}{An automated approach to adjoint-based error estimation}
+{Template-based generic programming}
+\begin{center}
+\input{../img/aut_assembly}
+\end{center}
+\end{frame}
+
+%==============================================================================
+
+%% TEMPLATE SPECIALIZATION
+\begin{frame}{An automated approach to adjoint-based error estimation}
+{Evaluation purposes}
+\scriptsize
+\begin{itemize}
+\item \fcolorbox{black}{green}{Residual} :
+assembles residual vector, $R^H$
+\item \fcolorbox{black}{orange}{Jacobian} :
+assembles Jacobian matrix,
+$\frac{\partial R^H}{\partial u^H}$
+or adjoint $[\frac{\partial R^H}{\partial u^H} ]^T$
+\item \fcolorbox{black}{pink}{QoI} :
+computes functional, $J^H$, and assembles functional derivative,
+$\frac{\partial J^H}{\partial u^H}$
+\item \fcolorbox{black}{gray!25}{Error}
+localizes error,
+$\mathcal{E}_i = R_g((z^h - I^H z^h) \psi_i \; ; \; u^H) +
+R_{\tau}((I^H z^h) \psi_i \; ; \; u^H)$
+\end{itemize}
+
+\begin{itemize}
+\item Allows rapid implementation of new physics, quantities of interest
+\item Avoids tedious / error-prone implementation of specialization-specific code.
+\end{itemize}
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+\scriptsize{
+$\star$
+Thomas Richter, and Thomas Wick.
+\emph{Variational localizations of the dual weighted residual estimator}.
+Journal of Computational and Applied Mathematics 279 (2015): 192-208.
+}
+\end{frame}
+
+%==============================================================================
+
+%% FINE SPACE
+\begin{frame}{An automated approach to adjoint-based error estimation}
+{Choice for the fine space}
+\begin{figure}
+\includegraphics[width=0.7\textwidth]{../img/aut_glial_nested}
+\end{figure}
+\end{frame}
+
+%==============================================================================
+
+%% EXAMPLE : BALANCE
+\begin{frame}[containsverbatim]{An automated approach to adjoint-based error estimation}
+{Balance of linear momentum residual}
+
+\begin{lstlisting}[
+language=C++,
+directivestyle={\color{black}}
+emph={int,char,double,float,unsigned},
+emphstyle={\color{blue}},
+basicstyle=\scriptsize,
+frame = single,
+]
+for (int elem = 0; elem < workset.size; ++elem) {
+  for (int ip = 0; ip < num_ips; ++ip)
+  for (int node = 0; node < num_nodes; ++node)
+  for (int i = 0; i < num_dims; ++i)
+  for (int j = 0; j < num_dims; ++j)
+    resid[i](elem, node, i) +=
+      stress(elem, ip, i, j) *
+      grad_w(elem, node, ip, i, j) *
+      wdv(elem, ip);
+}
+\end{lstlisting}
+
+\scriptsize
+\begin{columns}
+\begin{column}{0.5\textwidth}
+Primal problem: involves:
+\[
+\frac{\partial {\color{red}R} ^H}{\partial u^H} \delta u^H= 
+- {\color{red}R} ^H
+\]
+Dual problem: solve
+\[
+[ \frac{\partial {\color{red}R} ^h}{\partial u^h} ]^T z^h =
+[\frac{\partial J^h}{\partial u^h} ]^T
+\]
+\end{column}
+\begin{column}{0.5\textwidth}
+Error localization:
+\[
+\hspace*{-6em}
+\mathcal{E}_i = {\color{red}R}_g^h((z^h - I^H z^h) \psi_i \; ; \; u^H)
++ {\color{red}R}_{\tau}^h((I^H z^h) \psi_i \; ; \; u^H)
+\]
+
+\vspace{1em}
+
+Key idea: \\
+Evaluations share single implementation ${\color{red} R}$
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%==============================================================================
+
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
 \end{frame}
 
 \end{document}
