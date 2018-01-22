@@ -499,7 +499,7 @@
          Approved by:\\
          Dr. Mark S. Shephard, Chair\\
          Dr. Assad A. Oberai, Co-Chair\\
-         Dr. Antionette M. Maniatty\\
+         Dr. Antoinette M. Maniatty\\
          Dr. Jason E. Hicken\\
          Dr. Jeffrey W. Banks\\
          \vskip 100pt
