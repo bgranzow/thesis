@@ -8,6 +8,8 @@
 \usepackage{pgfplots}
 \usepackage{fancybox}
 \usepackage{listings}
+\setbeamerfont{frametitle}{size=\normalsize}
+\setbeamerfont{framesubtitle}{size=\normalsize}
 
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 
@@ -310,9 +312,22 @@ Journal of Computational and Applied Mathematics 279 (2015): 192-208.
 %% FINE SPACE
 \begin{frame}{An automated approach to adjoint-based error estimation}
 {Choice for the fine space}
+%
+\begin{minipage}{0.5\textwidth}
 \begin{figure}
-\includegraphics[width=0.7\textwidth]{../img/aut_glial_nested}
+\includegraphics[width=0.99\textwidth]{../img/aut_glial_nested}
 \end{figure}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\begin{itemize}
+\item Global higher order solve $\rightarrow$ greater accuracy
+\item Prefer over $p$-enrichment
+\begin{itemize}
+\item Stabilized FEM $\rightarrow$ higher order terms difficult to implement 
+\item Higher order stabilized FEM $\rightarrow$ rarely used in practice
+\end{itemize}
+\end{itemize}
+\end{minipage}
 \end{frame}
 
 %==============================================================================
@@ -374,7 +389,152 @@ Evaluations share single implementation ${\color{red} R}$
 
 %==============================================================================
 
-\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+%% COOKS MEMBRANE
+\begin{frame}{Applications to finite deformation mechanics}
+{Cook's membrane : problem definition}
+\scriptsize
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\includegraphics[width=0.98\textwidth]{../img/mech_cooks_geom}
+\vspace{1em}
+Geometry and problem definition \\
+\vspace{1em}
+\hrule
+\vspace{1em}
+Neohookean constitutive model \\
+$E = 1000$ \\
+$\nu = 0.4999$ \\
+\vspace{1em}
+Quantity of interest \\ [8pt]
+$J_1(u) = u_y(44, 55)$ \\
+$J_2(u) = \int_{\mathcal{B}} \frac12 (u_x + u_y) \text{d} V$
+\end{column}
+\begin{column}{0.6\textwidth}%%
+\includegraphics[width=0.98\textwidth]{../img/defend_cooks_reference}
+\vspace{1em}
+Reference primal solution components \\
+\vspace{1em}
+\hrule
+\vspace{1em}
+Solved using fine mesh: \\
+1.2 million DOFs \\
+\vspace{1em}
+Computed `exact' reference functional value: \\ [8pt]
+$J_1(u) = 2.395627$ \\
+$J_2(u) = 324.0948$
+\end{column}
+\end{columns}
 \end{frame}
+
+%==============================================================================
+
+%% COOKS EFFECTIVITIES
+\begin{frame}{Applications to finite deformation mechanics}
+{Cook's membrane : effectivities}
+\begin{minipage}{0.5\textwidth}
+\hspace*{-2em}
+\centering
+\includegraphics[width=1.2\textwidth]{../img/mech_cooks_pw_effectivity_plot}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\centering
+\vspace{0.5em}
+\includegraphics[width=1.2\textwidth]{../img/mech_cooks_avg_disp_effectivity_plot}
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%% COOKS MESHES
+\begin{frame}{Applications to finite deformation mechanics}
+{Cook's membrane : adapted meshes}
+\scriptsize
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/mech_cooks_pw_final_mesh} \\
+Final mesh for $J_1(u):$ point-wise QoI
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/mech_cooks_avg_u_final_mesh} \\
+Final mesh for $J_2(u):$ average disp. QoI
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%% CELL PROBLEM DEFINITION
+\begin{frame}{Applications to finite deformation mechanics}
+{A cell embedded in a matrix : problem definition}
+\scriptsize
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\includegraphics[width=0.99\textwidth]{../img/mech_glial_geom} \\ [8pt]
+Geometry for the cell problem
+\vspace{1em}
+\hrule
+\vspace{1em}
+Neohookean constitutive model: \\
+$E = 600$ Pa \\
+$\nu = 0.4999$ \\
+$J(u) = \int_{\mathcal{B}_0} \frac13(u_x + u_y + u_z) \, \text{d} V$
+\end{column}
+\begin{column}{0.5\textwidth}%%
+\includegraphics[width=0.99\textwidth]{../img/mech_glial_applied_traction} \\
+Applied tractions for the cell problem
+\includegraphics[width=0.99\textwidth]{../img/mech_glial_deformed} \\
+Deformed cell membrane after tractions
+\end{column}
+\end{columns}
+\end{frame}
+
+%==============================================================================
+
+%% CELL EFFECTIVITIES
+\begin{frame}{Applications to finite deformation mechanics}
+{A cell embedded in a matrix : parallelization}
+Problem run with 16 MPI ranks \\
+ParMA $\rightarrow$ load balancing to ensure partition quality \\
+10 solve / adapt cycles for the model problem \\
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/aut_glial_initial_parts} \\
+Initial mesh partitioning
+\end{column}
+\begin{column}{0.5\textwidth}%%
+\centering
+\includegraphics[width=0.99\textwidth]{../img/aut_glial_final_parts} \\
+Final mesh partitioning
+\end{column}
+\end{columns}
+\vspace{1em}
+Reference QoI value $J(u) = −527.1453$ \\
+using about $60$ million degrees of freedom
+\end{frame}
+
+
+%% CELL EFFECTIVITIES
+\begin{frame}{Applications to finite deformation mechanics}
+{A cell embedded in a matrix : effectivities}
+\scriptsize
+$\rightarrow$ Adapt Mesh \\
+\includegraphics[width=0.99\textwidth]{../img/mech_glial_effectivity_plot}
+\end{frame}
+
+
+%% CELL MESHES
+\begin{frame}{Applications to finite deformation mechanics}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
