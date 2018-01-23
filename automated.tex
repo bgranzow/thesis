@@ -117,7 +117,7 @@ abstract model problem: find $u \in \S$ such that
 %
 %% aut_abstract_primal
 \begin{gather}
-R_g(w; u) = 0 \quad \forall w \in \V.
+\R_g(w; u) = 0 \quad \forall w \in \V.
 \label{eq:aut_abstract_primal}
 \end{gather}
 %
@@ -210,7 +210,7 @@ that
 %
 Here $\R_{\tau}$ denotes a consistent \emph{stabilization residual} that adds
 stability to the numerical scheme. We say that the
-stabilization is \emph{consistent} if $\R_{\tau}(w^H ; u^H) \to 0$ as
+stabilization is \emph{consistent} if $\R_{\tau}(w^H ; u) \to 0$ as
 $H \to 0$.
 
 Again, we let $e := u - u^H$ denote the discretization error, and derive
@@ -815,7 +815,7 @@ space can be expressed as
 \end{gather}
 %
 
-Taking Taylor expansions of the discrete residual $R^h$ evaluated on the
+Taking Taylor expansions of the discrete residual $\bs{R}^h$ evaluated on the
 fine space and the discrete functional $J^h$ evaluated on the fine space
 about the point $\bs{u}^h_H$ yields
 %

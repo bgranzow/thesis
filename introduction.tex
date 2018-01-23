@@ -65,6 +65,9 @@ such as Godunov finite volume methods. Venditti and Darmofal
 \cite{venditti2000adjoint, venditti2002adjoint, venditti2003adjoint} developed
 adjoint-based error estimates for arbitrary discretizations using discrete
 adjoint equations based on two-level discretization schemes.
+Prudhomme and Oden \cite{prudhomme1999goal, oden2001goal} developed
+adjoint techniques to determine guaranteed upper and lower bounds for
+linear functionals in the context of linear variational problems.
 
 Adjoint-based error estimation and mesh adaptation have been heavily adopted
 by the computational fluid dynamics (CFD) community \cite{fidkowski2011review}.
@@ -105,12 +108,12 @@ to perform an adaptive adjoint-based error analysis:
 \item Adapt the mesh based on the local error contributions.
 \end{enumerate}
 %
-Additionally, modern solid applications necessitate the use of parallel
+Additionally, modern solid mechanics applications necessitate the use of parallel
 analysis, meaning each of these steps must execute effectively and
 efficiently on parallel machines.
 
 Further, both the primal residual and functional QoI can be highly nonlinear
-for solid mechanics applications. Solving the primal and adjoint problems
+in solid mechanics. Solving the primal and adjoint problems
 requires the linearization of the primal residual and the functional QoI
 with respect to the degrees of freedom of the problem. The derivation and
 numerical implementation of these linearizations can be time consuming and
