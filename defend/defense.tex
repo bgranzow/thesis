@@ -496,6 +496,7 @@ Deformed cell membrane after tractions
 Problem run with 16 MPI ranks \\
 ParMA $\rightarrow$ load balancing to ensure partition quality \\
 10 solve / adapt cycles for the model problem \\
+\vspace{1em}
 \begin{columns}
 \begin{column}{0.5\textwidth}
 \centering
@@ -513,26 +514,276 @@ Reference QoI value $J(u) = −527.1453$ \\
 using about $60$ million degrees of freedom
 \end{frame}
 
+%==============================================================================
 
 %% CELL EFFECTIVITIES
 \begin{frame}{Applications to finite deformation mechanics}
 {A cell embedded in a matrix : effectivities}
-\scriptsize
-$\rightarrow$ Adapt Mesh \\
 \includegraphics[width=0.99\textwidth]{../img/mech_glial_effectivity_plot}
 \end{frame}
 
+%==============================================================================
+%% CELL CONVERGENCE
+\begin{frame}{Applications to finite deformation mechanics}
+{A cell embedded in a matrix : error convergence}
+\includegraphics[width=0.99\textwidth]{../img/mech_glial_convergence_plot}
+\end{frame}
+
+%==============================================================================
 
 %% CELL MESHES
 \begin{frame}{Applications to finite deformation mechanics}
+{A cell embedded in a matrix : adapted meshes}
+\begin{minipage}{0.5\textwidth}
+\hspace*{-3em}
+\includegraphics[width=1.3\textwidth]{../img/mech_glial_initial_mesh} \\
+Initial mesh
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\centering
+\hspace*{-1em}
+\includegraphics[width=1.3\textwidth]{../img/mech_glial_final_mesh} \\
+Final adapted mesh
+\end{minipage}
 \end{frame}
 
+%==============================================================================
 
+%% SOLDER PROBLEM DEFINITION
+\begin{frame}{Applications to finite deformation mechanics}
+{Elastoplasticity in an array of solder joints : problem definition}
+\scriptsize
+\begin{minipage}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=0.95\textwidth]{../img/aut_solder_geom}
+\end{figure}
+Domain geometry problem geometry \\
+\hrule
+\vspace{1em}
+$6 \times 6$ array of solder joints. \\
+Between two dissimilar materials. \\
+Cooled from $T_0 = 393K$ to $T_f = 318K$. \\ [8pt]
+Elastoplastic constitutive model. \\
+\vspace*{-1.25em}
+\begin{itemize}
+\item von-Mises yield criterion
+\item Isotropic linear hardening
+\item Thermal correction
+\end{itemize}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=0.95\textwidth]{../img/aut_solder_qoi_geom}
+\end{figure}
+Solder joints defining the QoI
+\hrule
+\vspace{1em}
+$J(u)$ : average von-Mises stress over $\mathcal{B}_0$. \\
+$\mathcal{B}_0$ : defined by 3 solder joints \\
+$\sigma_{vm} := \sqrt{\frac32 \bs{\sigma}' : \bs{\sigma}'}$ \\
+$\bs{\sigma}'$ : deviatoric stress
+\end{minipage}
+\end{frame}
 
+%==============================================================================
 
+%% SOLDER WEAK SCALING
+\begin{frame}{Applications to finite deformation mechanics}
+{Elastoplasticity in an array of solder joints : weak scaling}
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/aut_weak_scaling}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+Richardson extrapolation $\rightarrow$ \\
+Reference value: $J(u) = 328.9$ \\
+\vspace{0.5em}
+\hrule
+\vspace{1em}
+Final solve:
+\begin{itemize}
+\item 8192 MPI ranks
+\item $> \frac12$ billion elements
+\end{itemize}
+\end{minipage}
+\end{frame}
 
+%==============================================================================
 
+%% SOLDER ERROR
+\begin{frame}{Applications to finite deformation mechanics}
+{Elastoplasticity in an array of solder joints : errors}
+\centering
+\includegraphics[width=0.7\textwidth]{../img/aut_solder_error}
+\end{frame}
 
+%==============================================================================
+
+%% SOLDER CONVERGENCE
+\begin{frame}{Applications to finite deformation mechanics}
+{Elastoplasticity in an array of solder joints : convergence}
+$4 \times$ \\
+Solve primal $\rightarrow$ Solve adjoint $\rightarrow$
+Estimate error $\rightarrow$ Adapt mesh
+\begin{center}
+\includegraphics[width=0.7\textwidth]{../img/aut_solder_convergence}
+\end{center}
+\end{frame}
+
+%==============================================================================
+
+%% SOLDER ADAPTATION
+\begin{frame}{Applications to finite deformation mechanics}
+{Elastoplasticity in an array of solder joints : adaptation}
+\centering
+\includegraphics[width=0.7\textwidth]{../img/aut_solder_mesh_initial} \\
+\includegraphics[width=0.7\textwidth]{../img/aut_solder_mesh_final}
+\end{frame}
+
+%==============================================================================
+
+%% AUT SOLDER ADAPTATION 2
+\begin{frame}{Applications to finite deformation mechanics}
+{Elastoplasticity in an array of solder joints : adaptation}
+\centering
+\includegraphics[width=0.7\textwidth]{../img/aut_solder_mesh_initial2} \\
+\includegraphics[width=0.7\textwidth]{../img/aut_solder_mesh_final2}
+\end{frame}
+
+%==============================================================================
+
+%% REFINEMENT INTRO
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Introduction}
+Adjoint solution must be represented in richer FEM space \\
+Full global enriched adjoint solve
+\begin{itemize}
+\item Guaranteed more accurate adjoint approximation
+\item Expensive proposition
+\end{itemize}
+Reconstruction of adjoint problem in richer space
+\begin{itemize}
+\item More practical approach
+\item Not guaranteed to yield more accurate adjoint
+\end{itemize}
+Compromise? Solve adjoint globally on non-uniformly refined meshes \\
+\begin{itemize}
+\item Less computationally expensive
+\item Still maintains more accuracy in adjoint approximation
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% LONG EDGE
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Long edge refinement}
+Mark longest edge in each element for refinement
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_long_mesh}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_long_mesh_3D}
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%% SINGLE EDGE
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Single edge refinement}
+Attempt to mark only a single edge in each element for refinement
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_single_mesh}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_single_mesh_3D}
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%% POISSON PROBLEM DEFINITION
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Application to Poisson's equation}
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_squarehole_initial} \\
+Initial mesh and point-wise QoI location for the Poisson example
+problem
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+$R(w,u) := (\nabla w, \nabla u) - (w, f)$ \\ [8pt]
+$f := 1$ \\ [8pt]
+$J(u) := u(0.75, 0.75)$  \\ [8pt]
+\hrule
+\vspace{1em}
+Compare adjoint-based error estimation when solving the adjoint
+problem with meshes obtained with:
+\begin{itemize}
+\item Uniform refinement
+\item Long-edge refinement
+\item Single-edge refinement
+\end{itemize}
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%% POISSON EFFECTIVIES
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Application to Poisson's equation : effectivities}
+\centering
+\includegraphics[width=0.9\textwidth]{../img/refine_poisson_effectivity}
+\end{frame}
+
+%==============================================================================
+
+%% POISSON DOFS
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Application to Poisson's equation : DOFs}
+\centering
+\includegraphics[width=0.9\textwidth]{../img/refine_poisson_dofs}
+\end{frame}
+
+%==============================================================================
+
+%% POISSON MESHES
+\begin{frame}{Non-uniform refinement approaches for adjoint solves}
+{Application to Poisson's equation : DOFs}
+Final adapted meshes when adjoint problem solved with
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_squarehole_unif_close} \\
+Uniform
+\end{minipage}%
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_squarehole_long_close} \\
+Long-edge
+\end{minipage}%
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/refine_squarehole_long_close} \\
+Single-edge
+\end{minipage}
+
+\vspace{1em}
+Main takeaway? \\
+Goal application: extensible, usable for novel research.
+\end{frame}
+
+%==============================================================================
+\begin{frame}{Adjoint-error estimation with VMS methods}
+\end{frame}
+
+\begin{frame}
 
 
 
