@@ -577,7 +577,7 @@ Elastoplastic constitutive model. \\
 \centering
 \includegraphics[width=0.95\textwidth]{../img/aut_solder_qoi_geom}
 \end{figure}
-Solder joints defining the QoI
+Solder joints defining the QoI \\ 
 \hrule
 \vspace{1em}
 $J(u)$ : average von-Mises stress over $\mathcal{B}_0$. \\
@@ -780,12 +780,196 @@ Goal application: extensible, usable for novel research.
 \end{frame}
 
 %==============================================================================
+
+%% VMS INTRODUCTION
 \begin{frame}{Adjoint-error estimation with VMS methods}
+{Introduction}
+VMS method : decompose solution, $u = u^h + u'$. \\
+$u^h$ : coarse scale component. \\
+$u'$ : fine scale components. \\ [8pt]
+\hrule
+\vspace{1em}
+For linear variational problems: $\mathcal{L} u  = f$, \\
+Strong form residual: $\mathcal{R} u := f - \mathcal{L} u$,
+%
+\begin{equation*}
+\begin{aligned}
+B(w^h, u^h) + B(w^h, u') &= (w^h, f) \quad \forall w^h \in V^h \\
+B(w', u^h) + B(w', u') &= (w', f) \quad \forall w' \in V' \\
+\end{aligned}
+\end{equation*}
+With weak residual
+\begin{equation*}
+R(w, u) := B(w, u) - (w, f)
+\end{equation*}
+\hrule
+\vspace{1em}
+Idea : solve or approximate $u'$ analytically. \\
+Solve for $\bar{u}$ numerically accounting for effect of $u'$
+on $\bar{u}.$
 \end{frame}
 
+%==============================================================================
+
+%% VMS ADJOINT IDEA
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Two error estimates}
+Let $J(u) = \int_{\Omega} j(\bs{x}) u \, \text{d} V$ \\
+Adjoint problem: $\mathcal{L}^* z = j$ \\
+Strong form adjoint residual: $\mathcal{R}^*z := j - \mathcal{L}^*z$ \\ [8pt]
+\hrule
+\vspace{1em}
+VMS method : immediately suggests two approaches for error estimation:
+\begin{enumerate}
+\item Don't solve adjoint problem, $\eta_1 = J(u) - J(u^H) = J(u')$
+\item Solve adjoint problem on same space as primal problem,
+but enrich it with VMS method $z = z^h + z'$.
+\end{enumerate}
+\vspace{0.5em}
+\hrule
+\vspace{1em}
+$u' \approx \tau_e \mathcal{R} u^h$ \\
+$z' \approx \tau^*_e \mathcal{R}^* z^h$ \\
+\end{frame}
+
+%==============================================================================
+
+%% VMS ADJOINT IDEA
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Two error estimates, cont...}
+Two error estimates:
+$\eta_1 = J(u) - J(u^h) \approx (j(\bs{x}) u^h, \tau_e \mathcal{R} u^h)$ \\ [4pt]
+$\eta_2 = J(u) - J(u^h) \approx -(\tau_e^* \mathcal{R}^* z^h, \mathcal{R} u^h) + 
+(\mathcal{L}^* z^h, \tau_e \mathcal{R} u^h)$ \\ [8pt]
+\hrule
+\vspace{1em}
+Remarkably, the two error estimates are identical \\
+(when commonly used approximation for $u'$, $z'$ is used) \\ [8pt]
+\hrule
+\vspace{1em}
+However, when decomposed into contributions at the element-level \\
+The two error estimates have drastically different behavior
+\end{frame}
+
+%==============================================================================
+
+%% VMS PROBLEM DEFINTION
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Application to advection diffusion : problem definition}
+Advection diffusion in L-shaped domain: $\kappa = 0.001$, $\bs{\alpha} = [-1,1], f= 1$. \\ [8pt]
+Two QoIS : $J_1(u) = \int_{\Omega} u \text{d} V$,   $J_2(u) = \int_{\Omega} q_2 u \text{d} V$. \\ [8pt]
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/defend_lshape_uh} \\
+Primal
+\end{minipage}%
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/vms_lshape_global_zh} \\
+Adjoint ($J_1(u)$)
+\end{minipage}%
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=0.99\textwidth]{../img/vms_lshape_square_zh} \\
+Adjoint ($J_2(u)$)
+\end{minipage}
+\end{frame}
+
+%==============================================================================
+
+%% VMS QOI 1
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Application to advection diffusion : $J_1(u)$ meshes}
+
+\begin{columns}
+\begin{column}{3.2cm}
+Initial mesh
+\includegraphics[width=3.5cm]{../img/vms_lshape_global_initial.pdf} \\
+VMS (simple)
+\includegraphics[width=3.2cm]{../img/vms_lshape_global_vms1_final.pdf} 
+\end{column}
+
+\begin{column}{4cm}
+SPR 
+\includegraphics[width=3.2cm]{../img/vms_lshape_global_spr_final.pdf}\\
+VMS (adjoint)\\
+\includegraphics[width=3.5cm]{../img/vms_lshape_global_vms2_final.pdf}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%==============================================================================
+
+%% VMS QOI 1
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Application to advection diffusion : $J_1(u)$ convergence}
+\includegraphics[width=0.75\textwidth]{../img/vms_lshape_global_convergence}
+\end{frame}
+
+%==============================================================================
+
+%% VMS QOI 2
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Application to advection diffusion : $J_2(u)$ meshes}
+
+\begin{columns}
+\begin{column}{3.2cm}
+Initial mesh
+\includegraphics[width=3.5cm]{../img/vms_lshape_global_initial.pdf} \\
+VMS (simple)
+\includegraphics[width=3.2cm]{../img/vms_lshape_square_vms1_final.pdf}
+\end{column}
+
+\begin{column}{4cm}
+SPR 
+\includegraphics[width=3.2cm]{../img/vms_lshape_global_spr_final.pdf}\\
+VMS (adjoint)\\
+\includegraphics[width=3.5cm]{../img/vms_lshape_square_vms2_final.pdf}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%==============================================================================
+
+%% VMS QOI 1
+\begin{frame}{Adjoint-error estimation with VMS methods}
+{Application to advection diffusion : $J_1(u)$ convergence}
+\includegraphics[width=0.75\textwidth]{../img/vms_lshape_square_convergence}
+\end{frame}
+
+%==============================================================================
+
+%% SUMMARY
+\begin{frame}{Summary}
+\begin{itemize}
+\item Developed automated approach for adjoint-based error estimation
+\item That is applicable to low-order stabilized FEM methods
+\item And we've applied to finite deformation solid mechanics
+\item And also used to investigate adjoint solves on non-uniformly refined meshes
+\item Novel investigation of adjoint error estimation in VMS methods
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
+%% FUTURE WORK
+\begin{frame}{Future Work}
+\begin{itemize}
+\item Extend automated approach to higher order FEM (Taylor-Hood elements)
+\item Consider load-stepping / truly dynamic behavior in solid mechanics
+\item Extend VMS method to non-linear variational problems / QoIs
+\item Wrap-in VMS method into the Goal application for solid mechanics
+\end{itemize}
+\end{frame}
+
+%==============================================================================
+
 \begin{frame}
-
-
-
+\centering
+Questions?
+Thank you!
+\end{frame}
 
 \end{document}
