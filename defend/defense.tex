@@ -592,13 +592,15 @@ $\bs{\sigma}'$ : deviatoric stress
 %% SOLDER WEAK SCALING
 \begin{frame}{Applications to finite deformation mechanics}
 {Elastoplasticity in an array of solder joints : weak scaling}
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{0.6\textwidth}
 \centering
-\includegraphics[width=0.99\textwidth]{../img/aut_weak_scaling}
+\hspace*{-3.2em}
+\includegraphics[width=1.15\textwidth]{../img/aut_weak_scaling}
 \end{minipage}%
-\begin{minipage}{0.5\textwidth}
-Richardson extrapolation $\rightarrow$ \\
-Reference value: $J(u) = 328.9$ \\
+\begin{minipage}{0.4\textwidth}
+Richardson extrapolation: \\
+Reference value: \\
+$J(u) = 328.9$ \\
 \vspace{0.5em}
 \hrule
 \vspace{1em}
@@ -616,7 +618,7 @@ Final solve:
 \begin{frame}{Applications to finite deformation mechanics}
 {Elastoplasticity in an array of solder joints : errors}
 \centering
-\includegraphics[width=0.7\textwidth]{../img/aut_solder_error}
+\includegraphics[width=0.99\textwidth]{../img/aut_solder_error}
 \end{frame}
 
 %==============================================================================
@@ -624,11 +626,11 @@ Final solve:
 %% SOLDER CONVERGENCE
 \begin{frame}{Applications to finite deformation mechanics}
 {Elastoplasticity in an array of solder joints : convergence}
-$4 \times$ \\
-Solve primal $\rightarrow$ Solve adjoint $\rightarrow$
-Estimate error $\rightarrow$ Adapt mesh
+$4 \times$ Solve primal $\rightarrow$ Solve adjoint $\rightarrow$ 
+Estimate error $\rightarrow$ Adapt mesh \\
+\vspace*{-1em}
 \begin{center}
-\includegraphics[width=0.7\textwidth]{../img/aut_solder_convergence}
+\includegraphics[width=0.8\textwidth]{../img/aut_solder_convergence}
 \end{center}
 \end{frame}
 
@@ -798,13 +800,9 @@ B(w^h, u^h) + B(w^h, u') &= (w^h, f) \quad \forall w^h \in V^h \\
 B(w', u^h) + B(w', u') &= (w', f) \quad \forall w' \in V' \\
 \end{aligned}
 \end{equation*}
-With weak residual
-\begin{equation*}
-R(w, u) := B(w, u) - (w, f)
-\end{equation*}
 \hrule
 \vspace{1em}
-Idea : solve or approximate $u'$ analytically. \\
+Idea : solve or approximately $u'$ analytically. \\
 Solve for $\bar{u}$ numerically accounting for effect of $u'$
 on $\bar{u}.$
 \end{frame}
@@ -821,7 +819,7 @@ Strong form adjoint residual: $\mathcal{R}^*z := j - \mathcal{L}^*z$ \\ [8pt]
 \vspace{1em}
 VMS method : immediately suggests two approaches for error estimation:
 \begin{enumerate}
-\item Don't solve adjoint problem, $\eta_1 = J(u) - J(u^H) = J(u')$
+\item Use fine scale solution directly, $\eta_1 = J(u) - J(u^H) = J(u')$
 \item Solve adjoint problem on same space as primal problem,
 but enrich it with VMS method $z = z^h + z'$.
 \end{enumerate}
@@ -837,7 +835,7 @@ $z' \approx \tau^*_e \mathcal{R}^* z^h$ \\
 %% VMS ADJOINT IDEA
 \begin{frame}{Adjoint-error estimation with VMS methods}
 {Two error estimates, cont...}
-Two error estimates:
+Two error estimates: \\ [4pt]
 $\eta_1 = J(u) - J(u^h) \approx (j(\bs{x}) u^h, \tau_e \mathcal{R} u^h)$ \\ [4pt]
 $\eta_2 = J(u) - J(u^h) \approx -(\tau_e^* \mathcal{R}^* z^h, \mathcal{R} u^h) + 
 (\mathcal{L}^* z^h, \tau_e \mathcal{R} u^h)$ \\ [8pt]
@@ -856,8 +854,11 @@ The two error estimates have drastically different behavior
 %% VMS PROBLEM DEFINTION
 \begin{frame}{Adjoint-error estimation with VMS methods}
 {Application to advection diffusion : problem definition}
-Advection diffusion in L-shaped domain: $\kappa = 0.001$, $\bs{\alpha} = [-1,1], f= 1$. \\ [8pt]
+\vspace*{-1em}
+Advection diffusion in L-shaped domain: \\
+$\kappa = 0.001$, $\bs{\alpha} = [-1,1], f= 1$. \\ [8pt]
 Two QoIS : $J_1(u) = \int_{\Omega} u \text{d} V$,   $J_2(u) = \int_{\Omega} q_2 u \text{d} V$. \\ [8pt]
+$q_2 : = 1$ inside red square and $0$ outside \\ [8pt]
 \begin{minipage}{0.33\textwidth}
 \centering
 \includegraphics[width=0.99\textwidth]{../img/defend_lshape_uh} \\
@@ -882,18 +883,20 @@ Adjoint ($J_2(u)$)
 {Application to advection diffusion : $J_1(u)$ meshes}
 
 \begin{columns}
-\begin{column}{3.2cm}
-Initial mesh
-\includegraphics[width=3.5cm]{../img/vms_lshape_global_initial.pdf} \\
-VMS (simple)
-\includegraphics[width=3.2cm]{../img/vms_lshape_global_vms1_final.pdf} 
+\begin{column}{0.5\textwidth}
+\centering
+Initial mesh \\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_global_initial.pdf} \\
+VMS ($\eta_1$) \\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_global_vms1_final.pdf} 
 \end{column}
 
-\begin{column}{4cm}
-SPR 
-\includegraphics[width=3.2cm]{../img/vms_lshape_global_spr_final.pdf}\\
-VMS (adjoint)\\
-\includegraphics[width=3.5cm]{../img/vms_lshape_global_vms2_final.pdf}
+\begin{column}{0.5\textwidth}
+\centering
+SPR  \\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_global_spr_final.pdf}\\
+VMS ($\eta_2$)\\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_global_vms2_final.pdf}
 \end{column}
 \end{columns}
 
@@ -914,18 +917,20 @@ VMS (adjoint)\\
 {Application to advection diffusion : $J_2(u)$ meshes}
 
 \begin{columns}
-\begin{column}{3.2cm}
-Initial mesh
-\includegraphics[width=3.5cm]{../img/vms_lshape_global_initial.pdf} \\
-VMS (simple)
-\includegraphics[width=3.2cm]{../img/vms_lshape_square_vms1_final.pdf}
+\begin{column}{0.5\textwidth}
+\centering
+Initial mesh \\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_square_initial.pdf} \\
+VMS ($\eta_1$) \\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_square_vms1_final.pdf} 
 \end{column}
 
-\begin{column}{4cm}
-SPR 
-\includegraphics[width=3.2cm]{../img/vms_lshape_global_spr_final.pdf}\\
-VMS (adjoint)\\
-\includegraphics[width=3.5cm]{../img/vms_lshape_square_vms2_final.pdf}
+\begin{column}{0.5\textwidth}
+\centering
+SPR  \\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_square_spr_final.pdf}\\
+VMS ($\eta_2$)\\
+\includegraphics[width=0.65\textwidth]{../img/vms_lshape_square_vms2_final.pdf}
 \end{column}
 \end{columns}
 
@@ -933,9 +938,9 @@ VMS (adjoint)\\
 
 %==============================================================================
 
-%% VMS QOI 1
+%% VMS QOI 2
 \begin{frame}{Adjoint-error estimation with VMS methods}
-{Application to advection diffusion : $J_1(u)$ convergence}
+{Application to advection diffusion : $J_2(u)$ convergence}
 \includegraphics[width=0.75\textwidth]{../img/vms_lshape_square_convergence}
 \end{frame}
 
