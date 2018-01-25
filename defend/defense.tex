@@ -99,15 +99,15 @@ From a high level, adjoint-based error analysis follows the steps:
 \begin{itemize}
 \item Choose a physically meaningful functional quantity $J(u)$.
 \item Solve the PDE of interest approximately with the FEM $\rightarrow u^H$.
-\item Solve an auxiliary dual PDE with the FEM $\rightarrow z^H$.
+\item Solve an auxiliary adjoint PDE with the FEM $\rightarrow z^H$.
 \item Determine an enriched representation of the dual solution $z^h$.
 \item Utilize $u^H$, $z^H$, and $z^h$ to estimate $J(u) - J(u^H)$.
-\item Localize contributions to $J(u) - J(u^H)$ to the mesh entities.
+\item Localize contributions to $J(u) - J(u^H)$ to mesh entities.
 \item Use localized error contributions to drive adaptation.
 \end{itemize}
 Key features:
 \begin{itemize}
-\item The dual PDE relates $J(u)$ to the original PDE of interest.
+\item The adjoint PDE relates $J(u)$ to the original PDE of interest.
 \item $z \rightarrow$ sensitivity of the functional quantity of
 interest with respect to perturbations in the original PDE residual.
 \end{itemize}
@@ -385,80 +385,6 @@ Evaluations share single implementation ${\color{red} R}$
 \end{column}
 \end{columns}
 
-\end{frame}
-
-%==============================================================================
-
-%% COOKS MEMBRANE
-\begin{frame}{Applications to finite deformation mechanics}
-{Cook's membrane : problem definition}
-\scriptsize
-\begin{columns}
-\begin{column}{0.4\textwidth}
-\includegraphics[width=0.98\textwidth]{../img/mech_cooks_geom}
-\vspace{1em}
-Geometry and problem definition \\
-\vspace{1em}
-\hrule
-\vspace{1em}
-Neohookean constitutive model \\
-$E = 1000$ \\
-$\nu = 0.4999$ \\
-\vspace{1em}
-Quantity of interest \\ [8pt]
-$J_1(u) = u_y(44, 55)$ \\
-$J_2(u) = \int_{\mathcal{B}} \frac12 (u_x + u_y) \text{d} V$
-\end{column}
-\begin{column}{0.6\textwidth}%%
-\includegraphics[width=0.98\textwidth]{../img/defend_cooks_reference}
-\vspace{1em}
-Reference primal solution components \\
-\vspace{1em}
-\hrule
-\vspace{1em}
-Solved using fine mesh: \\
-1.2 million DOFs \\
-\vspace{1em}
-Computed `exact' reference functional value: \\ [8pt]
-$J_1(u) = 2.395627$ \\
-$J_2(u) = 324.0948$
-\end{column}
-\end{columns}
-\end{frame}
-
-%==============================================================================
-
-%% COOKS EFFECTIVITIES
-\begin{frame}{Applications to finite deformation mechanics}
-{Cook's membrane : effectivities}
-\begin{minipage}{0.5\textwidth}
-\hspace*{-2em}
-\centering
-\includegraphics[width=1.2\textwidth]{../img/mech_cooks_pw_effectivity_plot}
-\end{minipage}%
-\begin{minipage}{0.5\textwidth}
-\centering
-\vspace{0.5em}
-\includegraphics[width=1.2\textwidth]{../img/mech_cooks_avg_disp_effectivity_plot}
-\end{minipage}
-\end{frame}
-
-%==============================================================================
-
-%% COOKS MESHES
-\begin{frame}{Applications to finite deformation mechanics}
-{Cook's membrane : adapted meshes}
-\scriptsize
-\begin{minipage}{0.5\textwidth}
-\centering
-\includegraphics[width=0.99\textwidth]{../img/mech_cooks_pw_final_mesh} \\
-Final mesh for $J_1(u):$ point-wise QoI
-\end{minipage}%
-\begin{minipage}{0.5\textwidth}
-\centering
-\includegraphics[width=0.99\textwidth]{../img/mech_cooks_avg_u_final_mesh} \\
-Final mesh for $J_2(u):$ average disp. QoI
-\end{minipage}
 \end{frame}
 
 %==============================================================================
