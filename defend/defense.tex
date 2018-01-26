@@ -10,6 +10,7 @@
 \usepackage{listings}
 \setbeamerfont{frametitle}{size=\normalsize}
 \setbeamerfont{framesubtitle}{size=\normalsize}
+\setbeamertemplate{footline}[frame number]
 
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 
@@ -729,8 +730,8 @@ B(w', u^h) + B(w', u') &= (w', f) \quad \forall w' \in V' \\
 \hrule
 \vspace{1em}
 Idea : solve or approximately $u'$ analytically. \\
-Solve for $\bar{u}$ numerically accounting for effect of $u'$
-on $\bar{u}.$
+Solve for $u^h$ numerically accounting for effect of $u'$
+on $u^h.$
 \end{frame}
 
 %==============================================================================
