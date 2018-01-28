@@ -88,7 +88,7 @@ be the steady-state, constant coefficient operator
 utilized in section \ref{sec:Results}:
 %
 \begin{gather}
-\OP u := \adv{u}
+\OP u := \adv{u},
 \end{gather}
 such that $\V = H^1_0(\Omega)$ and $\V^* = H^{-1}(\Omega)$.
 To determine the corresponding operator:
@@ -130,7 +130,7 @@ This proceeds as follows:
 \int_{\Omega} (\adva{z}) u \,
 \text{d} \Omega \\
 &=
-\paira{\OP^* z}{u}
+\paira{\OP^* z}{u}.
 \end{align*}
 %
 Here the third equality is achieved by application
@@ -167,7 +167,7 @@ We restate the adjoint property \eqref{eq:adv_adjoint} as
 \begin{gather}
 \int_{\Omega} z(\adv{u}) \, \text{d} \Omega =
 \int_{\Omega} (\adva{z}) u \, \text{d} \Omega
-\quad \forall \, u,z \in H^1_0(\Omega)
+\quad \forall \, u,z \in H^1_0(\Omega).
 \label{eq:app_adjoint}
 \end{gather}
 %
@@ -308,7 +308,7 @@ J(u) - J(\bar{u})
 \int_{\Omega} (\adva{\bar{z}}) \G' \R \bar{u} \, \text{d} \Omega \\
 &=
 \pairb{\G'_d \R^* \bar{z}}{\R \bar{u}} +
-\paira{\OP^* \bar{z}}{\G' \R \bar{u}}
+\paira{\OP^* \bar{z}}{\G' \R \bar{u}}.
 \end{aligned}
 \label{eq:app_error_cont_2}
 \end{gather*}
@@ -375,7 +375,7 @@ J(u) - J(u^h)
 \int_{\Omega} (\uptau^e_d \R^* z^h) \R u^h +
 \sum_{e=1}^{n_{el}} \int_{\Omega} (\adva{z^h})(\uptau^e \R u^h)
 \, \text{d} \Omega + \\
-& \quad \quad \quad \int_{\Omega} \tilde{z} \R u^h
+& \quad \quad \quad \int_{\Omega} \tilde{z} \R u^h,
 \end{aligned}
 \end{gather*}
 %
@@ -408,7 +408,7 @@ for $u,z \in H^1_0(\Omega^e)$ to obtain the result:
 \begin{aligned}
 &\int_{\Omega^e} z(\adv{u}) \, \text{d} \Omega = \\
 &\int_{\Omega^e} (\adva{z}) u \, \text{d} \Omega
-\quad \forall \, u,z \in H^1_0(\Omega^e)
+\quad \forall \, u,z \in H^1_0(\Omega^e).
 \end{aligned}
 \label{eq:app_elem_adjoint}
 \end{gather}
