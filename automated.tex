@@ -345,7 +345,9 @@ is then attached to the mesh using the APF library.
 The error estimation and localization routines are implemented entirely in
 the Goal application. The error is localized by an evaluation of the
 stabilized weighted residual operator $\R$, where the weight is chosen to be
-the adjoint solution multiplied by a partition of unity. Based on these
+the adjoint solution multiplied by a partition of unity. This error
+localization is discussed in further detail in Section
+\ref{sec:aut_error}. Based on these
 element-level residual vectors, Goal performs finite element assembly
 of the global residual vector, which is stored as a Tpetra vector. This
 vector represents an adjoint-weighted residual error estimate at each mesh
@@ -370,8 +372,7 @@ load balancing to ensure parallel partitioning quality.
 %%% IN-MEMORY INTEGRATION
 \subsection{In-Memory Integration of Components}
 
-The coupling of both the analysis and
-software components described above is done \emph{in-memory}
+The coupling of the software components described above is done \emph{in-memory}
 \cite{smith2016memory}. That is, there is no file-based communication of
 data from one analysis component to the next in the automated process.
 This in-memory coupling is a key ingredient for parallel analysis,
@@ -618,7 +619,8 @@ weighted residual form $\R_{\tau}$ are implemented in the Goal application.
 As an example, Listing \ref{lst:stabresidual} demonstrates the implementation
 of the pressure stabilization \cite{ramesh2005stabilized} residual
 $\R_{\tau}(w; u)$ term used in the Goal application for finite deformation
-solid mechanics.
+solid mechanics. This stabilization term is discussed in greater detail
+in Section \ref{ssec:aut_mech_glial}.
 
 \begin{lstlisting}[
 float,
@@ -725,6 +727,14 @@ be derived with fewer overall degrees of freedom \cite{taylor1973numerical}.
 Finally, we note that the unstructured mesh adaptation capabilities of the
 PUMI software make the $h$-enrichment approach readily available.
 
+In the present context, we consider the term \emph{uniform refinement}
+for triangles and tetrahedra to mean splitting each edge of the parent
+element at its midpoint. Or, in other words, creating new edges by
+by connecting the midpoints of the parent element's existing edges.
+The uniform refinement of a triangle results in 4 nested triangles
+and the uniform refinement of a tetrahedron results in 8 nested
+tetrahedra.
+
 We have denoted the trial and test spaces used for the primal problem
 as $\S^H$ and $\V^H$, respectively. We denote the trial and test spaces on
 the uniformly nested mesh as $\S^h$ and $\V^h$, respectively, where $h < H$
@@ -797,6 +807,7 @@ a sparse iterative solver in parallel.
 
 %%% ERROR ESTIMATION
 \section{Error Estimation}
+\label{sec:aut_error}
 
 %%% TWO LEVEL ERROR ESTIMATES
 \subsection{Two-Level Error Estimates}
@@ -1073,6 +1084,9 @@ G = \sum_{e=1}^{n_{el}} ( \eta_e ) ^{\frac{2d}{2p+d}}.
 \label{eq:aut_global_size_quantity}
 \end{gather}
 %
+This global quantity arises by considering \emph{a priori} convergence
+rates for the input mesh and attempting to find an optimal mesh size
+for an output mesh with $N$ elements. \cite{boussetta2006adaptive}.
 With this global quanity, new element sizes $H_e^{\text{new}}$ are
 computed by scaling the previous element size $H_e$
 %
@@ -1191,7 +1205,7 @@ Here summation over repeated indices is implied and
 $\bs{\sigma}' = \bs{\sigma} - \frac13 \text{tr}(\bs{\sigma})\bs{I}$ denotes
 the deviatoric part of the Cauchy stress tensor $\bs{\sigma}$. The von-Mises
 stress is often used in yield criterion for elastoplastic constitutive models,
-and is hence of particular interest for solid mechanics desing applications.
+and is hence of particular interest for solid mechanics design applications.
 
 We note that this funciton $J(u)$ has sources of nonlinearities from the
 deviatoric stress tensor $\bs{\sigma}'$ and further nonlinearites introduced
@@ -1347,7 +1361,7 @@ example.}
 \end{figure}
 
 Figure \ref{fig:aut_squarehole_error} displays the evolution of
-various during the adaptive process. The ``exact error'' $\E$
+various errors during the adaptive process. The ``exact error'' $\E$
 and the estimated error $\eta$ are very close, as previously
 demonstrated by the effectivity index $\I$. Additionally, the
 approximated upper bound on the error $\hat{\eta}$ overestimates
@@ -1381,6 +1395,7 @@ Further, this convergence plot is consistent with the reference
 
 %%% NONLINEAR ELASTICITY
 \subsection{A Cell Embedded in a Matrix}
+\label{ssec:aut_mech_glial}
 
 Recently, the automated approach developed in this paper was applied
 to a stabilized mixed pressure-displacement finite element formulation
@@ -1549,7 +1564,7 @@ total percentange of CPU time spent on each step in the
 adaptive analysis. For every adaptative iteration, the error
 localization \eqref{eq:aut_stabilized_localization} takes only
 a small percentage of the total CPU time, as it essentially amounts
-to an evaluation of the residual vector the fine space. More
+to an evaluation of the residual vector on the fine space. More
 interestingly, mesh adaptation initially accounts for about
 20 percent of the total CPU time but decreases as the adaptive
 simulation progresses. This is explained by the fact that the initial
