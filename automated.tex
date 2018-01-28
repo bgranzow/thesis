@@ -1,5 +1,6 @@
 \chapter{AN AUTOMATED APPROACH FOR PARALLEL ADJOINT-BASED
-ERROR ESTIMATION AND MESH ADAPTATION}
+ERROR ESTIMATION AND MESH ADAPTATION FOR STEADY-STATE
+PROBLEMS}
 \label{chap:automated}
 
 \let\thefootnote\relax\footnotetext{
@@ -180,7 +181,7 @@ J(u) - J(u^H) &= J'[u^H](e) + \O(e^2) \\
 &= \R_g'[u^H](e, z) + \O(e^2) \\
 &= \R_g(z; u) - \R_g(z; u^H) + \O(e^2) \\
 &= - \R_g(z; u^H) + \O(e^2) \\
-&= - \R_g(z - z^H; u^H) + \O(e^2)
+&= - \R_g(z - z^H; u^H) + \O(e^2).
 \end{aligned}
 \label{eq:aut_abstract_galerkin_error}
 \end{gather}
@@ -223,7 +224,7 @@ J(u) - J(u^H) &= J'[u^H](e) + \O(e^2) \\
 &= \R_g'[u^H](e, z) + \O(e^2) \\
 &= \R_g(z; u) - \R_g(z; u^H) + \O(e^2) \\
 &= - \R_g(z; u^H) + \O(e^2) \\
-&= - \R_g(z - z^H; u^H) + \R_{\tau}(z^H; u^H) + \O(e^2)
+&= - \R_g(z - z^H; u^H) + \R_{\tau}(z^H; u^H) + \O(e^2).
 \end{aligned}
 \label{eq:aut_abstract_stabilized_error}
 \end{gather}
@@ -697,7 +698,7 @@ assembly for linear problems.
 \subsection{A Richer Space via Uniform Refinement}
 
 The adjoint solution must be represented in a richer
-space the the one used for the primal problem to obtain meaningful error
+space than the one used for the primal problem to obtain meaningful error
 estimates. There are several strategies that are commonly used to obtain
 such a representation. First, the adjoint problem can be solved in the same
 finite element space as the primal problem and then be enriched to a higher
@@ -963,7 +964,7 @@ J(u) - J(u^H) \approx
 \sum_{i=1}^{n_{vtx}}
 \underbrace{
 - \R_g( (z^h - z^H) \phi_i \; ; \; u^H) +
-\R_{\tau}( z^H \phi_i \; ; \; u^H)
+\R_{\tau}( z^H \phi_i \; ; \; u^H).
 }_{\eta_i}
 \label{eq:aut_stabilized_localization}
 \end{gather}
@@ -974,7 +975,7 @@ value of the error contributions over all mesh vetrices
 %
 %% aut_upper_bound
 \begin{gather}
-\hat{\eta} = \sum_{i=1}^{n_{vtx}} | \eta_i |
+\hat{\eta} = \sum_{i=1}^{n_{vtx}} | \eta_i |.
 \label{eq:aut_upper_bound}
 \end{gather}
 
