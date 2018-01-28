@@ -782,7 +782,7 @@ For any solution $u = u' + \bar{u}$ to the continuous VMS
 formulation \eqref{eq:primal_vms}, we have the error representation
 %
 \begin{gather}
-\E_1 = J(u) - J(\bar{u}) = J(u')
+\E_1 = J(u) - J(\bar{u}) = J(u').
 \end{gather}
 %
 \end{prop}
@@ -816,7 +816,7 @@ error representation
 \begin{gather}
 \E_2 = J(u) - J(\bar{u}) =
 \pairb{\G'_d \R^* \bar{z}}{ \R \bar{u}} +
-\paira{\OP^* \bar{z}}{\G' \R \bar{u}}
+\paira{\OP^* \bar{z}}{\G' \R \bar{u}}.
 \label{eq:error_cont_1}
 \end{gather}
 %
@@ -842,7 +842,7 @@ J(u) - J(\bar{u}) &=
 &= \pairb{z'}{\R \bar{u}} + \paira{\OP^* \bar{z}}{\G' \R \bar{u}}
 && \text{by \eqref{eq:primal_vms_2}} \\
 &= \pairb{\G'_d \R^* \bar{z}}{\R \bar{u}} +
-\paira{\OP^* \bar{z}}{\G' \R \bar{u}}
+\paira{\OP^* \bar{z}}{\G' \R \bar{u}}.
 && \text{by \eqref{eq:dual_fine_operator}}
 \end{aligned}
 \label{eq:error_cont_2}
@@ -874,7 +874,7 @@ we have the error representation
 %
 \begin{gather}
 \hat{\E}_1 = J(u) - J(u^h) =
-\paira{q}{\uptau^e \R u^h}^{\Omega'} + \paira{q}{\tilde{u}}
+\paira{q}{\uptau^e \R u^h}^{\Omega'} + \paira{q}{\tilde{u}}.
 \label{eq:representation_1}
 \end{gather}
 %
@@ -893,7 +893,7 @@ J(u) - J(u^h) &=
 && \text{by \eqref{eq:primal_subgrid_decomp}} \\
 &= \paira{q}{\tilde{u}'}^{\Omega'} + \paira{q}{\tilde{u}}
 && \text{by linearity} \\
-&= \paira{q}{\uptau^e \R u^h}^{\Omega'} + \paira{q}{\tilde{u}}
+&= \paira{q}{\uptau^e \R u^h}^{\Omega'} + \paira{q}{\tilde{u}}.
 && \text{by \eqref{eq:primal_fine_approx}} \\
 \end{aligned}
 \end{gather*}
@@ -913,7 +913,7 @@ representation
 &=
 \pairb{\uptau^e_d \R^* z^h}{\R u^h}^{\Omega'} +
 \paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega'} +
-\pairb{\tilde{z}}{\R u^h}
+\pairb{\tilde{z}}{\R u^h}.
 \end{aligned}
 \label{eq:representation_2}
 \end{gather}
@@ -959,7 +959,7 @@ representation
 &=
 \pairb{\uptau^e_d \R^* z^h}{\R u^h}^{\Omega'} +
 \paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega'} +
-\pairb{\tilde{z}}{ \R u^h}
+\pairb{\tilde{z}}{ \R u^h}.
 && \text{by \eqref{eq:dual_fine_approx}}
 \end{aligned}
 \end{gather*}
@@ -978,14 +978,14 @@ and $\tilde{z} = 0$ in \eqref{eq:representation_2}, and
 are given below:
 %
 \begin{gather}
-\eta_1 = \paira{q}{\uptau^e \R u^h}^{\Omega'}
+\eta_1 = \paira{q}{\uptau^e \R u^h}^{\Omega'} ,
 \label{eq:estimate_1}
 \end{gather}
 %
 \begin{gather}
 \eta_2 =
 \pairb{\uptau^e_d \R^* z^h}{\R u^h}^{\Omega'} +
-\paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega'}
+\paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega'}.
 \label{eq:estimate_2}
 \end{gather}
 
@@ -1014,7 +1014,7 @@ we obtain the desired result since
 &&\text{by linearity} \\
 &= \paira{q}{\uptau^e \R u^h}^{\Omega'}
 &&\text{by definition} \\
-&= \eta_1
+&= \eta_1.
 &&
 \end{aligned}
 \end{gather*}
@@ -1060,7 +1060,7 @@ g^e_d(\bs{x}; \bs{z}) \delta(\bs{x} - \bs{y})
 \, \text{d} \Omega
 && \text{by \eqref{eq:dual_elem_greens}} \\
 \implies
-g^e(\bs{z}; \bs{y}) &= g^e_d(\bs{y}; \bs{z})
+g^e(\bs{z}; \bs{y}) &= g^e_d(\bs{y}; \bs{z}).
 \end{aligned}
 \end{gather*}
 %
@@ -1116,7 +1116,7 @@ $\eta_2$ is given as
 %
 \begin{gather}
 \eta_2^e = | \pairb{\uptau^e_d \R^* z^h}{\R u^h}^{\Omega^e} | +
-| \paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega^e} |
+| \paira{\OP^* z^h}{\uptau^e \R u^h}^{\Omega^e} |.
 \end{gather}
 
 Note that the indicator $\eta^e_1$ is only non-zero
@@ -1184,7 +1184,7 @@ element size $h_e$ according to the formula
 h^e_{\text{new}} =
 \left( \frac{G}{N} \right)^{\frac{1}{d}}
 \left( \eta^e \right)^{\frac{-2}{2p + d}}
-h^e
+h^e.
 \label{eq:size}
 \end{gather}
 Finally, to prevent excessive refinement or coarsening
@@ -1194,7 +1194,7 @@ element size and no greater than twice the previous
 element size.
 %
 \begin{gather}
-\frac12 \leq \frac{h^e_{\text{new}}}{h^e} \leq 2
+\frac12 \leq \frac{h^e_{\text{new}}}{h^e} \leq 2.
 \end{gather}
 %
 
@@ -1396,7 +1396,7 @@ q_2 :=
 \begin{cases}
 1 & \text{if} \; {-0.95} \leq x \leq {-0.5} \;
 \text{and} \; 0.5 \leq y \leq 0.95 \\
-0 & \text{otherwise}
+0 & \text{otherwise}.
 \end{cases}
 \end{gather}
 %
