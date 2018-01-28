@@ -32,7 +32,7 @@ enriched in some manner. That is, it is
 necessary to obtain a representation of the
 adjoint solution in a richer space compared
 to the space used for the primal problem.
-Several strategies are commonly
+Several strategies are commonly used
 to obtain an enriched adjoint representation.
 These approaches include
 solving the adjoint problem in a globally higher
@@ -209,7 +209,7 @@ Consider the ratio
 \frac{J^h(\bs{u}^h) - J^h(\bs{u}^h_H)}
 {J - J^h(\bs{u}^h_H)} \approx
 \frac{ - \bs{z}^h \cdot \bs{R}^h(\bs{u}^h_H)}
-{J - J^h(\bs{u}^h_H)},
+{J - J^h(\bs{u}^h_H)}
 \end{gather}
 %
 which, as $H \to 0$, will tend towards \cite{fidkowski2011review}
@@ -319,7 +319,7 @@ a base mesh.
 Note that, for the \textsc{Long} edge refinement
 approach, some elements are split once while others
 are split multiple times. It follows then that there is
-single global ratio $\frac{h}{H}$ of the fine mesh size
+no single global ratio $\frac{h}{H}$ of the fine mesh size
 to the coarse mesh size. Presently, we approximate
 this ratio by taking the average of all ratios
 of nested element sizes to their parent element
