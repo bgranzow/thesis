@@ -1,0 +1,152 @@
+All revisions marked with respect to page numbers in the document:
+
+granzow_thesis.pdf
+
+and show up in the revised document
+
+granzow_thesis_revised.pdf
+
+Abstract
+---
+
+* 2nd paragraph - fixed misspelling of Galerkin 
+
+CHAPTER 1
+---
+
+* Section 1.1, 2nd paragraph - changed 'c.f' to 'cf.'
+
+* Section 1.1, 3rd paragraph - change ' J: V \to R' to 'J: S \to R'.
+
+* Page 3, 2nd paragraph - changed 'model solid applications'
+to 'model solid mechanics applications'.
+
+* Section 1.2,  2nd paragraph - change 'yield both effective error' to
+yield effective error. This removes the confusing word both which had
+no meaning in this context.
+
+* Section 1.3, 1st paragraph - removed repeated word 'perform'.
+
+CHAPTER 2
+---
+
+* Added 'Steady-State' to the title to make it clear we are
+discussing steady-state problems (or quasi-steady w/ a single
+load step).
+
+* Equation (2.6) added period at end.
+
+* Equation (2.8) added period at end.
+
+* Section 2.3.3 - added a forward reference to point readers to
+the section where error localization is discussed in greater
+detail.
+
+* Section 2.3.5 - Changed 'the coupling of the both analysis and
+software components' to 'the coupling of the software components'.
+
+* Section 2.5.2 - added a forward reference to point readers to
+the section where the mechanics stabilization term is provided
+mathematically.
+
+* Section 2.6.1, 1st sentence - changed 'in a richer space the the'
+to 'in a richer space than the'
+
+* Section 2.6.1 - After 2nd paragraph - added a new paragraph
+to explain exactly what is meant by 'uniform refinement' for
+triangles and tetrahedra.
+
+* Equation (2.21) added period at end.
+
+* Equation (2.22) added period at end.
+
+* Equation (2.28) added period at end.
+
+* Section 2.8 - Attempt to explain a little bit about where the
+global quantity 'G' comes from.
+
+* Section 2.9.3, 1st paragraph - Correct misspelled word 'design'
+
+* Section 2.10.1, page 33 - changed 'displays the evolution of
+various during the adaptive process' to 'displays the evolution of
+various errors during the adaptive process'.
+
+* Section 2.10.2, page 38 - changed 'evaluation of the residual vector
+fine space' to 'evaluation of the residual vector on the fine space'.
+
+* Section 2.10.2, page 38 - changed 'While process of adjoint' to
+'While the process of adjoint'
+
+CHAPTER 3
+---
+
+* Section 3.5.1, 1st paragraph - changed 'in the incompressible limit'
+to 'nearly incompressible'.
+
+* Equation (3.12) added period at end.
+
+* Equation (3.32) added period at end.
+
+* Equation (3.33) added period at end.
+
+* Equation (3.35) added period at end
+
+CHAPTER 4
+---
+
+* Section 4.1 - Changed 'Several strategies are commonly to obtain' to
+'Several strategies are commonly used to obtain'.
+
+* Section 4.3.2 - Changed 'It follows then that there is single global
+quantity' to 'It follows then that there is no single global quantity'.
+
+* Equation (4.12) added period at end.
+
+* Equation (4.15) added period at end.
+
+CHAPTER 5
+---
+
+* Equation (5.35) added period at end.
+
+* Equation (5.36) added period at end.
+
+* Proof right after Equation (5.36) added period at end.
+
+* Equation (5.37) added period at end.
+
+* Equation (5.38) added period at end.
+
+* Proof right after Equation (5.38) added period at end.
+
+* Equation (5.39) added comma at end.
+
+* Equation (5.40) added period at end.
+
+* Page 100 : Proof of Proposition 5, added period at end of \eta_1 = \eta_2
+argument.
+
+* Page 100 : Proof of \tau^e = \tau^e_d, added period at end.
+
+* Equation (5.45) added period at end.
+
+* Equation (5.47) added period at end.
+
+* Equation (5.48) added period at end.
+
+* Equation (5.52) added period at end.
+
+* Equation (5.56) added period at end.
+
+APPENDIX B
+---
+
+* First unmarked equation page 129, add period at end.
+
+* Equation (B.9) add period at end.
+
+* First unmarked equation page 132, add period at end.
+
+* First unmarked equation page 13
+
+* Equation (B.18) add period at end.
