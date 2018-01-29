@@ -116,9 +116,6 @@ to 'nearly incompressible'.
 
 * Equation (3.35) added period at end
 
-* All - renamed the 'average displacement QoI' to
-'integrated displacement QoI'.
-
 * Fig. 3.1 made larger
 
 * Fig. 3.2 made larger
@@ -141,6 +138,12 @@ to 'nearly incompressible'.
 
 * Fig. 3.15 made larger
 
+* All - renamed the 'average displacement QoI' to
+'integrated displacement QoI'.
+
+* All plots with error on the y-axis - rescaled to be relative errors
+relative tho the exact QoI value J(u)
+
 CHAPTER 4
 ---
 
@@ -153,6 +156,15 @@ quantity' to 'It follows then that there is no single global quantity'.
 * Equation (4.12) added period at end.
 
 * Equation (4.15) added period at end.
+
+* Fig. 4.4 made larger
+
+* Fig. 4.5 made larger
+
+* Fig. 4.7 made larger
+
+* All plots with error on the y-axis - rescaled to be relative errors
+relative tho the exact QoI value J(u)
 
 CHAPTER 5
 ---
@@ -187,6 +199,10 @@ argument.
 * Equation (5.52) added period at end.
 
 * Equation (5.56) added period at end.
+
+* Fig. 5.4 made larger
+
+* Fig. 5.6 made larger
 
 APPENDIX B
 ---
