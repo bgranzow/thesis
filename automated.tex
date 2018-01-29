@@ -1149,10 +1149,10 @@ location $\bs{x}_0$, the QoI derivative vector is zeroed out, and we place a
 one in the row of the QoI derivative vector that corresponds to the $i^{th}$
 component of the solution at the vertex.
 
-%%% AVERAGE SOLUTION OVER A SUBDOMAIN
-\subsection{Average Solution Over a Sub-domain}
+%%% INTEGRATED SOLUTION OVER A SUBDOMAIN
+\subsection{Integrated Solution Over a Sub-Domain}
 
-Next, we consider the average solution over a sub-domain
+Next, we consider the integrated solution over a sub-domain
 $\Omega_0 \subset \Omega$, which can be expressed as
 %
 %% aut_avg_u_qoi
@@ -1164,12 +1164,12 @@ J(u) = \int_{\Omega_0} \frac{1}{n_c} \sum_{i=1}^{n_c} u_i
 %
 Here, $n_c$ denotes the number of components for the solution vector. As an
 example, Listing \ref{lst:aut_avg_u_qoi} demonstrates the Goal implementation
-for the QoI corresponding to the average displacement over a sub-domain.
+for the QoI corresponding to the integrated displacement over a sub-domain.
 
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=Evaluation of the average displacement over a sub-domain,
+caption=Evaluation of the integrated displacement over a sub-domain,
 label=lst:aut_avg_u_qoi]
 template <typename ScalarT>
 void AvgDisp<ScalarT>::at_point(
@@ -1180,8 +1180,8 @@ void AvgDisp<ScalarT>::at_point(
 }
 \end{lstlisting}
 
-%%% AVERAGE VON-MISES STRESS OVER A SUBDOMAIN
-\subsection{Average von-Mises Stress Over a Sub-domain}
+%%% Integrated VON-MISES STRESS OVER A SUBDOMAIN
+\subsection{Integrated von-Mises Stress Over a Sub-Domain}
 
 Finally, specifically for mechanics problems, we consider the evaluation of
 the von-Mises stress integrated over a sub-domain $\Omega_0 \subset \Omega$,
@@ -1221,7 +1221,7 @@ specific QoI in the Goal application.
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=Evaluation of the average von-Mises stress over a sub-domain,
+caption=Evaluation of the integrated von-Mises stress over a sub-domain,
 label=lst:aut_avg_vm_qoi]
 template <typename ScalarT>
 void AvgVM<ScalarT>::at_point(
@@ -1466,7 +1466,7 @@ exposition, we refer the reader to Chapter \ref{chap:mech}.
 We focus on a microglial cell with dimensions of about
 $20 \mu m \times 20 \mu m \times 20 \mu m$ embedded in an extracellular
 matrix of dimension $100 \mu \times 100 \mu m \times 100 \mu m$.
-The QoI is chosen to be a local average displacement
+The QoI is chosen to be a local integrated displacement
 $J(\bs{U}) = \int_{\Omega_0} \frac13 (u_x + u_y + u_z) \, \text{d} \Omega$,
 defined over a box $\Omega_0$ with dimensions
 $30 \mu m \times 30 \mu m \times 30 \mu m$
@@ -1612,7 +1612,7 @@ resting temperature of $T_{f} = 318K$ in a single load
 step. The faces with minimum $x$, $y$, and $z$ coordinate
 values were constrained to have zero displacements in
 the $x$, $y$, and $z$ directions, respectively. As a
-QoI, we consider the average von-Mises stress given by
+QoI, we consider the integrated von-Mises stress given by
 equation \eqref{eq:aut_avg_vm_qoi} over three solder joints
 shown in yellow in Figure \ref{fig:aut_solder_geom}.
 
@@ -1627,7 +1627,7 @@ shown in yellow in Figure \ref{fig:aut_solder_geom}.
 \includegraphics[width=.99\linewidth]{img/aut_solder_qoi_geom.png}
 \end{subfigure}
 \caption{The solder joint array geometry (left) and the
-geometric specification of the average von-Mises QoI
+geometric specification of the integrated von-Mises QoI
 (right).}
 \label{fig:aut_solder_geom}
 \end{figure}
@@ -1776,7 +1776,7 @@ magnitude fewer degrees of freedom.
 \centering
 \includegraphics[width=0.75\linewidth]{img/aut_solder_convergence.pdf}
 \caption{Error convergence histories for the solder joint example problem
-with the average von-Mises stress QoI.}
+with the integrated von-Mises stress QoI.}
 \label{fig:aut_solder_convergence}
 \end{figure}
 

@@ -93,6 +93,12 @@ fine space' to 'evaluation of the residual vector on the fine space'.
 
 * Fig. 2.17 made larger
 
+* Section 2.9.2 - renamed QoI to 'Integrated Solution Over a Sub-domain'
+Changed all remaining references to this QoI to this new name.
+
+* Section 2.9.3 - renamed QoI to 'Integrated von-Mises Stress Over a Sub-Domain}
+Changed all remaining references to this QoI to this new name.
+
 CHAPTER 3
 ---
 
