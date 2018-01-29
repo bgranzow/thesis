@@ -21,7 +21,7 @@ to approximate discretization errors for a functional quantity of interest
 (QoI) \cite{venditti2000adjoint, becker2001optimal, giles2002adjoint,
 peraire1998bounds, prudhomme1999goal, braack2003posteriori,
 bangerth2013adaptive}, such as point-wise displacements or stresses, or the
-average displacement over a sub-domain. Mesh adaptation utilizes local
+integrated displacement over a sub-domain. Mesh adaptation utilizes local
 information obtained from error estimates to control discretization
 errors by adaptively modifying the computational mesh.
 
@@ -799,7 +799,7 @@ In this section, we investigate two displacement-based quantities of
 interest for Cook's membrane. The first QoI we consider is
 the $y$-component of displacement at the point $\bs{X}_0 = (44,55)$ such
 that $J_1(\bs{U}) = \int_{\B} \delta(\bs{X} - \bs{X}_0) \; u_y \, \text{d} V$. 
-The second QoI we consider is the average displacement
+The second QoI we consider is the integrated displacement
 over the entire domain, such that $J_2(\bs{U}) = \int_{\B} \frac12 (u_x + u_y)
 \, \text{d} V$. Figure \ref{fig:cooks_geom} shows the geometry and loading
 conditions for the Cook's membrane problem, where the left-most boundary
@@ -813,7 +813,7 @@ that the scaling parameter $\alpha = \frac34$.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.4\textwidth]{img/mech_cooks_geom.png}
+\includegraphics[width=0.6\textwidth]{img/mech_cooks_geom.png}
 \caption{Cook's membrane problem definition.}
 \label{fig:cooks_geom}
 \end{figure}
@@ -821,7 +821,7 @@ that the scaling parameter $\alpha = \frac34$.
 For each QoI, an initial mesh with a uniform size of $H=8$
 was generated. Figures \ref{fig:mech_cooks_pw_meshes} and
 \ref{fig:mech_cooks_avg_u_meshes} show the initial mesh utilized for both
-the point-wise and average displacement QoIs. From these initial meshes,
+the point-wise and integrated displacement QoIs. From these initial meshes,
 the steps
 %
 \begin{gather*}
@@ -841,20 +841,20 @@ of elements in the previous mesh.
 \centering
 \begin{subfigure}{.33\textwidth}
 \centering
-\includegraphics[width=.9\linewidth]{img/mech_cooks_pw_p.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_pw_p.png}
 \end{subfigure}%
 \begin{subfigure}{.33\textwidth}
 \centering
-\includegraphics[width=.9\linewidth]{img/mech_cooks_pw_zp.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_pw_zp.png}
 \end{subfigure}
 \begin{subfigure}{.33\textwidth}
 \centering
-\includegraphics[width=.9\linewidth]{img/mech_cooks_avg_u_zp.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_avg_u_zp.png}
 \end{subfigure}
 \caption{The pressure component $p$ of the primal solution scaled by its
 maximal value (left), the pressure component $z_p$ of the adjoint solution for
 the point-wise QoI $J_1(\bs{U})$, and the pressure component $z_p$ of the
-adjoint solution for the average displacement QoI $J_2(\bs{U})$.}
+adjoint solution for the integrated displacement QoI $J_2(\bs{U})$.}
 \label{fig:mech_cooks_pressures}
 \end{figure}
 
@@ -863,7 +863,7 @@ the pressure component $p$ of the primal solution scaled by its maximal
 value. We remark that this result is consistent with previous literature
 \cite{ostien2016tet}. The center and right-most figures of Figure
 \ref{fig:mech_cooks_pressures} shows the pressure component $z_p$ of the
-adjoint solution for the point-wise QoI $J_1(\bs{U})$ and the average
+adjoint solution for the point-wise QoI $J_1(\bs{U})$ and the integrated
 displacement QoI $J_2(\bs{U})$, respectively. For the point-wise QoI, the
 adjoint solution $z_p$ is highly localized to the point that defines the
 QoI and the corner of stress singularity.
@@ -872,11 +872,11 @@ QoI and the corner of stress singularity.
 \centering
 \begin{subfigure}{.5\textwidth}
 \centering
-\includegraphics[width=.6\linewidth]{img/mech_cooks_pw_initial_mesh.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_pw_initial_mesh.png}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
 \centering
-\includegraphics[width=.6\linewidth]{img/mech_cooks_pw_final_mesh.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_pw_final_mesh.png}
 \end{subfigure}
 \caption{Initial mesh (left) and adapted mesh (right) at the fifth
 adaptive iteration for the Cook's membrane problem with the point-wise
@@ -889,21 +889,21 @@ problem was solved on a ``truth'' mesh with about $1.5$ million degrees of
 freedom. This mesh is finer at every spatial location than the final meshes
 produced by the two adaptive simulations. The reference value for the
 point-wise QoI on the truth mesh was computed to be
-$J_1(\bs{U}) = 2.395627$ and the reference value for the average displacement
-QoI was computed to be $J_2(\bs{U}) = 324.0948$.
+$J_1(\bs{U}) = 2.395627$ and the reference value for the integrated
+displacement QoI was computed to be $J_2(\bs{U}) = 324.0948$.
 
 \begin{figure}[ht!]
 \centering
 \begin{subfigure}{.5\textwidth}
 \centering
-\includegraphics[width=.6\linewidth]{img/mech_cooks_avg_u_initial_mesh.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_avg_u_initial_mesh.png}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
 \centering
-\includegraphics[width=.6\linewidth]{img/mech_cooks_avg_u_final_mesh.png}
+\includegraphics[width=.99\linewidth]{img/mech_cooks_avg_u_final_mesh.png}
 \end{subfigure}
 \caption{Initial mesh (left) and adapted mesh (right) at the fifth adaptive
-iteration for the Cook's membrane problem with the average displacement
+iteration for the Cook's membrane problem with the integrated displacement
 QoI $J_2(\bs{U})$.}
 \label{fig:mech_cooks_avg_u_meshes}
 \end{figure}
@@ -921,7 +921,9 @@ exactly recovered the ``true error''. Similarly, a discrete effectivity index
 of $\I_h = 1$ indicates that the error estimate $\eta$ has exactly recovered
 the error between the functional evaluated on the fine space and the
 functional evaluated on the coarse space. Figure
-\ref{fig:mech_cooks_effectivity} plots the effectivity $\I$ relative to the
+\ref{fig:mech_cooks_effectivity_1} and Figure
+\ref{fig:mech_cooks_effectivity_2}
+plot the effectivity $\I$ relative to the
 ``exact error'' and the effectivity $\I_h$ relative to the fine-space error,
 and demonstrates the ability of $\eta$ to effectively estimate the error as
 $H \to 0$ during the adaptive process for the chosen functional quantities.
@@ -929,24 +931,24 @@ The small distance away from $1$ in the discrete effectivity index $\I_h$
 represents the linearization error associated with the estimate $\eta$,
 introduced by the linearized adjoint problem \eqref{eq:mech_adjoint_problem}.
 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=.75\linewidth]{img/mech_cooks_pw_effectivity_plot.pdf}
+\caption{Effectivities for the point-wise QoI $J_1(\bs{U})$
+for the Cook's membrane problem.}
+\label{fig:mech_cooks_effectivity_1}
+\end{figure}
 
 \begin{figure}[ht!]
 \centering
-\begin{subfigure}{.5\textwidth}
-\centering
-\includegraphics[width=.99\linewidth]{img/mech_cooks_pw_effectivity_plot.pdf}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-\centering
-\includegraphics[width=.95\linewidth]{img/mech_cooks_avg_disp_effectivity_plot.pdf}
-\end{subfigure}
-\caption{Effectivities for the point-wise QoI $J_1(\bs{U})$ (left) and for the
-average displacement QoI $J_2(\bs{U})$ (right) for the Cook's membrane
-problem.}
-\label{fig:mech_cooks_effectivity}
+\includegraphics[width=.75\linewidth]{img/mech_cooks_avg_disp_effectivity_plot.pdf}
+\caption{Effectivities for the integrated displacement QoI
+$J_2(\bs{U})$ for the Cook's membrane problem.}
+\label{fig:mech_cooks_effectivity_2}
 \end{figure}
 
-Figure \ref{fig:mech_cooks_error} demonstrates the evolution of various errors
+Figure \ref{fig:mech_cooks_error_1} and Figure
+\ref{fig:mech_cooks_error_2} demonstrate the evolution of various errors
 throughout the adaptive process. First, we note that the ``exact error'' $\E$
 and the estimated error $\eta$ are very close, as previously discussed. Next,
 we note that the estimated bound $\hat{\eta}$ on the functional error,
@@ -964,17 +966,18 @@ value of the functional.
 
 \begin{figure}[ht!]
 \centering
-\begin{subfigure}{.5\textwidth}
+\includegraphics[width=.75\linewidth]{img/mech_cooks_pw_error_plot.pdf}
+\caption{Errors for the point-wise QoI $J_1(\bs{U})$ for the
+Cook's membrane problem.}
+\label{fig:mech_cooks_error_1}
+\end{figure}
+
+\begin{figure}[ht!]
 \centering
-\includegraphics[width=.99\linewidth]{img/mech_cooks_pw_error_plot.pdf}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-\centering
-\includegraphics[width=.95\linewidth]{img/mech_cooks_avg_disp_error_plot.pdf}
-\end{subfigure}
-\caption{Errors for the point-wise QoI $J_1(\bs{U})$ (left) and for the
-average displacement QoI $J_2(\bs{U})$ (right) for the Cook' membrane problem.}
-\label{fig:mech_cooks_error}
+\includegraphics[width=.75\linewidth]{img/mech_cooks_avg_disp_error_plot.pdf}
+\caption{Errors for the point-wise QoI $J_2(\bs{U})$ for the
+Cook's membrane problem.}
+\label{fig:mech_cooks_error_2}
 \end{figure}
 
 Figure \ref{fig:mech_cooks_pw_meshes} shows the adapted mesh after $5$
@@ -987,7 +990,7 @@ throughout the domain. This demonstrates that the adaptive adjoint-based
 procedure accurately identifies other sources of error that must be resolved
 even when a fully localized QoI is chosen. Similarly, Figure
 \ref{fig:mech_cooks_avg_u_meshes} shows the adapted mesh after $5$
-adaptive cycles for the average displacement QoI. Again there is heavy
+adaptive cycles for the integrated displacement QoI. Again there is heavy
 refinement in the corner with the stress singularity.
 
 Interestingly, Figure \ref{fig:mech_cooks_pw_meshes} also illustrates that
@@ -1034,14 +1037,14 @@ accurately as possible.
 inner-most surface represents the geometry of the microgial cell, the
 outer-most bounding box represents the extracellular matrix in which the
 cell is embedded, and the inner bounding box represents the domain over
-which the local average displacement QoI $J(\bs{U})$ is defined.}
+which the local integrated displacement QoI $J(\bs{U})$ is defined.}
 \label{fig:mech_glial_geom}
 \end{figure}
 
 Specifically, we focus on a microglial cell with dimensions of about
 $20 \mu m \times 20 \mu m \times 20 \mu m$ embedded in an extracellular matrix
 of dimension $100 \mu m \times 100 \mu m \times 100 \mu m$. We choose the
-QoI to be a local average displacement,
+QoI to be a local integrated displacement,
 $J(\bs{U}) = \int_{\B_0} \frac13 (u_x + u_y + u_z) \, \text{d} V$, defined
 over a $30 \mu m \times 30 \mu m \times 30 \mu m$ bounding box $\B_0$
 surrounding the microglial cell. Figure \ref{fig:mech_glial_geom} shows the
@@ -1073,7 +1076,7 @@ constrain rigid body translations and rotations, we prescribe displacements
 $u_x = 0$ on the face with constant minimum $x$-coordinate value, $u_y = 0$
 on the face with constant minimum $y$-coordinate value, and $u_z = 0$ on the
 face with constant minimum $z$-coordinate value. As a reference value for
-the average displacement QoI, the primal problem was solved on a ``truth''
+the integrated displacement QoI, the primal problem was solved on a ``truth''
 mesh with about $60$ million degrees of freedom. The reference value for the
 QoI was computed to be $J(\bs{U}) = -527.1453$.
 
@@ -1118,8 +1121,8 @@ the previous mesh.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=.5\linewidth]{img/mech_glial_effectivity_plot.pdf}
-\caption{Effectivity indices for the local average displacement QoI
+\includegraphics[width=.75\linewidth]{img/mech_glial_effectivity_plot.pdf}
+\caption{Effectivity indices for the local integrated displacement QoI
 $J(\bs{U})$ for the microglial cell problem.}
 \label{fig:mech_glial_effectivity}
 \end{figure}
@@ -1142,17 +1145,17 @@ demonstrated by the effectivity $\I$.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=.5\linewidth]{img/mech_glial_error_plot.pdf}
-\caption{Errors for the local average displacement QoI $J(\bs{U})$ for the
+\includegraphics[width=.75\linewidth]{img/mech_glial_error_plot.pdf}
+\caption{Errors for the local integrated displacement QoI $J(\bs{U})$ for the
 microglial cell problem.}
 \label{fig:mech_glial_error}
 \end{figure}
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=.6\linewidth]{img/mech_glial_convergence_plot}
+\includegraphics[width=.8\linewidth]{img/mech_glial_convergence_plot}
 \caption{Error convergence using uniform mesh refinement (Uniform) and
-adjoint-based adaptivity (Goal) for the local average displacement QoI
+adjoint-based adaptivity (Goal) for the local integrated displacement QoI
 $J(\bs{U})$ for the microglial cell problem.}
 \label{fig:mech_glial_convergence}
 \end{figure}
