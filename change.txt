@@ -77,6 +77,22 @@ fine space' to 'evaluation of the residual vector on the fine space'.
 * Section 2.10.2, page 38 - changed 'While process of adjoint' to
 'While the process of adjoint'
 
+* Fig. 2.4 made larger
+
+* Fig. 2.5 made larger
+
+* Fig. 2.6 made larger
+
+* Fig. 2.7 made larger
+
+* Fig. 2.10 made larger
+
+* Fig. 2.12 made larger
+
+* Fig. 2.13 made larger
+
+* Fig. 2.17 made larger
+
 CHAPTER 3
 ---
 
