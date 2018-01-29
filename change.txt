@@ -4,7 +4,7 @@ granzow_thesis.pdf
 
 and show up in the revised document
 
-granzow_thesis_revised.pdf
+granzow_thesis_committee_revised.pdf
 
 Abstract
 ---
