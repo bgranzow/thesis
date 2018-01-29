@@ -99,6 +99,9 @@ Changed all remaining references to this QoI to this new name.
 * Section 2.9.3 - renamed QoI to 'Integrated von-Mises Stress Over a Sub-Domain}
 Changed all remaining references to this QoI to this new name.
 
+* All plots with error on the y-axis - rescaled to be relative errors
+relative tho the exact QoI value J(u)
+
 CHAPTER 3
 ---
 
@@ -112,6 +115,31 @@ to 'nearly incompressible'.
 * Equation (3.33) added period at end.
 
 * Equation (3.35) added period at end
+
+* All - renamed the 'average displacement QoI' to
+'integrated displacement QoI'.
+
+* Fig. 3.1 made larger
+
+* Fig. 3.2 made larger
+
+* Fig. 3.3 made larger
+
+* Fig. 3.4 made larger
+
+* Fig. 3.5 made larger
+
+* Fig. 3.6 made larger
+
+* Fig. 3.7 made larger
+
+* Fig. 3.8 made larger
+
+* Fig. 3.13 made larger
+
+* Fig. 3.14 made larger
+
+* Fig. 3.15 made larger
 
 CHAPTER 4
 ---
