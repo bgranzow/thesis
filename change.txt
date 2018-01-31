@@ -34,6 +34,8 @@ CHAPTER 2
 discussing steady-state problems (or quasi-steady w/ a single
 load step).
 
+* Equation (2.4) - Changed R on left hand side of equation to R_g.
+
 * Equation (2.6) added period at end.
 
 * Equation (2.8) added period at end.
@@ -102,6 +104,9 @@ Changed all remaining references to this QoI to this new name.
 * All plots with error on the y-axis - rescaled to be relative errors
 relative tho the exact QoI value J(u)
 
+* Modified all instances of J (the determinant of F) to be j to avoid
+confusion with QoI terminology.
+
 CHAPTER 3
 ---
 
@@ -109,6 +114,8 @@ CHAPTER 3
 to 'nearly incompressible'.
 
 * Equation (3.12) added period at end.
+
+* Equation (3.13) - Changed sign on stabilization term from - to +
 
 * Equation (3.32) added period at end.
 
@@ -143,6 +150,9 @@ to 'nearly incompressible'.
 
 * All plots with error on the y-axis - rescaled to be relative errors
 relative tho the exact QoI value J(u)
+
+* Modified all instances of J (the determinant of F) to be j to avoid
+confusion with QoI terminology.
 
 CHAPTER 4
 ---

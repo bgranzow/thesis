@@ -146,7 +146,7 @@ and
 %% aut_resid_deriv
 \begin{gather}
 \R_g'[u^H](w, z) :=
-\frac{d}{d \epsilon} \R(z; u^H + \epsilon w) \bigr|_{\epsilon = 0}.
+\frac{d}{d \epsilon} \R_g(z; u^H + \epsilon w) \bigr|_{\epsilon = 0}.
 \end{gather}
 %
 Here, $u^H \in \S^H$ denotes some finite element approximation to the
@@ -1418,7 +1418,7 @@ defined as:
 \begin{aligned}
 &\R_g(\bs{W}^H ; \bs{U}^H) := \\
 &\int_{\Omega} \bs{P} : \nabla \bs{w}^H \, \text{d} \Omega +
-\int_{\Omega} \left[ \frac{p^H}{\kappa} - \frac{1}{2 J}(J^2 - 1) \right] \;
+\int_{\Omega} \left[ \frac{p^H}{\kappa} - \frac{1}{2 j}(j^2 - 1) \right] \;
 q^H \, \text{d} \Omega -
 \int_{\partial \Omega_h} \bs{h} \cdot \bs{w} \; \text{d} \Gamma,
 \end{aligned}
@@ -1431,14 +1431,14 @@ and the stabilization residual is defined as:
 \begin{gather}
 \R_{\tau}(\bs{W}^H ; \bs{U}^H) :=
 \sum_{e=1}^{n_{el}} \int_{\Omega_e} \tau_e
-(J \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H) \;
+(j \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H) \;
 \text{d} \Omega.
 \label{aut_mech_stabilized}
 \end{gather}
 %
-Here, $\bs{F}$ is the deformation gradient, $J := \text{det}(\bs{F})$,
+Here, $\bs{F}$ is the deformation gradient, $j := \text{det}(\bs{F})$,
 $\bs{h}$ is an applied traction over the boundary $\partial \Omega_h$,
-$\bs{P} := J \bs{\sigma} \bs{F}^{-T}$ is the first Piola-Kirchhoff
+$\bs{P} := j \bs{\sigma} \bs{F}^{-T}$ is the first Piola-Kirchhoff
 stress tensor, $\bs{\sigma}$ is the Cauchy stress tensor, $n_{el}$
 is the total number of elements in the mesh, and $\tau_e :=
 \frac{c_0 H_e^2}{2 \mu}$ is a mesh-dependent stabilization parameter,

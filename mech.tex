@@ -120,7 +120,7 @@ deformation, is located at the point $\bs{x} \in \B_t$ in the deformed
 configuration at time $t$. Let $\bs{u} := \bs{x} - \bs{X}$ denote the
 displacement vector. The deformation gradient is then defined as $\bs{F} :=
 \bs{I} + \frac{\partial \bs{u}}{\partial \bs{X}}$, and we denote the
-determinant of the deformation gradient as $J := \det(\bs{F})$.
+determinant of the deformation gradient as $j := \det(\bs{F})$.
 
 The balance of linear momentum in the absence of inertial and body forces
 leads to the following boundary value problem in the reference configuration:
@@ -137,7 +137,7 @@ leads to the following boundary value problem in the reference configuration:
 \label{eq:mech_linear_momentum}
 \end{gather}
 %
-Here, $\bs{P} := J \bs{\sigma} \bs{F}^{-T}$ denotes the first Piola-Kirchhoff
+Here, $\bs{P} := j \bs{\sigma} \bs{F}^{-T}$ denotes the first Piola-Kirchhoff
 stress tensor, $\bs{g}$ denotes an externally applied displacement, $\bs{h}$
 denotes an externally applied traction, $\bs{n}$ denotes the unit outward
 normal to the boundary $\Gamma_h$, and $\bs{\sigma}$ denotes the Cauchy
@@ -149,8 +149,8 @@ is characterized by the relationship:
 %% mech_neohookean_model
 \begin{gather}
 \bs{\sigma} =
-\underbrace{\mu J^{-\frac53} \text{dev}(\bs{F}\bs{F}^T)}_{\bs{\sigma}'} +
-\underbrace{\frac{\kappa}{2 J}(J^2 - 1)}_{p} \bs{I}.
+\underbrace{\mu j^{-\frac53} \text{dev}(\bs{F}\bs{F}^T)}_{\bs{\sigma}'} +
+\underbrace{\frac{\kappa}{2 j}(j^2 - 1)}_{p} \bs{I}.
 \label{eq:mech_neohookean_model}
 \end{gather}
 %
@@ -167,16 +167,16 @@ first Piola-Kirchhoff stress tensor can be expressed as
 %% mech_div_first_pk
 \begin{gather}
 \begin{aligned}
-\nabla \cdot \bs{P} &= \nabla \cdot ( J \bs{\sigma} \bs{F}^{-T} ) \\
-&= \nabla \cdot ( J (\bs{\sigma}' + p \bs{I}) \bs{F}^{-T} ) \\
-&= \nabla \cdot ( J \bs{\sigma}' \bs{F}^{-T} ) +
-\nabla \cdot ( J p \bs{F}^{-T} ) \\
-&= \nabla \cdot ( J \bs{\sigma}' \bs{F}^{-T} ) + J \bs{F}^{-T} \nabla p.
+\nabla \cdot \bs{P} &= \nabla \cdot ( j \bs{\sigma} \bs{F}^{-T} ) \\
+&= \nabla \cdot ( j (\bs{\sigma}' + p \bs{I}) \bs{F}^{-T} ) \\
+&= \nabla \cdot ( j \bs{\sigma}' \bs{F}^{-T} ) +
+\nabla \cdot ( j p \bs{F}^{-T} ) \\
+&= \nabla \cdot ( j \bs{\sigma}' \bs{F}^{-T} ) + j \bs{F}^{-T} \nabla p.
 \end{aligned}
 \label{eq:mech_div_first_pk}
 \end{gather}
 %
-Here, we have used the Piola identity $\nabla \cdot (J \bs{F}^{-T}) = 0$
+Here, we have used the Piola identity $\nabla \cdot (j \bs{F}^{-T}) = 0$
 in the fourth equality. Using the decomposition \eqref{eq:mech_div_first_pk}
 and introducing the pressure \eqref{eq:mech_neohookean_model} as an unknown
 variable, the model problem \eqref{eq:mech_linear_momentum} can be written
@@ -186,9 +186,9 @@ in mixed form as:
 \begin{gather}
 \begin{cases}
 \begin{aligned}
-- \nabla \cdot (J \bs{\sigma}' \bs{F}^{-T}) - J \bs{F}^{-T} \nabla p &= 0,
+- \nabla \cdot (j \bs{\sigma}' \bs{F}^{-T}) - j \bs{F}^{-T} \nabla p &= 0,
 && \bs{X} \in \B, \\
-\frac{p}{k} - \frac{1}{2 J}(J^2 - 1) &= 0,
+\frac{p}{k} - \frac{1}{2 j}(j^2 - 1) &= 0,
 && \bs{X} \in \B, \\
 \bs{u} &= \bs{g}, && \bs{X} \in \Gamma_g, \\
 \bs{P} \cdot \bs{n} &= \bs{h}, && \bs{X} \in \Gamma_h.
@@ -247,9 +247,9 @@ defined as
 \begin{gather}
 \begin{split}
 \R_g(\bs{W} ; \bs{U}) :=
-&\int_{\B} (J \bs{\sigma}' \bs{F}^{-T}) : \nabla \bs{w} \; \text{d} V
-+ \int_{\B} (J p \bs{F}^{-T}) : \nabla \bs{w} \; \text{d} V + \\
-& \int_{\B} \left[ \frac{p}{\kappa} - \frac{1}{2 J}(J^2 - 1) \right] \;
+&\int_{\B} (j \bs{\sigma}' \bs{F}^{-T}) : \nabla \bs{w} \; \text{d} V
++ \int_{\B} (j p \bs{F}^{-T}) : \nabla \bs{w} \; \text{d} V + \\
+& \int_{\B} \left[ \frac{p}{\kappa} - \frac{1}{2 j}(j^2 - 1) \right] \;
 q \; \text{d} V
 - \int_{\Gamma_h} \bs{h} \cdot \bs{w} \; \text{d} A.
 \end{split}
@@ -314,8 +314,8 @@ such that for all $(\bs{w}^H, q^H) \in (\V^H_w, \V^H_p)$
 \begin{gather}
 \begin{split}
 - \int_{\B} (\nabla \cdot \bs{P}) \cdot \bs{w}^H \; \text{d} V +
-& \int_{\B} \left[ \frac{p^H}{\kappa} - \frac{1}{2 J}(J^2 - 1) \right] \;
-q^H \; \text{d} V - \\
+& \int_{\B} \left[ \frac{p^H}{\kappa} - \frac{1}{2 j}(j^2 - 1) \right] \;
+q^H \; \text{d} V + \\
 \sum_{e=1}^{n_{el}} & \int_{\B_e} (\nabla \cdot \bs{P}) \cdot
 (\tau_e \bs{F}^{-T} \nabla q^H) \; \text{d} V = 0.
 \label{eq:mech_perturbed}
@@ -332,9 +332,9 @@ The integrand of the third term on left hand side of equation
 \begin{gather}
 \begin{split}
 (\nabla \cdot \bs{P}) \cdot (\tau_e \bs{F}^{-T} \nabla q^H) \; = \;
-&(\nabla \cdot J \bs{\sigma}' \bs{F}^{-T} ) \cdot
+&(\nabla \cdot j \bs{\sigma}' \bs{F}^{-T} ) \cdot
 (\tau_e \bs{F}^{-T} \nabla q^H) + \\
-&(\tau_e J \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H).
+&(\tau_e j \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H).
 \label{eq:mech_integrand_expand}
 \end{split}
 \end{gather}
@@ -364,7 +364,7 @@ corresponding to the additional pressure stabilization, given by:
 \begin{gather}
 \R_{\tau}(\bs{W}^H ; \bs{U}^H) :=
 \sum_{e=1}^{n_{el}} \int_{\B_e} \tau_e
-(J \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H) \; \text{d} V.
+(j \bs{F}^{-1} \bs{F}^{-T}) : (\nabla p^H \otimes \nabla q^H) \; \text{d} V.
 \end{gather}
 %
 We remark that we have introduced a consistent stabilization term, in that
