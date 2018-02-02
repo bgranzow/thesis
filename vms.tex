@@ -11,7 +11,7 @@ for variational multiscale methods.''
 vol. 322, pp. 331-459, Aug. 2017.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction and motivation}
+\section{Introduction and Motivation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Stabilized finite element methods have been used to
@@ -155,11 +155,11 @@ and $\eta_2$ to drive mesh adaptation to accurately
 compute output quantities $J(u)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Review of VMS methods}
+\section{Review of VMS Methods}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %=============================================================================
-\subsection{Model problem}
+\subsection{Model Problem}
 %=============================================================================
 
 Let $\Omega \subset \mathbb{R}^d$
@@ -210,7 +210,7 @@ find $u \in \V$ such that
 \end{gather}
 
 %=============================================================================
-\subsection{VMS formulation}
+\subsection{VMS Formulation}
 %=============================================================================
 
 In this section, we review the foundations of the
@@ -368,7 +368,7 @@ recalling the definition of the primal residual
 operator $\R u:= f - \OP u$.
 
 %=============================================================================
-\subsection{Subgrid model}
+\subsection{Subgrid Model}
 %=============================================================================
 
 In practice, the continuous VMS model
@@ -529,11 +529,11 @@ function $f$.
 \end{rmk}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{The dual problem}
+\section{The Dual Problem}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %=============================================================================
-\subsection{Abstract problem}
+\subsection{Abstract Problem}
 %=============================================================================
 
 Let $J(u) : \V \to \mathbb{R}$ be a linear functional
@@ -576,7 +576,7 @@ $\R^* : \V \to \V^*$ of the dual problem as
 $\R^* z := q - \OP^* z$.
 
 %=============================================================================
-\subsection{VMS formulation}
+\subsection{VMS Formulation}
 %=============================================================================
 
 If the primal problem necessitates the use of numerical
@@ -663,7 +663,7 @@ as:
 %
 
 %=============================================================================
-\subsection{Subgrid model}
+\subsection{Subgrid Model}
 %=============================================================================
 
 To derive a corresponding subgrid model to the VMS formulation
@@ -759,7 +759,7 @@ $L_2$ inner product defined on element interiors.
 \end{rmk}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Error estimation}
+\section{Error Estimation}
 \label{sec:Error}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -774,7 +774,7 @@ estimate over the other in the context of error localization needed
 to drive mesh adaptation.
 
 %=============================================================================
-\subsection{Continuous VMS error representations}
+\subsection{Continuous VMS Error Representations}
 %=============================================================================
 
 \begin{prop}
@@ -860,7 +860,7 @@ Green's operators and the coarse-scale solutions for
 both the primal and dual problems.
 
 %=============================================================================
-\subsection{Subgrid model error representations}
+\subsection{Subgrid Model Error Representations}
 %=============================================================================
 
 We now derive error representations that arise by
@@ -966,7 +966,7 @@ representation
 \end{proof}
 
 %=============================================================================
-\subsection{Subgrid model error estimates}
+\subsection{Subgrid Model Error Estimates}
 %=============================================================================
 
 In general, the approximation errors $\tilde{u}$
@@ -1081,7 +1081,7 @@ $\V^e = \{ u \in \V : u = 0 \; \text{on} \; \partial \Omega^e \}$.
 \end{proof}
 
 %=============================================================================
-\subsection{Error localization}
+\subsection{Error Localization}
 %=============================================================================
 
 We now demonstrate that even though $\eta_1$ and
@@ -1140,7 +1140,7 @@ the subdomain $\Omega^s$, whereas this would not
 be the case for $\eta^e_2$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Mesh adaptation}
+\section{Mesh Adaptation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Mesh adaptation provides a means to modify the
@@ -1161,7 +1161,7 @@ contribute to the error and perform mesh coarsening
 in areas that do not strongly contribute to the error.
 
 %=============================================================================
-\subsection{Size field specification}
+\subsection{Size Field Specification}
 %=============================================================================
 
 Let $N$ be a desired target number of mesh elements.
@@ -1277,7 +1277,7 @@ we have provided \ref{app:propositions} to concretely demonstrate
 the propositions derived in Section \ref{sec:Error}.
 
 %=============================================================================
-\subsection{One dimensional example}
+\subsection{One Dimensional Example}
 %=============================================================================
 
 Let $\Omega = \{ x : x \in [0,1] \}$. We choose the forcing
@@ -1329,7 +1329,7 @@ diffusion example with a global QoI}
 \end{table}
 
 %=============================================================================
-\subsection{A manufactured solution}
+\subsection{A Manufactured Solution}
 %=============================================================================
 
 Let $\Omega = \{ \bs{x} : \bs{x} \in [0,1] \times [0,1] \}$.
@@ -1374,7 +1374,7 @@ diffusion example with a global QoI}
 \end{table}
 
 %=============================================================================
-\subsection{Advection in an L-shaped domain}
+\subsection{Advection in an L-Shaped Domain}
 %=============================================================================
 
 Let $\Omega = \{ \bs{x} :
