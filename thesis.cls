@@ -59,29 +59,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PAGE LAYOUT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% SIDE MARGINS:
-\if@twoside                 % Values for two-sided printing:
-   \oddsidemargin .55in     %   Left margin on odd-numbered pages.
-   \evensidemargin .05in    %   Left margin on even-numbered pages.
-   \marginparwidth 40pt     %   Width of marginal notes.
-\else                       % Values for one-sided printing:
-   \oddsidemargin 0.55in    %   Note that \oddsidemargin = \evensidemargin
-   \evensidemargin 0.55in
-   \marginparwidth 40pt
-\fi
-\marginparsep 10pt          % Horizontal space between outer margin and
-                            % marginal note
-\textwidth 5.9in            % width of text
- 
-% VERTICAL SPACING:
-                         % Top of page:
-\topmargin -.5in         %    distance from top of page to running head
-\headheight 14pt         %    Height of box containing running head.
-\headsep .4in            %    Space between running head and text.
-\textheight 8.8in        %    space for text
-\footskip 30pt           %    Distance from baseline of box containing foot
-                         %    to baseline of last line of text.
-
+% bng : now done w/ geometry package
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                            SECTION HEADINGS
@@ -503,7 +481,7 @@
          Dr. Jason E. Hicken\\
          Dr. Jeffrey W. Banks\\
          \vskip 100pt
-         \includegraphics[width=0.3\linewidth]{img/rpi_seal}
+         \includegraphics[width=0.25\linewidth]{img/rpi_seal}
          \vskip 20pt
          \emph{Department of \expandafter{\@department}}\\
          Rensselaer Polytechnic Institute\\
