@@ -474,7 +474,7 @@ Jacobian matrix.
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=The abstract Goal integrator class interface,
+caption=The abstract Goal integrator class interface.,
 label=lst:software_integrator]
 class Integrator {
   public:
@@ -593,7 +593,7 @@ the Goal application.
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=Poisson residual,
+caption=Poisson residual.,
 label=lst:presidual]
 template <typename ScalarT>
 void Residual<ScalarT>::at_point(
@@ -625,7 +625,7 @@ in Section \ref{ssec:aut_mech_glial}.
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=Pressure stabilization residual for mechanics,
+caption=Pressure stabilization residual for mechanics.,
 label=lst:stabresidual]
 template <typename ScalarT>
 void Stabilization<ScalarT>::at_point(
@@ -1169,7 +1169,7 @@ for the QoI corresponding to the integrated displacement over a sub-domain.
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=Evaluation of the integrated displacement over a sub-domain,
+caption=Evaluation of the integrated displacement over a sub-domain.,
 label=lst:aut_avg_u_qoi]
 template <typename ScalarT>
 void AvgDisp<ScalarT>::at_point(
@@ -1221,7 +1221,7 @@ specific QoI in the Goal application.
 \begin{lstlisting}[
 float,
 style=mystyle,
-caption=Evaluation of the integrated von-Mises stress over a sub-domain,
+caption=Evaluation of the integrated von-Mises stress over a sub-domain.,
 label=lst:aut_avg_vm_qoi]
 template <typename ScalarT>
 void AvgVM<ScalarT>::at_point(
@@ -1505,7 +1505,7 @@ to constrain rigid body rotations and translations.
 \end{subfigure}
 \caption{A close-up of the initial mesh (left) the mesh after
 5 adaptive iterations (center) and the final adapted mesh (right)
-for the microglial cell example}
+for the microglial cell example.}
 \label{fig:aut_glial_meshes}
 \end{figure}
 
@@ -1540,7 +1540,7 @@ during the adaptive iterations.
 \includegraphics[width=.99\linewidth]{img/aut_glial_final_parts.png}
 \end{subfigure}
 \caption{The parallel mesh partitioning for the initial mesh (left)
-and the final adapted mesh (right) for the microglial cell example}
+and the final adapted mesh (right) for the microglial cell example.}
 \label{fig:aut_glial_parts}
 \end{figure}
 
@@ -1555,7 +1555,7 @@ across parallel partitions is no greater than $5\%$.
 \centering
 \includegraphics[width=0.75\linewidth]{img/aut_glial_timings.pdf}
 \caption{Breakdown of the CPU time spent for each portion of
-the adaptive process for the microglial cell example}
+the adaptive process for the microglial cell example.}
 \label{fig:aut_glial_timings}
 \end{figure}
 
